@@ -1,20 +1,23 @@
 import React from 'react'
-import Card from '../ui/Card/Card'
-import Input from '../ui/Input/Input'
+import Card from '../components/ui/Card/Card'
+import Input from '../components/ui/Input/Input'
 import { Link } from "react-router-dom"
-import Button from '../ui/Button'
+import Button from '../components/ui/Button'
 import { FcGoogle } from 'react-icons/fc'
 import { Eye, EyeOff } from 'lucide-react'
 import { useState } from 'react'
 
 
-function Login() {
+function Register() {
 
   const [showPassword, setShowPassword] = useState(false)
 
   return (
     <Card>
       <form className='space-y-2 px-8 mt-8'>
+        {/* username */}
+        <Input id="name" label="Username" type="text" placeholder="Saikiran" />
+
         {/* Email input */}
         <Input id="Email" label="Email" type="email" placeholder="you@gmail.com" />
 
@@ -39,7 +42,7 @@ function Login() {
 
         {/* login button */}
         <div className='flex items-center justify-center mt-6'>
-          <Button type="submit" variant="primary" className="tracking-wider w-full">Login</Button>
+          <Button type="submit" variant="primary" className="tracking-wider w-full">Register</Button>
         </div>
 
         {/* continue with google button */}
@@ -59,7 +62,7 @@ function Login() {
         {/* sigup button */}
         <div className='flex justify-center items-center'>
           <p className='text-muted text-xs'>Don't have an account ?</p>
-          <Link to="/forgot-password" className='text-xs flex justify-center text-primary/60 items-center hover:text-body cursor-pointer underline'>Signup</Link>
+          <Link to="/forgot-password" className='text-xs flex justify-center text-primary/60 items-center hover:text-body cursor-pointer underline'>Login</Link>
         </div>
 
       </form>
@@ -67,4 +70,4 @@ function Login() {
   )
 }
 
-export default Login
+export default Register
