@@ -4,6 +4,20 @@
    DESIGN TOKENS
 ========================================== */
 
+
+/* fonts */
+
+.inter-font {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+}
+
+
+.dancing-script-font {
+  font-family: "Dancing Script", cursive;
+  font-optical-sizing: auto;
+}
+
 /* Light Theme */
 
 :root {
