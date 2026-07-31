@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
+import Login from "./pages/authentication/Login";
 import Card from "./components/ui/Card/Card";
-import ComponentLibrary from "./pages";
-import Register from "./pages/Register";
+import ComponentLibrary from "./pages/ComponentLibrary"
+import Register from "./pages/authentication/Register";
 
 export default function App() {
   return (
