@@ -3,6 +3,7 @@ import Login from "./pages/authentication/Login";
 import Card from "./components/ui/Card/Card";
 import ComponentLibrary from "./pages/ComponentLibrary"
 import Register from "./pages/authentication/Register";
+import ForgotPassword from "./pages/authentication/ForgotPassword";
 
 export default function App() {
   return (
@@ -10,7 +11,7 @@ export default function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/forgot-password" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
       {/* Login page */}
       {/* <Login /> */}
