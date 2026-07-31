@@ -36,7 +36,7 @@ function Register() {
         </div>
 
         {/* continue with google button */}
-        <SocialLogin />
+        {/* <SocialLogin /> */}
 
         {/* divider */}
         <AuthDivider />

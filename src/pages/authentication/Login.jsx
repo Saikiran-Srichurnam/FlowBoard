@@ -43,7 +43,7 @@ function Login() {
         </div>
 
         {/* continue with google button */}
-        <SocialLogin />
+        {/* <SocialLogin /> */}
 
         {/* divider */}
         <AuthDivider />
