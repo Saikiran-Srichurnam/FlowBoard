@@ -6,11 +6,13 @@ import Register from "./pages/authentication/Register";
 import ForgotPassword from "./pages/authentication/ForgotPassword";
 import Dashboard from "./components/dashboard/Dashboard";
 import Layout from "./components/layout/Layout";
+import Home from "./components/dashboard/Home";
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Login />} />
         <Route path="/">
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
@@ -20,6 +22,7 @@ export default function App() {
         {/* protected routes */}
         <Route path="/" element={<Layout />}>
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="home" element={<Home />} />
         </Route>
       </Routes>
     </BrowserRouter>
