@@ -10,8 +10,7 @@ function Header() {
   const [openMenu, setOpenMenu] = useState(false)
 
   const navItems = [
-    { name: "Home", path: "/home" },
-    { name: "About", path: "/about" },
+    { name: "Features", path: "/about" },
     { name: "Contact Us", path: "/contact" },
     { name: "Testimonials", path: "/testimonials" },
   ]
@@ -36,7 +35,6 @@ function Header() {
 
         {openMenu && (
           <ul className='absolute mt-2 right-0 rounded-lg shadow-lg w-40 text-center leading-16 overflow-hidden bg-surface'>
-            <Link to="/home"> <List li="Home" /></Link>
             <List li="About" />
             <List li="Contact Us" />
             <List li="Testimonials" />

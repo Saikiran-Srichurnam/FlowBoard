@@ -5,7 +5,6 @@ import {
   CheckSquare,
   KanbanSquare,
   CalendarDays,
-  ChartColumn,
   Users,
   Bell,
   Star,
@@ -13,30 +12,40 @@ import {
   User,
   LogOut,
 } from "lucide-react";
-import { li } from 'framer-motion/client';
+import { NavLink } from 'react-router-dom';
 
 function SideBar() {
 
   const sideBarItems = [
-    { name: "Dashboard", symbol: <LayoutDashboard size={24} /> },
-    { name: "Projects", symbol: <FolderKanban size={24} /> },
-    { name: "Tasks", symbol: <CheckSquare size={24} /> },
-    { name: "Kanban Board", symbol: <KanbanSquare size={24} /> },
-    { name: "Calender", symbol: <CalendarDays size={24} /> },
-    { name: "Team", symbol: <Users size={24} /> },
-    { name: "Notifications", symbol: <Bell size={24} /> },
-    { name: "Favorites", symbol: <Star size={24} /> },
-    { name: "Settings", symbol: <Settings size={24} /> },
-    { name: "Profile", symbol: <User size={24} /> },
-    { name: "Logout", symbol: <LogOut size={24} /> },
+    { name: "Dashboard", path: "/dashboard", symbol: <LayoutDashboard size={24} /> },
+    { name: "Projects", path: "/projects", symbol: <FolderKanban size={24} /> },
+    { name: "Tasks", path: "/tasks", symbol: <CheckSquare size={24} /> },
+    { name: "Kanban Board", path: "/kanban-board", symbol: <KanbanSquare size={24} /> },
+    { name: "Calender", path: "/calendar", symbol: <CalendarDays size={24} /> },
+    { name: "Team", path: "/team", symbol: <Users size={24} /> },
+    { name: "Notifications", path: "/notifications", symbol: <Bell size={24} /> },
+    { name: "Favorites", path: "/favorites", symbol: <Star size={24} /> },
+    { name: "Settings", path: "/settings", symbol: <Settings size={24} /> },
+    { name: "Profile", path: "/profile", symbol: <User size={24} /> },
+    { name: "Logout", path: "/logout", symbol: <LogOut size={24} /> },
   ]
 
+  const sideBarClass = ({ isActive }) => (
+    `flex gap-2 w-full p-2 ease-in ${isActive ? "bg-primary text-white shadow-lg font-semibold rounded-sm" : "duration-200 ease-in hover:bg-primary/30 hover:text-black hover:font-semibold"}`
+  )
+
   return (
-    <ul className='fixed bg-surface p-6 mt-16 md:mt-20 h-full flex flex-col justify-between items-center z-20 shadow-xl '>
-      {sideBarItems.map((item) => (
-        <li className='flex gap-2 w-full'>{item.symbol}{item.name}</li>
-      ))}
-    </ul>
+    <aside className='fixed left-0 w-58 h-full overflow-y-auto bg-surface z-20 shadow-xl'>
+      <ul className='py-6 px-4 flex flex-col space-y-4 pb-24'>
+        {sideBarItems.map((item) => (
+          <li key={item.name} className='w-full cursor-pointer'>
+            <NavLink to={item.path} className={sideBarClass}>
+              {item.symbol} <span>{item.name}</span>
+            </NavLink>
+          </li>
+        ))}
+      </ul>
+    </aside>
   )
 }
 
