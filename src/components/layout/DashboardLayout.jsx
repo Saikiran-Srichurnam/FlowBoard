@@ -1,18 +1,26 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import { SideBar } from '../common'
+import { Header, SideBar } from '../common'
 import Dashboard from '../dashboard/Dashboard'
 function DashboardLayout() {
   return (
-    <>
-      <div className="flex">
-        <SideBar />
+    <div className='w-full h-full bg-white p-2'>
 
-        <main className="flex-1 ml-64 p-6 overflow-y-auto">
-          <Outlet />
-        </main>
+      {/* Big Dashboard Card */}
+      <div className='bg-background w-full h-full rounded-2xl shadow-md'>
+
+        <div className="flex h-full">
+          <div className='flex justify-between'>
+
+            <SideBar />
+            <Header />
+          </div>
+          {/* <main className="flex-1 h-full p-6 overflow-y-auto">
+            <Outlet />
+          </main> */}
+        </div>
       </div>
-    </>
+    </div>
   )
 }
 

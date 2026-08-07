@@ -35,8 +35,9 @@ function SideBar() {
   )
 
   return (
-    <aside className='fixed left-0 w-58 h-full overflow-y-auto bg-surface z-20 shadow-xl'>
-      <ul className='py-6 px-4 flex flex-col space-y-4 pb-24'>
+    <aside className='left-0 top-0 w-64 h-full overflow-y-auto bg-surface z-20 shadow-md overflow-hidden shrink-0 flex flex-col border-r border-r-gray-300 rounded-l-2xl'>
+      <h1 className='my-6 mx-auto'>FlowBoard Logo</h1>
+      <ul className='p-4 flex flex-col space-y-2'>
         {sideBarItems.map((item) => (
           <li key={item.name} className='w-full cursor-pointer'>
             <NavLink to={item.path} className={sideBarClass}>
