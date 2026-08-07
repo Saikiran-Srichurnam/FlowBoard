@@ -1,17 +1,23 @@
 import React from 'react'
+import { cn } from '../../../utils/cn'
 
 
-function Input({ label, type, placeholder, id, minLength }) {
+function Input({ label, type, placeholder, id, minLength, className, ...rest }) {
   return (
     <div className='flex flex-col gap-2'>
-      <label htmlFor={id}>{label}</label>
+      {label && (
+        <label htmlFor={id}>{label}</label>
+      )}
+
       <input
         id={id}
         type={type}
         placeholder={placeholder}
         minLength={minLength}
         required
-        className="bg-background px-3 py-2 rounded-md focus-visible:none border border-primary/30 focus-visible:ring-1 focus-visible:border-primary/50 outline-none" />
+        className={cn("bg-background h-12 rounded-md border border-primary/30 focus-visible:ring-1 focus-visible:border-primary/50 outline-none", className)}
+        {...rest}
+      />
     </div>
   )
 }

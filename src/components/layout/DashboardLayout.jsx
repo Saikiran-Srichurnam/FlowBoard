@@ -10,14 +10,15 @@ function DashboardLayout() {
       <div className='bg-background w-full h-full rounded-2xl shadow-md'>
 
         <div className="flex h-full">
-          <div className='flex justify-between'>
-
+          <div className='md:w-64 h-full shrink-0'>
             <SideBar />
-            <Header />
           </div>
-          {/* <main className="flex-1 h-full p-6 overflow-y-auto">
-            <Outlet />
-          </main> */}
+          <div className='flex flex-col h-full flex-1'>
+            <Header />
+            <main className="flex-1 p-6 overflow-y-auto">
+              <Outlet />
+            </main>
+          </div>
         </div>
       </div>
     </div>
