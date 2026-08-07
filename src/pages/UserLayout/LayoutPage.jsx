@@ -6,7 +6,7 @@ function LayoutPage() {
   const navigate = useNavigate()
 
   const handleGetStarted = () => {
-    navigate("/login")
+    navigate("/register")
   }
 
   return (
