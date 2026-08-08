@@ -4,7 +4,7 @@ import { Header, SideBar } from '../common'
 import Dashboard from '../dashboard/Dashboard'
 function DashboardLayout() {
   return (
-    <div className='w-full h-full bg-white p-2'>
+    <div className='w-full h-full bg-background p-2'>
 
       {/* Big Dashboard Card */}
       <div className='bg-background w-full h-full rounded-2xl shadow-md'>
@@ -15,7 +15,7 @@ function DashboardLayout() {
           </div>
           <div className='flex flex-col h-full flex-1'>
             <Header />
-            <main className="flex-1 p-6 overflow-y-auto">
+            <main className="flex-1 p-6  mx-6 my-auto">
               <Outlet />
             </main>
           </div>

@@ -8,9 +8,14 @@ import Button from '../../components/ui/Button'
 
 function Register() {
 
+  const [userName, setUserName] = useState("")
+
   const navigate = useNavigate()
   const handleRegister = (e) => {
     e.preventDefault()
+
+    localStorage.setItem("userName", userName)
+    console.log("Stored username:", localStorage.getItem("userName"));
 
     navigate("/login")
   }
@@ -20,7 +25,7 @@ function Register() {
       <AuthHeader title="Create account" subtitle="Start managing your projects" />
       <form className='space-y-2 px-8 mt-8' onSubmit={handleRegister}>
         {/* username */}
-        <Input id="name" label="Username" type="text" placeholder="Saikiran" />
+        <Input id="userName" label="Username" type="text" placeholder="Saikiran" value={userName} onChange={(e) => setUserName(e.target.value)} />
 
         {/* Email input */}
         <Input id="email" label="Email" type="email" placeholder="you@gmail.com" />

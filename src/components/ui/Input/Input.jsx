@@ -15,7 +15,7 @@ function Input({ label, type, placeholder, id, minLength, className, ...rest }) 
         placeholder={placeholder}
         minLength={minLength}
         required
-        className={cn("bg-background h-12 rounded-md border border-primary/30 focus-visible:ring-1 focus-visible:border-primary/50 outline-none", className)}
+        className={cn("bg-background h-12 rounded-md border border-primary/30 focus-visible:ring-1 focus-visible:border-primary/50 outline-none px-4 py-2", className)}
         {...rest}
       />
     </div>

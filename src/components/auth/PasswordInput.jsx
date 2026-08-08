@@ -8,8 +8,8 @@ function PasswordInput() {
 
   return (
     <div className='relative'>
-      <Input id="password" label="Password" type={showPassword ? "text" : "password"} placeholder="••••••••" minLength={6}/>
-      <button type='button' onClick={() => setShowPassword(!showPassword)} className='absolute bottom-2 right-4'>
+      <Input id="password" label="Password" type={showPassword ? "text" : "password"} placeholder="••••••••" minLength={6} />
+      <button type='button' onClick={() => setShowPassword(!showPassword)} className='absolute bottom-3 right-4'>
         {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
       </button>
     </div>

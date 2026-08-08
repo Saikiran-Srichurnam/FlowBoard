@@ -7,6 +7,9 @@ import { PlusIcon, Bell, User, ChevronDown } from "lucide-react"
 
 function Header() {
 
+  // get the username from localstorage
+  const storedUserName = localStorage.getItem("userName")
+
   return (
     <header className=" w-full flex justify-end px-8 py-4">
       <div className="flex justify-between items-center gap-6 ">
@@ -33,7 +36,7 @@ function Header() {
             <User size={20} className="text-primary" />
           </div>
           <div>
-            <h3 className="font-bold text-sm text-black">Saikiran</h3>
+            <h3 className="font-bold text-sm text-black">{storedUserName || "User"}</h3>
             <h4 className="font-semibold text-xs">Admin</h4>
           </div>
           <button className="p-2 cursor-pointer hover:shadow-sm hover:rounded-full bg-transparent"><ChevronDown size={20} className="text-primary" /></button>
