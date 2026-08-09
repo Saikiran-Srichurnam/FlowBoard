@@ -2,7 +2,7 @@ import React from 'react'
 import Input from '../ui/Input/Input';
 import DateRangePicker from './DateRangePicker';
 import StatsOverview from './StatsOverview';
-import ProjectOverview from '../project/ProjectOverview';
+import ProjectOverview from '../project/ProjectsOverview';
 
 function Dashboard() {
 

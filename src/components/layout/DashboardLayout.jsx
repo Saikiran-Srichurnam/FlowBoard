@@ -15,7 +15,7 @@ function DashboardLayout() {
           </div>
           <div className='flex flex-col h-full flex-1'>
             <Header />
-            <main className="flex-1 p-6  mx-6 my-auto">
+            <main className="flex-1 p-4 mx-2 my-auto">
               <Outlet />
             </main>
           </div>
