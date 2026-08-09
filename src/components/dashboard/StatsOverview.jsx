@@ -5,10 +5,12 @@ import { ClipboardPenLine, CircleCheck, Hourglass, Users2Icon, ArrowUp, ArrowDow
 function StatsOverview() {
 
   const statsData = [
-    { symbol: ClipboardPenLine, name: "Total Projects", total: 24, performance: 12, text: "from last week" },
-    { symbol: CircleCheck, name: "Tasks Completed", total: 156, performance: 18, text: "from last week" },
-    { symbol: Hourglass, name: "In Progress", total: 32, performance: -5, text: "from last week" },
-    { symbol: Users2Icon, name: "Team Members", total: 8, performance: 2, text: "from last week" }
+    {
+      symbol: ClipboardPenLine, symbolClass: "bg-primary/30 text-primary", name: "Total Projects", total: 24, performance: 12, text: "from last week"
+    },
+    { symbol: CircleCheck, symbolClass: "bg-success/10 text-success", name: "Tasks Completed", total: 156, performance: 18, text: "from last week" },
+    { symbol: Hourglass, symbolClass: "bg-yellow-100 text-yellow-500", name: "In Progress", total: 32, performance: -5, text: "from last week" },
+    { symbol: Users2Icon, symbolClass: "bg-primary/10 text-blue-500", name: "Team Members", total: 8, performance: 2, text: "from last week" }
   ]
 
   return (
@@ -22,10 +24,10 @@ function StatsOverview() {
         const ArrowSymbol = isPositive ? ArrowUp : ArrowDown
 
         return (
-          <div key={data.name} className='bg-surface p-4 border border-border rounded-xl shadow-sm space-y-2 min-w-full md:min-w-56'>
+          <div key={data.name} className='bg-surface p-4 border-2 border-border rounded-md shadow-sm space-y-2 min-w-full md:min-w-56 transition-all hover:-translate-y-2 hover:shadow-lg hover:duration-300'>
             <div className='flex flex-col'>
               <div className=' flex gap-4 '>
-                <span className='bg-primary/10 p-2 text-primary rounded-md items flex justify-center items-center'>
+                <span className={`p-2 rounded-md items flex justify-center items-center ${data.symbolClass}`}>
                   <Icon className='h-10 w-10' />
                 </span>
                 <div className='flex flex-col space-y-1'>
