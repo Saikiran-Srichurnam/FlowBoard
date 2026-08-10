@@ -4,9 +4,8 @@ import Login from "./pages/authentication/Login";
 import Card from "./components/ui/Card/Card";
 import Register from "./pages/authentication/Register";
 import ForgotPassword from "./pages/authentication/ForgotPassword";
-import Dashboard from "./components/dashboard/Dashboard";
+import Dashboard from "./pages/DashboardPage/Dashboard";
 import DashboardLayout from "./components/layout/DashboardLayout";
-import Home from "./components/dashboard/Home";
 
 export default function App() {
   return (
@@ -22,7 +21,6 @@ export default function App() {
         {/* protected routes */}
         <Route path="/" element={<DashboardLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="home" element={<Home />} />
         </Route>
       </Routes>
     </BrowserRouter>

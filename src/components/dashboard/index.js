@@ -1,7 +1,9 @@
-import Header from "./Header/Header";
-import Footer from "./Footer/Footer";
+import DateRangePicker from "./DateRangePicker";
+import StatsOverview from "./StatsOverview";
+import ProjectOverview from "./ProjectsOverview";
 
 export {
-  Header,
-  Footer
+  DateRangePicker,
+  StatsOverview,
+  ProjectOverview
 }

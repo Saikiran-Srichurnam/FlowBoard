@@ -1,8 +1,6 @@
 import React from 'react'
-import Input from '../ui/Input/Input';
-import DateRangePicker from './DateRangePicker';
-import StatsOverview from './StatsOverview';
-import ProjectOverview from '../project/ProjectsOverview';
+import Input from '../../components/ui/Input/Input';
+import { DateRangePicker, StatsOverview, ProjectOverview } from '../../components/dashboard';
 
 function Dashboard() {
 

@@ -36,7 +36,7 @@ function ProjectOverview() {
       <section id='kanban-cards'>
         <div className='grid grid-cols-2 md:grid-cols-4 gap-2'>
           {kanbanCardsDetails.map((kanban) => (
-            <div>
+            <div key={kanban.title}>
               <div className={`p-2 flex justify-between items-center border border-border shadow-sm rounded-lg ${kanban.kanbanClass}`}>
                 <h1>{kanban.title} </h1>
                 <p className="shadow-sm h-6 w-6 text-center rounded-full">{kanban.total} </p>
