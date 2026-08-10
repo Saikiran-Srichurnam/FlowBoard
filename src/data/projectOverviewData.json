@@ -1,0 +1,18 @@
+[
+  {
+    "label": "To Do",
+    "Value": 6
+  },
+  {
+    "label": "In Progress",
+    "Value": 4
+  },
+  {
+    "label": "Review",
+    "Value": 3
+  },
+  {
+    "label": "Done",
+    "Value": 7
+  }
+]

@@ -1,6 +1,6 @@
 import React from 'react'
 import Input from '../../components/ui/Input/Input';
-import { DateRangePicker, StatsOverview, ProjectOverview } from '../../components/dashboard';
+import { DateRangePicker, StatsOverview, ProjectOverview, TaskOverview } from '../../components/dashboard';
 
 function Dashboard() {
 
@@ -28,8 +28,9 @@ function Dashboard() {
       </div>
 
       {/* project overview */}
-      <div>
-        <ProjectOverview />
+      <div className='flex gap-2 w-full'>
+        <ProjectOverview className="w-8/12"/>
+        <TaskOverview className="w-4/12"/>
       </div>
 
     </section>
