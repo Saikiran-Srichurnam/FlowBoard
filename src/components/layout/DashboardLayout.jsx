@@ -9,11 +9,13 @@ function DashboardLayout() {
       {/* Big Dashboard Card */}
       <div className='bg-background w-full h-full rounded-2xl shadow-md'>
 
-        <div className="flex h-full">
-          <div className='md:w-64 h-full shrink-0'>
-            <SideBar />
+        <div className='flex h-full'>
+          <div className="flex">
+            <div className='md:w-56'>
+              <SideBar />
+            </div>
           </div>
-          <div className='flex flex-col h-full flex-1'>
+          <div className='flex flex-col h-full flex-1 shrink-0'>
             <Header />
             <main className="flex-1 p-4 mx-2 my-auto">
               <Outlet />
@@ -21,7 +23,7 @@ function DashboardLayout() {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   )
 }
 

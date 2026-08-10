@@ -35,7 +35,7 @@ function SideBar() {
   )
 
   return (
-    <aside className='left-0 top-0 w-64 h-full overflow-y-auto bg-surface z-20 shadow-md shrink-0 flex flex-col border-r border-r-gray-300 rounded-l-2xl'>
+    <aside className='left-0 top-0 w-56 h-full overflow-y-auto bg-surface z-20 shadow-md shrink-0 flex flex-col border-r border-r-gray-300 rounded-l-2xl'>
       <div className='flex justify-center items-center mx-auto gap-2'>
         <img src='src\assets\flowboard-logo.png' className=' size-16 bg-transparent' />
         <h1 className='my-6 mx-auto text-2xl font-semibold text-black'>FlowBoard</h1>
