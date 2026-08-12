@@ -73,8 +73,7 @@ function TaskOverview() {
     <section
       id="TaskOverview"
       className="
-      h-64
-        w-4/12
+        h-64
         rounded-md
         border
         border-border
@@ -87,7 +86,7 @@ function TaskOverview() {
       {/* Header */}
       <div className="flex items-center justify-between">
 
-        <h2 className="text-sm font-medium text-gray-800">
+        <h2 className="text-sm font-medium text-heading">
           Task Overview
         </h2>
 

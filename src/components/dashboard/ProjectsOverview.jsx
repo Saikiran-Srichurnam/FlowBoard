@@ -18,7 +18,7 @@ function ProjectOverview() {
   ]
 
   return (
-    <div id='ProjectOverview' className='bg-surface h-full p-6 shadow-sm border border-border rounded-md space-y-2'>
+    <div id='ProjectOverview' className='bg-surface h-full w-full p-6 shadow-sm border border-border rounded-md space-y-2'>
       <div className='flex justify-between items-center'>
         <div className='flex gap-2 text-center'>
           <BookOpenText size={24} />
