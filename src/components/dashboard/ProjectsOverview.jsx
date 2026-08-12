@@ -41,7 +41,7 @@ function ProjectOverview() {
                   <p className="shadow-sm h-6 w-6 text-center rounded-full">{kanban.total} </p>
                 </div>
                 {projectDetails.map((project) => (
-                  <div className={`bg-surface p-4 shadow-sm mt-2 rounded-md border-l-3 border-l-${kanban.kanbanClass} space-y-2`}>
+                  <div className={`bg-surface p-4 shadow-sm mt-2 rounded-md border-l-2 border-l-${kanban.kanbanClass} space-y-2`}>
                     <div className='text-xs space-y-2'>
                       <h1 className='text-heading'>{project.title}</h1>
                       <p className='text-muted'>{project.projectName}</p>
