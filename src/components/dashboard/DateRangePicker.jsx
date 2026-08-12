@@ -6,12 +6,12 @@ import "react-day-picker/style.css";
 function DateRangePicker() {
   const today = new Date();
 
-  const oneWeekLater = new Date(today);
-  oneWeekLater.setDate(today.getDate() + 7);
+  const oneWeekAgo = new Date(today);
+  oneWeekAgo.setDate(today.getDate() - 6);
 
   const [range, setRange] = useState({
-    from: today,
-    to: oneWeekLater,
+    from: oneWeekAgo,
+    to: today,
   });
 
   const [open, setOpen] = useState(false);
@@ -85,7 +85,7 @@ function DateRangePicker() {
             mode="range"
             selected={range}
             onSelect={setRange}
-            defaultMonth={today}
+            defaultMonth={oneWeekAgo}
             showOutsideDays
             className="flowboard-calendar"
           />
