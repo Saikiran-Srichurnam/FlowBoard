@@ -9,6 +9,7 @@ import {
   Productivity
 } from '../../components/dashboard';
 import RecentActivity from '../../components/dashboard/RecentActivity';
+import TeamsMembersList from '../../components/dashboard/TeamsMembersList';
 
 
 function Dashboard() {
@@ -49,7 +50,7 @@ function Dashboard() {
       <div className='flex flex-row my-2 w-full gap-2'>
         <RecentActivity className="w-4/12" />
         <Productivity className="w-4/12" />
-        {/* <RecentActivity className="w-4/12" /> */}
+        <TeamsMembersList className="w-4/12" />
       </div>
 
 
