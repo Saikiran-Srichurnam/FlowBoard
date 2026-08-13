@@ -9,7 +9,7 @@ function RecentActivity() {
     { text: "You Created a new task", task: "API Integration", time: "6h ago" },
   ]
   return (
-    <section id="RecentActivity" className="h-fit w-full rounded-md border border-border bg-surface p-5 shadow-sm">
+    <section id="RecentActivity" className="h-64 w-full rounded-md border border-border bg-surface p-5 shadow-sm">
       <div>
         <h2 className="text-sm text-heading font-semibold">
           Recent Activity

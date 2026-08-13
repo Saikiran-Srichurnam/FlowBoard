@@ -1,6 +1,13 @@
 import React from 'react'
 import Input from '../../components/ui/Input/Input';
-import { DateRangePicker, StatsOverview, ProjectOverview, TaskOverview, UpCommingEvents } from '../../components/dashboard';
+import {
+  DateRangePicker,
+  StatsOverview,
+  ProjectOverview,
+  TaskOverview,
+  UpCommingEvents,
+  Productivity
+} from '../../components/dashboard';
 import RecentActivity from '../../components/dashboard/RecentActivity';
 
 
@@ -41,8 +48,8 @@ function Dashboard() {
       {/* RecentActivity */}
       <div className='flex flex-row my-2 w-full gap-2'>
         <RecentActivity className="w-4/12" />
-        {/* <RecentActivity className="w-4/12" />
-        <RecentActivity className="w-4/12" /> */}
+        <Productivity className="w-4/12" />
+        {/* <RecentActivity className="w-4/12" /> */}
       </div>
 
 

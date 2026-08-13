@@ -48,8 +48,7 @@ const centerTextPlugin = {
 ChartJS.register(
   ArcElement,
   Tooltip,
-  Legend,
-  centerTextPlugin
+  Legend
 );
 
 
@@ -137,17 +136,17 @@ function TaskOverview() {
                     (item) => item.Value
                   ),
 
-                  backgroundColor:
-                    projectOverviewData.map(
-                      (item) => statusColors[item.label]
-                    ),
+                  backgroundColor: projectOverviewData.map(
+                    (item) => statusColors[item.label]
+                  ),
 
                   borderColor: "#ffffff",
-
                   borderWidth: 2,
                 },
               ],
             }}
+
+            plugins={[centerTextPlugin]}
 
             options={{
               cutout: "68%",
@@ -155,8 +154,6 @@ function TaskOverview() {
               maintainAspectRatio: false,
 
               plugins: {
-                // IMPORTANT
-                // Disable Chart.js default legend
                 legend: {
                   display: false,
                 },
