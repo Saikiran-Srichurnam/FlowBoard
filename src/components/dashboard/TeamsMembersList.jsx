@@ -26,7 +26,7 @@ function TeamsMembersList() {
           variant="ghost"
           className="text-xs text-primary"
         >
-          View Calender
+          View All
         </Button>
       </div>
       <div className='mt-2 space-y-4'>

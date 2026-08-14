@@ -71,7 +71,7 @@ function TaskOverview() {
   return (
     <section
       id="TaskOverview"
-      className="h-64 rounded-md border border-border bg-surface p-5 shadow-sm">
+      className="h-64 md:h-full rounded-md border border-border bg-surface p-5 shadow-sm">
 
       {/* Header */}
       <div className="flex items-center justify-between">
@@ -108,7 +108,7 @@ function TaskOverview() {
 
 
       {/* Chart + Custom Legend */}
-      <div className="mt-5 flex items-center justify-center gap-5">
+      <div className="mt-8 flex items-center justify-center gap-4">
 
 
         {/* Doughnut */}

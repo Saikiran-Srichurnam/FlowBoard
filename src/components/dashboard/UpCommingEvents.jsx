@@ -22,7 +22,7 @@ function UpCommingEvents() {
   return (
     <section
       id="UpCommingEvents"
-      className="h-64 rounded-md border border-border bg-surface p-5 shadow-sm"
+      className="h-64 md:h-full rounded-md border border-border bg-surface p-5 shadow-sm"
     >
       {/* header*/}
       <div className="flex items-center justify-between mb-1">

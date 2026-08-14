@@ -11,7 +11,7 @@ function DashboardLayout() {
 
         <div className='flex h-full'>
           <div className="flex">
-            <div className='md:w-56'>
+            <div className='md:w-64'>
               <SideBar />
             </div>
           </div>

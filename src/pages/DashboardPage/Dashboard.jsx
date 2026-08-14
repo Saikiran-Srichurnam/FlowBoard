@@ -19,7 +19,7 @@ function Dashboard() {
 
   return (
     <section id="dashboard" >
-      <div className='flex justify-between items-center'>
+      <div className='flex justify-between items-center p-4'>
         {/* welcome message and username */}
         <div>
           <h1 className='font-semibold text-black text-lg'>Dashboard</h1>
