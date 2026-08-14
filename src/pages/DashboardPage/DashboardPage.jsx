@@ -12,7 +12,7 @@ import RecentActivity from '../../components/dashboard/RecentActivity';
 import TeamsMembersList from '../../components/dashboard/TeamsMembersList';
 
 
-function Dashboard() {
+function DashboardPage() {
 
   // get the username from the local storage
   const storedUserName = localStorage.getItem("userName")
@@ -58,4 +58,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard
+export default DashboardPage
