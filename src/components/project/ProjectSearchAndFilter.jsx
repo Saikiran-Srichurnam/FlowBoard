@@ -14,9 +14,18 @@ function ProjectSearchAndFilter() {
     { value: "Archive" },
   ];
 
+  const sortOrder = [
+    { value: "latest" },
+    { value: "Alphabetical" },
+    { value: "old" }
+  ]
+
   // dropdown of status
   const [isOpen, setIsOpen] = useState(false)
   const [selectedOption, setSelectedOption] = useState("All")
+  const [isSortOpen, setIsSortOpen] = useState(false)
+  const [selectedSortOption, setSelectedSortOption] = useState("latest")
+
   return (
     <section id='ProjectSearchAndFilter' className='flex gap-2'>
       <Input
@@ -34,7 +43,7 @@ function ProjectSearchAndFilter() {
           className="flex justify-between items-center h-10 text-heading text-xs md:text-sm bg-background w-24 lg:w-32 focus-visible:bg-background rounded-md border border-primary/30 outline-none px-4 py-2 focus:border-primary/30 focus:ring-2 focus:ring-primary/10 cursor-pointer"
         >
           <span>{selectedOption}</span>
-          <ChevronDown size={24} className={`transition-transform transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
+          <ChevronDown size={24} className={`transition-transform transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
         </button>
 
         {isOpen && (
@@ -52,8 +61,31 @@ function ProjectSearchAndFilter() {
             }
           </ul>
         )}
+      </div>
+      <div>
+        <button id='Sort' onClick={() => setIsSortOpen(!isSortOpen)}
+          className="flex justify-between items-center h-10 text-heading text-xs md:text-sm bg-background w-24 lg:w-32 focus-visible:bg-background rounded-md border border-primary/30 outline-none px-4 py-2 focus:border-primary/30 focus:ring-2 focus:ring-primary/10 cursor-pointer"
+        >
+          <span>{selectedSortOption}</span>
+          <ChevronDown size={24} className={`transition-transform transform duration-300 ${isSortOpen ? "rotate-180" : ""}`} />
+        </button>
+        {isSortOpen && (
 
 
+          <ul
+            className="absolute mt-2 w-48 flex flex-col z-50 rounded-md border border-primary/10 bg-background shadow-md
+          ">
+            {
+              sortOrder.map((order) => (
+                <li key={order.value} value={order.value} className=" text-primary/60 pl-2 py-1 hover:bg-primary/10 hover:text-primary hover:font-semibold duration-300 cursor-pointer"
+                  onClick={() => {
+                    setSelectedSortOption(order.value)
+                    setIsSortOpen(false)
+                  }}>{order.value}</li>
+              ))
+            }
+          </ul>
+        )}
       </div>
 
     </section>
