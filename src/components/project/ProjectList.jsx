@@ -1,7 +1,6 @@
 import React from 'react'
-import { projects } from '../../data/project'
 
-function ProjectList() {
+function ProjectList({projects}) {
   return (
     <div className="overflow-hidden rounded-lg border border-border bg-surface">
 

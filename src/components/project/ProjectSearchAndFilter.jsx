@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import Input from '../ui/Input/Input'
 import { ChevronDown } from 'lucide-react';
 import { ul } from 'framer-motion/client';
+import { projects } from '../../data/project';
 
-function ProjectSearchAndFilter() {
+function ProjectSearchAndFilter({ search, setSearch, selectedOption, setSelectedOption }) {
 
   // project statuses
   const projectStatuses = [
@@ -11,7 +12,6 @@ function ProjectSearchAndFilter() {
     { value: "Active" },
     { value: "Completed" },
     { value: "On Hold" },
-    { value: "Archive" },
   ];
 
   const sortOrder = [
@@ -22,7 +22,6 @@ function ProjectSearchAndFilter() {
 
   // dropdown of status
   const [isOpen, setIsOpen] = useState(false)
-  const [selectedOption, setSelectedOption] = useState("All")
   const [isSortOpen, setIsSortOpen] = useState(false)
   const [selectedSortOption, setSelectedSortOption] = useState("latest")
 
@@ -34,6 +33,8 @@ function ProjectSearchAndFilter() {
         type="text"
         placeholder="Search Projects ..."
         className="h-10 w-80 lg:w-96 px-3"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
       />
 
       {/* project status filter */}
