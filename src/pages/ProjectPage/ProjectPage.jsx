@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ProjectHeader, ProjectSearchAndFilter, ProjectViewToggle, ProjectGrid } from '../../components/project'
+import { ProjectHeader, ProjectSearchAndFilter, ProjectViewToggle, ProjectGrid, ProjectList } from '../../components/project'
 
 function ProjectPage() {
 
@@ -16,12 +16,9 @@ function ProjectPage() {
           setView={setView}
         />
       </div>
-      <div className="mt-6">
-        <ProjectGrid />
-      </div>
 
       <div className="mt-6">
-        {view === "grid" && <ProjectGrid />}
+        {view === "grid" ? <ProjectGrid /> : <ProjectList />}
       </div>
     </section>
   )

@@ -3,6 +3,7 @@ import ProjectSearchAndFilter from "./ProjectSearchAndFilter";
 import ProjectViewToggle from "./ProjectViewToggle";
 import ProjectCard from "./ProjectCard";
 import ProjectGrid from "./ProjectGrid";
+import ProjectList from "./ProjectList"
 
 
 export {
@@ -10,5 +11,6 @@ export {
   ProjectSearchAndFilter,
   ProjectViewToggle,
   ProjectCard,
-  ProjectGrid
+  ProjectGrid,
+  ProjectList
 }
