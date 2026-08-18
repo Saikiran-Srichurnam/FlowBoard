@@ -4,7 +4,14 @@ import { ChevronDown } from 'lucide-react';
 import { ul } from 'framer-motion/client';
 import { projects } from '../../data/project';
 
-function ProjectSearchAndFilter({ search, setSearch, selectedOption, setSelectedOption }) {
+function ProjectSearchAndFilter({
+  search,
+  setSearch,
+  selectedOption,
+  setSelectedOption,
+  selectedSortOption,
+  setSelectedSortOption
+}) {
 
   // project statuses
   const projectStatuses = [
@@ -17,13 +24,15 @@ function ProjectSearchAndFilter({ search, setSearch, selectedOption, setSelected
   const sortOrder = [
     { value: "latest" },
     { value: "Alphabetical" },
-    { value: "old" }
+    { value: "oldest" }
   ]
 
   // dropdown of status
   const [isOpen, setIsOpen] = useState(false)
+  // dropdown for sorting
   const [isSortOpen, setIsSortOpen] = useState(false)
-  const [selectedSortOption, setSelectedSortOption] = useState("latest")
+
+
 
   return (
     <section id='ProjectSearchAndFilter' className='flex gap-2'>

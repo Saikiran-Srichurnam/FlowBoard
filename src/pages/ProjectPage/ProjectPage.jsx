@@ -7,6 +7,7 @@ function ProjectPage() {
   const [view, setView] = useState("grid");
   const [search, setSearch] = useState("");
   const [selectedOption, setSelectedOption] = useState("All")
+  const [selectedSortOption, setSelectedSortOption] = useState("latest")
 
   const filteredProjects = projects.filter((p) => {
     const matchedSearch = p.name.toLowerCase().includes(search.toLowerCase());
@@ -15,6 +16,26 @@ function ProjectPage() {
     return matchedSearch && matchedStatus
 
   });
+
+  const sortedProjects = [...filteredProjects].sort((a, b) => {
+    if (selectedSortOption === "Alphabetical") {
+      // negative number → a comes before b
+      // positive number → b comes before a
+      // 0               → same order
+      return a.name.localeCompare(b.name)
+    }
+
+    if (selectedSortOption === "latest") {
+      // 3 - 1 = 2 -> Put b before a.
+      return b.id - a.id
+    }
+
+    if (selectedSortOption === "oldest") {
+      // 1 - 3 = -2 -> Put a before b
+      return a.id - b.id
+    }
+
+  })
 
   return (
     <section id='ProjectPage' className='bg-surface h-full w-full p-6 shadow-sm border border-border rounded-md space-y-2'>
@@ -26,6 +47,8 @@ function ProjectPage() {
           setSearch={setSearch}
           selectedOption={selectedOption}
           setSelectedOption={setSelectedOption}
+          selectedSortOption={selectedSortOption}
+          setSelectedSortOption={setSelectedSortOption}
         />
         <ProjectViewToggle
           view={view}
@@ -35,8 +58,8 @@ function ProjectPage() {
 
       <div className="mt-6">
         {view === "grid"
-          ? <ProjectGrid projects={filteredProjects} />
-          : <ProjectList projects={filteredProjects} />
+          ? <ProjectGrid projects={sortedProjects} />
+          : <ProjectList projects={sortedProjects} />
         }
       </div>
     </section>
