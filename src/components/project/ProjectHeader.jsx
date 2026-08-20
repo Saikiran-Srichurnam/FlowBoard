@@ -10,14 +10,12 @@ function ProjectHeader() {
   const handleAddBtn = () => {
     console.log("adding project", Date.now())
     document.body.style.overflow = "hidden"
-    document.body.classList.add("addModal")
     setShowModal(true)
   }
 
   // handle close modal button
   const handleCloseModal = () => {
     document.body.style.overflow = ""; // Restore scroll
-    document.body.classList.remove("addModal");
     setShowModal(false);
   };
 

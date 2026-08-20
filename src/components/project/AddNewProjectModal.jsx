@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { X, ChevronDown } from 'lucide-react'
 import Input from '../ui/Input/Input'
+import Button from '../ui/Button';
 
 
 function AddNewProjectModal({ onClose }) {
@@ -15,8 +16,16 @@ function AddNewProjectModal({ onClose }) {
   const [optionSelect, setOptionSelect] = useState("Active")
 
   return (
-    <div className='fixed top-1/8 left-1/3 z-50 text-black border max-w-sm p-4 bg-background space-y-2'>
-      <div>
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-[6vh]">
+      {/* Background overlay */}
+      <div
+        className="absolute inset-0 bg-black/10 backdrop-blur-sm"
+        onClick={onClose}
+      />
+
+      {/* Modal */}
+      <div className="relative z-10 w-full max-w-sm px-6 py-4 text-black bg-background border rounded-lg shadow-xl space-y-2 overflow-hidden text-sm">
+
         <button className='absolute right-4 top-4' onClick={onClose}><X size={24} /></button>
         <h1 className='text-center text-2xl'>Add Project</h1>
         <div className='flex flex-col gap-2'>
@@ -110,6 +119,7 @@ function AddNewProjectModal({ onClose }) {
 
         {/* tasks */}
         <Input type="text" label="Total Tasks" />
+        <Button className="w-full mt-2">Save</Button>
       </div>
     </div>
 
