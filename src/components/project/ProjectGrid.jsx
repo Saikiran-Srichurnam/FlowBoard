@@ -1,11 +1,12 @@
-import React from "react";
 import ProjectCard from "./ProjectCard";
+import { useProjects } from "../../context/ProjectContext";
 
-function ProjectGrid({ initialProjects }) {
+function ProjectGrid() {
+  const { projects } = useProjects()
   return (
     <div className="bg-background p-4 rounded-lg border border-border shadow-sm">
       <div className=" grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {initialProjects.map((project) => (
+        {projects.map((project) => (
           <ProjectCard
             key={project.id}
             image={project.image}

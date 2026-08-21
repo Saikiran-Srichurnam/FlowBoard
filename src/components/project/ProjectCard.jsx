@@ -1,7 +1,4 @@
-import React from "react";
 import { MoreVertical, CalendarDays, CheckSquare } from "lucide-react";
-
-
 
 function ProjectCard({
   name,
@@ -93,7 +90,7 @@ function ProjectCard({
         {/* Members */}
         <div className="flex items-center">
           <div className="flex -space-x-2">
-            {members.slice(0, 3).map((member, index) => (
+            {(members || []).slice(0, 3).map((member, index) => (
               <div
                 key={index}
                 className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-surface bg-slate-200 text-xs font-semibold text-heading"
@@ -109,7 +106,7 @@ function ProjectCard({
             ))}
           </div>
 
-          {members.length > 3 && (
+          {members && members.length > 3 && (
             <span className="ml-2 text-xs font-medium text-muted">
               +{members.length - 3}
             </span>
