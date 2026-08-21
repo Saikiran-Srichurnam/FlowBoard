@@ -1,6 +1,6 @@
 import React from 'react'
 
-function ProjectList({projects}) {
+function ProjectList({ initialProjects }) {
   return (
     <div className="overflow-hidden rounded-lg border border-border bg-surface">
 
@@ -15,7 +15,7 @@ function ProjectList({projects}) {
       </div>
 
       {/* Rows */}
-      {projects.map((project) => (
+      {initialProjects.map((project) => (
         <div
           key={project.id}
           className="grid grid-cols-6 items-center border-b border-border px-5 py-4 text-sm last:border-b-0 hover:bg-slate-50"

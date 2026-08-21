@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { ProjectHeader, ProjectSearchAndFilter, ProjectViewToggle, ProjectGrid, ProjectList } from '../../components/project'
-import { projects } from '../../data/project';
+import { projects as initialProjects } from '../../data/project';
 
 function ProjectPage() {
 
@@ -9,7 +9,7 @@ function ProjectPage() {
   const [selectedOption, setSelectedOption] = useState("All")
   const [selectedSortOption, setSelectedSortOption] = useState("latest")
 
-  const filteredProjects = projects.filter((p) => {
+  const filteredProjects = initialProjects.filter((p) => {
     const matchedSearch = p.name.toLowerCase().includes(search.toLowerCase());
     const matchedStatus = selectedOption === "All" || p.status === selectedOption;
 
@@ -58,8 +58,8 @@ function ProjectPage() {
 
       <div className="mt-6">
         {view === "grid"
-          ? <ProjectGrid projects={sortedProjects} />
-          : <ProjectList projects={sortedProjects} />
+          ? <ProjectGrid initialProjects={sortedProjects} />
+          : <ProjectList initialProjects={sortedProjects} />
         }
       </div>
     </section>
