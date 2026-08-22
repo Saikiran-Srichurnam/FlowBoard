@@ -21,7 +21,6 @@ function AddNewProjectModal({ onClose }) {
   //Modal Data
   const [projectName, setProjectName] = useState("")
   const [projectDescription, setProjectDescription] = useState("")
-  const [projectStatus, setProjectStatus] = useState("Active")
   const [projectProgress, setProjectProgress] = useState(0)
   const [projectTasks, setProjectTasks] = useState(0)
 
@@ -87,12 +86,12 @@ function AddNewProjectModal({ onClose }) {
     }
 
     addProject(newProjectData);
-    console.log('✅ New project added:', newProjectData);
+    console.log('New project added:', newProjectData);
 
 
     setProjectName("")
     setProjectDescription("")
-    setProjectStatus("Active")
+    setOptionSelect("Active")
     setProjectProgress(0)
     setProjectTasks(0)
 
@@ -194,7 +193,7 @@ function AddNewProjectModal({ onClose }) {
                   <label htmlFor={member}>{member}</label>
                 </span>
               ))}
-              {/* ✅ Show selected members */}
+              {/* Show selected members */}
               {projectMembers.length > 0 && (
                 <p className='text-xs text-muted-foreground mt-1'>
                   Selected: {projectMembers.join(', ')}

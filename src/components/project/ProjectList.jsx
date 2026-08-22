@@ -80,7 +80,7 @@ function ProjectList() {
               {project.dueDate}
             </div>
 
-            {/* Team Members - ✅ Fixed array display */}
+            {/* Team Members */}
             <div className="flex items-center gap-1">
               <div className="flex -space-x-2">
                 {project.members && project.members.slice(0, 3).map((member, index) => (
