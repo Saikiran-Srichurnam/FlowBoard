@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import { Plus } from 'lucide-react'
 import Button from "../ui/Button"
 import AddNewProjectModal from './AddNewProjectModal'
+import { useProjects } from '../../context/ProjectContext'
 
 function ProjectHeader() {
-  const [showModal, setShowModal] = useState(false)
+  const {showModal, setShowModal} = useProjects()
 
   // handle add project btn
   const handleAddBtn = () => {
@@ -12,12 +13,6 @@ function ProjectHeader() {
     document.body.style.overflow = "hidden"
     setShowModal(true)
   }
-
-  // handle close modal button
-  const handleCloseModal = () => {
-    document.body.style.overflow = ""; // Restore scroll
-    setShowModal(false);
-  };
 
   return (
     <section id='ProjectHeader' className='flex justify-between items-center'>
@@ -28,7 +23,7 @@ function ProjectHeader() {
       <Button onClick={handleAddBtn}><Plus size={24} />New Project</Button>
 
       {/* conditional rendering of modal */}
-      {showModal && <AddNewProjectModal onClose={handleCloseModal} />}
+      {showModal && <AddNewProjectModal />}
     </section >
   )
 }

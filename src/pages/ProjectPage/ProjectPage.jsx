@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { ProjectHeader, ProjectSearchAndFilter, ProjectViewToggle, ProjectGrid, ProjectList } from '../../components/project'
-import { projects as initialProjects } from '../../data/project';
+import { ProjectHeader, ProjectSearchAndFilter, ProjectViewToggle, ProjectGrid, ProjectList, EditProject } from '../../components/project'
+import { useProjects } from '../../context/ProjectContext';
 
 function ProjectPage() {
 
@@ -9,8 +9,13 @@ function ProjectPage() {
   const [selectedOption, setSelectedOption] = useState("All")
   const [selectedSortOption, setSelectedSortOption] = useState("latest")
 
-  const filteredProjects = initialProjects.filter((p) => {
-    const matchedSearch = p.name.toLowerCase().includes(search.toLowerCase());
+  const { projects, editProjectId } = useProjects()
+
+  const filteredProjects = projects.filter((p) => {
+    const matchedSearch = p.name
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
     const matchedStatus = selectedOption === "All" || p.status === selectedOption;
 
     return matchedSearch && matchedStatus
@@ -22,18 +27,20 @@ function ProjectPage() {
       // negative number → a comes before b
       // positive number → b comes before a
       // 0               → same order
-      return a.name.localeCompare(b.name)
+      return a.name.localeCompare(b.name);
     }
 
-    if (selectedSortOption === "latest") {
+    if (selectedSortOption === "Latest") {
       // 3 - 1 = 2 -> Put b before a.
       return b.id - a.id
     }
 
-    if (selectedSortOption === "oldest") {
+    if (selectedSortOption === "Oldest") {
       // 1 - 3 = -2 -> Put a before b
       return a.id - b.id
     }
+
+    return 0
 
   })
 
@@ -58,10 +65,14 @@ function ProjectPage() {
 
       <div className="mt-6">
         {view === "grid"
-          ? <ProjectGrid initialProjects={sortedProjects} />
-          : <ProjectList initialProjects={sortedProjects} />
+          ? <ProjectGrid sortedProjects={sortedProjects} />
+          : <ProjectList sortedProjects={sortedProjects} />
         }
       </div>
+
+      {editProjectId !== null && (
+        <EditProject projectId={editProjectId} />
+      )}
     </section>
   )
 }

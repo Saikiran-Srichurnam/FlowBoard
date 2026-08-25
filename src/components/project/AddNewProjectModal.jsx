@@ -1,4 +1,4 @@
-import React, { useId, useState } from 'react'
+import React, { useState } from 'react'
 import { X, ChevronDown } from 'lucide-react'
 import Input from '../ui/Input/Input'
 import Button from '../ui/Button';
@@ -7,7 +7,7 @@ import Button from '../ui/Button';
 import { useProjects } from '../../context/ProjectContext';
 
 
-function AddNewProjectModal({ onClose }) {
+function AddNewProjectModal() {
   // project status
   const projectStatuses = [
     { value: "Active" },
@@ -45,8 +45,6 @@ function AddNewProjectModal({ onClose }) {
   }
 
 
-  const projectId = useId()
-
   // Helper function to get date + 1 week
   const getDueDate = () => {
     const date = new Date();
@@ -58,8 +56,7 @@ function AddNewProjectModal({ onClose }) {
     });
   }
 
-  // use the context to save the new project information into the projects data file
-  const { addProject } = useProjects()
+  const { addProject, handleCloseModal } = useProjects()
 
   // save the information to project data file (as object)
   const handleSaveProjectInfo = () => {
@@ -95,7 +92,7 @@ function AddNewProjectModal({ onClose }) {
     setProjectProgress(0)
     setProjectTasks(0)
 
-    onClose()
+    handleCloseModal()
   }
 
   return (
@@ -103,13 +100,13 @@ function AddNewProjectModal({ onClose }) {
       {/* Background overlay */}
       <div
         className="absolute inset-0 bg-black/10 backdrop-blur-sm"
-        onClick={onClose}
+        onClick={handleCloseModal}
       />
 
       {/* Modal */}
       <div className="relative z-10 w-full max-w-sm px-6 py-4 text-black bg-background border rounded-lg shadow-xl space-y-2 overflow-hidden text-sm">
 
-        <button className='absolute right-4 top-4' onClick={onClose}><X size={24} /></button>
+        <button className='absolute right-4 top-4' onClick={handleCloseModal}><X size={24} /></button>
         <h1 className='text-center text-2xl'>Add Project</h1>
         <div className='flex flex-col gap-2'>
           <Input

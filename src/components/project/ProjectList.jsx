@@ -1,7 +1,6 @@
 import { useProjects } from "../../context/ProjectContext"
 
-function ProjectList() {
-  const { projects } = useProjects()
+function ProjectList({ sortedProjects }) {
 
   // Helper to get status color
   const getStatusColor = (status) => {
@@ -31,12 +30,12 @@ function ProjectList() {
       </div>
 
       {/* Rows */}
-      {projects.length === 0 ? (
+      {sortedProjects.length === 0 ? (
         <div className="col-span-6 text-center py-8 text-muted">
           No projects found. Create your first project!
         </div>
       ) : (
-        projects.map((project) => (
+        sortedProjects.map((project) => (
           <div
             key={project.id}
             className="grid grid-cols-6 items-center border-b border-border px-5 py-4 text-sm last:border-b-0 hover:bg-slate-50 transition-colors"

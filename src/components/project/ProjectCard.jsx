@@ -1,6 +1,9 @@
 import { MoreVertical, CalendarDays, CheckSquare } from "lucide-react";
+import { useState } from "react";
+import { useProjects } from "../../context/ProjectContext";
 
 function ProjectCard({
+  id,
   name,
   image,
   description,
@@ -11,8 +14,23 @@ function ProjectCard({
   members = [],
 }) {
 
+  const [activeMenu, setActiveMenu] = useState(false);
+
+  const handleMenuButton = () => {
+    setActiveMenu(prev => !prev)
+  }
+
+  const { handleEditProject } = useProjects()
+
+  // handle the edit project button
+  const handleEdit = () => {
+    handleEditProject(id)
+    setActiveMenu(false)
+  }
+
+
   return (
-    <div className="group border border-border rounded-2xl relative p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl bg-surface">
+    <div id={id} className="group border border-border rounded-2xl relative p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl bg-surface">
 
       <img
         src={image}
@@ -42,8 +60,15 @@ function ProjectCard({
           className="rounded-md p-1.5 text-muted transition-colors hover:bg-slate-100 hover:text-heading"
           aria-label={`More options for ${name}`}
         >
-          <MoreVertical size={18} />
+          <MoreVertical size={18} onClick={handleMenuButton} />
         </button>
+        {activeMenu ? (
+          <div className="absolute right-6 mt-8 w-24 bg-slate-200 border text-sm z-10 space-y-2 flex flex-col">
+            <button className="hover:bg-primary hover:text-surface text-heading" onClick={handleEdit}>Edit</button>
+            <button className="hover:bg-primary hover:text-surface text-heading">Delete</button>
+          </div>
+        ) : ""}
+
       </div>
 
       {/* Project information */}

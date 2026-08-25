@@ -1,8 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Input from '../ui/Input/Input'
 import { ChevronDown } from 'lucide-react';
-import { ul } from 'framer-motion/client';
-import { projects } from '../../data/project';
 
 function ProjectSearchAndFilter({
   search,
@@ -22,9 +20,9 @@ function ProjectSearchAndFilter({
   ];
 
   const sortOrder = [
-    { value: "latest" },
-    { value: "Alphabetical" },
-    { value: "oldest" }
+    { value: "latest", label: "Latest" },
+    { value: "alphabetical", label: "Alphabetical" },
+    { value: "oldest", label: "Oldest" }
   ]
 
   // dropdown of status
@@ -85,15 +83,18 @@ function ProjectSearchAndFilter({
           <ul
             className="absolute mt-2 w-48 flex flex-col z-50 rounded-md border border-primary/10 bg-background shadow-md
           ">
-            {
-              sortOrder.map((order) => (
-                <li key={order.value} value={order.value} className=" text-primary/60 pl-2 py-1 hover:bg-primary/10 hover:text-primary hover:font-semibold duration-300 cursor-pointer"
-                  onClick={() => {
-                    setSelectedSortOption(order.value)
-                    setIsSortOpen(false)
-                  }}>{order.value}</li>
-              ))
-            }
+            {sortOrder.map((order) => (
+              <li
+                key={order.value}
+                className="text-primary/60 pl-2 py-1 hover:bg-primary/10 hover:text-primary hover:font-semibold duration-300 cursor-pointer"
+                onClick={() => {
+                  setSelectedSortOption(order.label)
+                  setIsSortOpen(false)
+                }}
+              >
+                {order.label}
+              </li>
+            ))}
           </ul>
         )}
       </div>

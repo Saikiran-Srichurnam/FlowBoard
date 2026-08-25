@@ -38,8 +38,42 @@ export function ProjectProvider({ children }) {
     setProjects([...projects, newProject]); // Auto-saves via useEffect
   };
 
+  const [showModal, setShowModal] = useState(false);
+  const [editProjectId, setEditProjectId] = useState(null)
+
+  // Close ADD modal
+  const handleCloseModal = () => {
+    document.body.style.overflow = "";
+    setShowModal(false);
+  };
+
+  // Open EDIT modal
+  const handleEditProject = (projectId) => {
+    document.body.style.overflow = "hidden";
+    setEditProjectId(projectId);
+  };
+
+  // Close EDIT modal
+  const handleCloseEditModal = () => {
+    document.body.style.overflow = "";
+    setEditProjectId(null);
+  };
+
   return (
-    <ProjectContext.Provider value={{ projects, addProject }} >
+    <ProjectContext.Provider value={{
+      projects,
+      addProject,
+
+      // Add modal
+      showModal,
+      setShowModal,
+      handleCloseModal,
+
+      // Edit modal
+      editProjectId,
+      handleEditProject,
+      handleCloseEditModal,
+    }} >
       {children}
     </ProjectContext.Provider>
   )
