@@ -108,7 +108,7 @@ function EditProjectModal({ projectId }) {
       <div className="relative z-10 w-full max-w-sm px-6 py-4 text-black bg-background border rounded-lg shadow-xl space-y-2 overflow-hidden text-sm">
 
         <button className='absolute right-4 top-4' onClick={handleCloseEditModal}><X size={24} /></button>
-        <h1 className='text-center text-2xl'>Add Project</h1>
+        <h1 className='text-center text-2xl'>Edit Project</h1>
         <div className='flex flex-col gap-2'>
           <Input
             type="text"

@@ -74,8 +74,8 @@ function ProjectCard({
           <MoreVertical size={18} onClick={handleMenuButton} />
         </button>
         {activeMenu ? (
-          <div className="absolute right-6 mt-8 w-24 bg-slate-200 border text-sm z-10 space-y-2 flex flex-col">
-            <button className="hover:bg-primary hover:text-surface text-heading" onClick={handleEdit}>Edit</button>
+          <div className="absolute right-6 mt-8 w-24 bg-background border border-border  rounded-lg text-sm font-semibold z-10 space-y-2 flex flex-col ">
+            <button className="hover:text-primary hover:bg-primary/10 p-1 rounded-lg " onClick={handleEdit}>Edit</button>
           </div>
         ) : ""}
 
