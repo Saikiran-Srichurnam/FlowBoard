@@ -59,6 +59,35 @@ export function ProjectProvider({ children }) {
     setEditProjectId(null);
   };
 
+  // updated project details
+  const updateProject = (projectId, updatedProjectData) => {
+    setProjects((prevProjects) =>
+      prevProjects.map((project) =>
+        project.id === projectId
+          ? { ...project, ...updatedProjectData }
+          : project
+      )
+    )
+  }
+  // const updateProject = (projectId, updatedProjectData) => {
+  //   console.log("ID RECEIVED:", projectId);
+  //   console.log("UPDATED DATA:", updatedProjectData);
+
+  //   setProjects((prevProjects) => {
+  //     console.log("OLD PROJECTS:", prevProjects);
+
+  //     const updatedProjects = prevProjects.map((project) =>
+  //       project.id === projectId
+  //         ? { ...project, ...updatedProjectData }
+  //         : project
+  //     );
+
+  //     console.log("NEW PROJECTS:", updatedProjects);
+
+  //     return updatedProjects;
+  //   });
+  // }
+
   return (
     <ProjectContext.Provider value={{
       projects,
@@ -73,6 +102,9 @@ export function ProjectProvider({ children }) {
       editProjectId,
       handleEditProject,
       handleCloseEditModal,
+
+      // Update Project 
+      updateProject
     }} >
       {children}
     </ProjectContext.Provider>

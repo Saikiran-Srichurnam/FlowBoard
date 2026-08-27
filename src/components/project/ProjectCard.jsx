@@ -1,4 +1,4 @@
-import { MoreVertical, CalendarDays, CheckSquare } from "lucide-react";
+import { MoreVertical, CalendarDays, CheckSquare, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useProjects } from "../../context/ProjectContext";
 
@@ -20,7 +20,7 @@ function ProjectCard({
     setActiveMenu(prev => !prev)
   }
 
-  const { handleEditProject } = useProjects()
+  const { handleEditProject, projects } = useProjects()
 
   // handle the edit project button
   const handleEdit = () => {
@@ -65,7 +65,6 @@ function ProjectCard({
         {activeMenu ? (
           <div className="absolute right-6 mt-8 w-24 bg-slate-200 border text-sm z-10 space-y-2 flex flex-col">
             <button className="hover:bg-primary hover:text-surface text-heading" onClick={handleEdit}>Edit</button>
-            <button className="hover:bg-primary hover:text-surface text-heading">Delete</button>
           </div>
         ) : ""}
 
@@ -146,9 +145,12 @@ function ProjectCard({
       </div>
 
       {/* Due date */}
-      <div className="mt-4 flex items-center gap-1.5 text-xs text-muted">
-        <CalendarDays size={15} />
-        <span>Due {dueDate}</span>
+      <div className="flex justify-between items-center">
+        <div className="mt-4 flex items-center gap-1.5 text-xs text-muted">
+          <CalendarDays size={15} />
+          <span>Due {dueDate}</span>
+        </div>
+        <button className="hover:bg-red-100 hover:text-danger text-heading p-1 rounded-md cursor-pointer"><Trash2 size={24} /></button>
       </div>
     </div>
   );

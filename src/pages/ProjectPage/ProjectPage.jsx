@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ProjectHeader, ProjectSearchAndFilter, ProjectViewToggle, ProjectGrid, ProjectList, EditProject } from '../../components/project'
+import { ProjectHeader, ProjectSearchAndFilter, ProjectViewToggle, ProjectGrid, ProjectList, EditProjectModal } from '../../components/project'
 import { useProjects } from '../../context/ProjectContext';
 
 function ProjectPage() {
@@ -9,7 +9,7 @@ function ProjectPage() {
   const [selectedOption, setSelectedOption] = useState("All")
   const [selectedSortOption, setSelectedSortOption] = useState("latest")
 
-  const { projects, editProjectId } = useProjects()
+  const { projects=[], editProjectId } = useProjects()
 
   const filteredProjects = projects.filter((p) => {
     const matchedSearch = p.name
@@ -71,7 +71,7 @@ function ProjectPage() {
       </div>
 
       {editProjectId !== null && (
-        <EditProject projectId={editProjectId} />
+        <EditProjectModal projectId={editProjectId} />
       )}
     </section>
   )
