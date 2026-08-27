@@ -88,6 +88,12 @@ export function ProjectProvider({ children }) {
   //   });
   // }
 
+
+  // delete project
+  const deleteProject = (projectId) => {
+    setProjects((allprojects) =>
+      allprojects.filter(project => project.id !== projectId))
+  }
   return (
     <ProjectContext.Provider value={{
       projects,
@@ -104,7 +110,10 @@ export function ProjectProvider({ children }) {
       handleCloseEditModal,
 
       // Update Project 
-      updateProject
+      updateProject,
+
+      // delete Project
+      deleteProject,
     }} >
       {children}
     </ProjectContext.Provider>
