@@ -1,7 +1,6 @@
 import { MoreVertical, CalendarDays, CheckSquare, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useProjects } from "../../context/ProjectContext";
-import { projects } from "../../data/project";
 
 function ProjectCard({
   id,
@@ -162,7 +161,7 @@ function ProjectCard({
           <CalendarDays size={15} />
           <span>Due {dueDate}</span>
         </div>
-        <button className="hover:bg-red-100 hover:text-danger text-heading p-1 rounded-md cursor-pointer" onClick={handleDelete}><Trash2 size={24} /></button>
+        <button className="hover:bg-red-100 hover:text-danger text-muted p-1 rounded-md cursor-pointer" onClick={handleDelete}><Trash2 size={24} /></button>
       </div>
     </div>
   );

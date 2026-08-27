@@ -6,7 +6,7 @@ import ProjectGrid from "./ProjectGrid";
 import ProjectList from "./ProjectList";
 import AddNewProjectModal from "./AddNewProjectModal";
 import EditProjectModal from "./EditProjectModal";
-
+import ProjectRow from "./ProjectRow";
 
 
 export {
@@ -18,4 +18,5 @@ export {
   ProjectList,
   AddNewProjectModal,
   EditProjectModal,
+  ProjectRow
 }

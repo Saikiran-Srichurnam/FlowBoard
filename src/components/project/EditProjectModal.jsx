@@ -6,10 +6,9 @@ import Button from '../ui/Button';
 // importing useProjects from the file of project context
 import { useProjects } from '../../context/ProjectContext';
 
-
 function EditProjectModal({ projectId }) {
 
-  const { addProject, handleCloseEditModal, projects, updateProject } = useProjects()
+  const { handleCloseEditModal, projects, updateProject } = useProjects()
 
   // extracting project details of the edit project id 
   const projectDetails = projects.find((p) => p.id === projectId)
