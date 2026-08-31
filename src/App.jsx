@@ -6,6 +6,7 @@ import Register from "./pages/authentication/Register";
 import ForgotPassword from "./pages/authentication/ForgotPassword"
 import { DashboardPage, ProjectPage } from "./pages";
 import DashboardLayout from "./components/layout/DashboardLayout";
+import TaskPage from "./pages/TasksPage/TaskPage";
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
         <Route path="/" element={<DashboardLayout />}>
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="projects" element={<ProjectPage />} />
+          <Route path="tasks" element={<TaskPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

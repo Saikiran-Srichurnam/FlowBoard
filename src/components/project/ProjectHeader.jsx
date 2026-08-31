@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import { Plus } from 'lucide-react'
 import Button from "../ui/Button"
 import AddNewProjectModal from './AddNewProjectModal'
