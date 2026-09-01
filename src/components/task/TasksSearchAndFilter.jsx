@@ -7,8 +7,8 @@ function TasksSearchAndFilter({
   setSearch,
   selectedOption,
   setSelectedOption,
-  selectedSortOption,
-  setSelectedSortOption
+  selectedPriorityOption,
+  setSelectedPriorityOption
 }) {
 
   // project statuses
@@ -21,9 +21,10 @@ function TasksSearchAndFilter({
   ];
 
   const sortOrder = [
-    { value: "latest", label: "Latest" },
-    { value: "alphabetical", label: "Alphabetical" },
-    { value: "oldest", label: "Oldest" }
+    { value: "all", label: "All" },
+    { value: "high", label: "High" },
+    { value: "medium", label: "Medium" },
+    { value: "low", label: "Low" }
   ]
 
   // dropdown of status
@@ -75,7 +76,7 @@ function TasksSearchAndFilter({
         <button id='Sort' onClick={() => setIsSortOpen(!isSortOpen)}
           className="flex justify-between items-center h-10 text-heading text-xs md:text-sm bg-background w-24 lg:w-32 focus-visible:bg-background rounded-md border border-primary/30 outline-none px-4 py-2 focus:border-primary/30 focus:ring-2 focus:ring-primary/10 cursor-pointer"
         >
-          <span className='text-xs'>{selectedSortOption}</span>
+          <span className='text-xs'>{selectedPriorityOption}</span>
           <ChevronDown size={24} className={`transition-transform transform duration-300 ${isSortOpen ? "rotate-180" : ""}`} />
         </button>
         {isSortOpen && (
@@ -89,7 +90,7 @@ function TasksSearchAndFilter({
                 key={order.value}
                 className="text-primary/60 pl-2 py-1 hover:bg-primary/10 hover:text-primary hover:font-semibold duration-300 cursor-pointer"
                 onClick={() => {
-                  setSelectedSortOption(order.label)
+                  setSelectedPriorityOption(order.label)
                   setIsSortOpen(false)
                 }}
               >
