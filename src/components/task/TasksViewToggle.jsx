@@ -8,7 +8,7 @@ function TasksViewToggle({ view, setView }) {
       <button
         type="button"
         onClick={() => setView("grid")}
-        className={`flex h-8 w-8 items-center justify-center rounded-md transition-colors ${view === "grid"
+        className={`flex h-8 w-8 items-center justify-center rounded-md transition-colors cursor-pointer ${view === "grid"
           ? "bg-primary text-background"
           : "text-muted hover:bg-surface hover:text-heading"
           }`}
@@ -21,7 +21,7 @@ function TasksViewToggle({ view, setView }) {
       <button
         type="button"
         onClick={() => setView("list")}
-        className={`flex h-8 w-8 items-center justify-center rounded-md transition-colors ${view === "list"
+        className={`flex h-8 w-8 items-center justify-center rounded-md transition-colors cursor-pointer ${view === "list"
           ? "bg-primary text-background"
           : "text-muted hover:bg-surface hover:text-heading"
           }`}
