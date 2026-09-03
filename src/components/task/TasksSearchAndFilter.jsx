@@ -14,17 +14,17 @@ function TasksSearchAndFilter({
   // project statuses
   const tasksStatuses = [
     { value: "All" },
-    { value: "To Do" },
+    { value: "Todo" },
     { value: "In Progress" },
     { value: "Review" },
     { value: "Done" },
   ];
 
   const sortOrder = [
-    { value: "all", label: "All" },
-    { value: "high", label: "High" },
-    { value: "medium", label: "Medium" },
-    { value: "low", label: "Low" }
+    { value: "All", label: "All" },
+    { value: "High", label: "High" },
+    { value: "Medium", label: "Medium" },
+    { value: "Low", label: "Low" }
   ]
 
   // dropdown of status

@@ -18,7 +18,7 @@ function TaskPage() {
 
     const matchedStatus = selectedOption === "All" || t.status === selectedOption;
 
-    const matchedPriority = selectedPriorityOption === "All" || t.priority.toLowerCase() === selectedPriorityOption
+    const matchedPriority = selectedPriorityOption === "All" || t.priority === selectedPriorityOption
 
     return matchedTask && matchedStatus && matchedPriority
   })

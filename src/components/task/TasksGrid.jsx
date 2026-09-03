@@ -8,6 +8,7 @@ function TasksGrid({ filteredTasks }) {
           <TasksCard
             key={task.id}
             id={task.id}
+            title={task.title}
             description={task.description}
             status={task.status}
             priority={task.priority}
