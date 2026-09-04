@@ -1,4 +1,4 @@
-import { TasksGrid, TasksHeader, TasksSearchAndFilter, TasksViewToggle } from "../../components/task"
+import { TasksGrid, TasksHeader, TasksList, TasksSearchAndFilter, TasksViewToggle } from "../../components/task"
 import { useState } from "react"
 import { useTasks } from "../../context/TasksContext";
 
@@ -23,9 +23,6 @@ function TaskPage() {
     return matchedTask && matchedStatus && matchedPriority
   })
 
-
-
-
   return (
     <section id='TasksPage' className='bg-surface h-full w-full p-6 shadow-sm border border-border rounded-md space-y-2'>
       {/* task header where title and add task button exists  */}
@@ -48,7 +45,7 @@ function TaskPage() {
       <div className="my-4">
         {view === "grid" ?
           <TasksGrid filteredTasks={filteredTasks} />
-          : ""
+          : <TasksList filteredTasks={filteredTasks} />
         }
       </div>
     </section>

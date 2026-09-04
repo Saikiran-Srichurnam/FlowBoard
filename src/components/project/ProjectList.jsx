@@ -1,5 +1,3 @@
-import { useState } from "react"
-import { useProjects } from "../../context/ProjectContext"
 import ProjectRow from "./ProjectRow"
 
 

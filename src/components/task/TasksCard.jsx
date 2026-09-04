@@ -12,9 +12,16 @@ function TasksCard({
   status,
   priority,
   projectId,
-  assignee,
+  assignee = [],
   dueDate,
 }) {
+
+  console.log("TASK CARD:", {
+    title,
+    assignee,
+    isArray: Array.isArray(assignee),
+    length: assignee?.length,
+  });
   return (
     <div
       id={id}
@@ -27,14 +34,14 @@ function TasksCard({
         <div className="flex items-center gap-2">
           <span
             className={`h-2.5 w-2.5 rounded-full ${status === "Todo"
-                ? "bg-slate-400"
-                : status === "In Progress"
-                  ? "bg-yellow-500"
-                  : status === "Review"
-                    ? "bg-blue-500"
-                    : status === "Done"
-                      ? "bg-success"
-                      : "bg-slate-400"
+              ? "bg-red-400"
+              : status === "In Progress"
+                ? "bg-yellow-500"
+                : status === "Review"
+                  ? "bg-blue-500"
+                  : status === "Done"
+                    ? "bg-success"
+                    : "bg-slate-400"
               }`}
           />
 
@@ -85,10 +92,10 @@ function TasksCard({
 
         <span
           className={`rounded-full px-2.5 py-1 text-xs font-semibold ${priority === "High"
-              ? "bg-red-100 text-danger"
-              : priority === "Medium"
-                ? "bg-yellow-100 text-yellow-700"
-                : "bg-green-100 text-success"
+            ? "bg-red-100 text-danger"
+            : priority === "Medium"
+              ? "bg-yellow-100 text-yellow-700"
+              : "bg-green-100 text-success"
             }`}
         >
           {priority}
@@ -99,23 +106,39 @@ function TasksCard({
       <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
 
         {/* Assignee */}
-        <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 text-xs font-semibold text-heading">
-            {assignee
-              ?.split(" ")
-              .map((word) => word[0])
-              .join("")
-              .slice(0, 2)
-              .toUpperCase()}
+        <div className="flex items-center gap-3">
+          {/* Avatars */}
+          <div className="flex -space-x-2">
+            {assignee.slice(0, 3).map((member, index) => (
+              <div
+                key={index}
+                className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-surface bg-slate-200 text-xs font-semibold text-heading"
+                title={member}
+              >
+                {member
+                  ?.split(" ")
+                  .map((word) => word[0])
+                  .join("")
+                  .slice(0, 2)
+                  .toUpperCase()}
+              </div>
+            ))}
+
+            {assignee.length > 3 && (
+              <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-surface bg-slate-100 text-xs font-semibold text-muted">
+                +{assignee.length - 3}
+              </div>
+            )}
           </div>
 
+          {/* Assignee names */}
           <div className="flex flex-col">
             <span className="text-[11px] text-muted">
               Assigned to
             </span>
 
-            <span className="text-xs font-medium text-heading">
-              {assignee}
+            <span className="text-[10px] font-medium text-heading">
+              {assignee.join(", ")}
             </span>
           </div>
         </div>
