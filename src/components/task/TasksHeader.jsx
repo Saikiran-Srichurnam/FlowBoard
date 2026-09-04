@@ -1,6 +1,7 @@
 import { useState } from "react"
 import Button from "../ui/Button"
 import { Plus } from "lucide-react"
+import AddNewTaskModal from "./AddNewTaskModal"
 
 function TasksHeader() {
 
@@ -20,8 +21,8 @@ function TasksHeader() {
       </div>
       <Button onClick={handleAddTaskBtn} ><Plus size={24} />New Task</Button>
 
-      {/* conditional rendering of modal
-      {showModal && <AddNewProjectModal />} */}
+      {/* conditional rendering of modal */}
+      {showModal && <AddNewTaskModal />}
     </section >
   )
 }

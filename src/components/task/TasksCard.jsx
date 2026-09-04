@@ -16,12 +16,6 @@ function TasksCard({
   dueDate,
 }) {
 
-  console.log("TASK CARD:", {
-    title,
-    assignee,
-    isArray: Array.isArray(assignee),
-    length: assignee?.length,
-  });
   return (
     <div
       id={id}

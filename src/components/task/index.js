@@ -3,7 +3,9 @@ import TasksHeader from "./TasksHeader";
 import TasksList from "./TasksList";
 import TasksSearchAndFilter from "./TasksSearchAndFilter";
 import TasksViewToggle from "./TasksViewToggle";
-
+import TasksCard from "./TasksCard";
+import TasksRow from "./TasksRow";
+import AddNewTaskModal from "./AddNewTaskModal";
 
 
 export {
@@ -11,5 +13,8 @@ export {
   TasksSearchAndFilter,
   TasksViewToggle,
   TasksGrid,
-  TasksList
+  TasksCard,
+  TasksList,
+  TasksRow,
+  AddNewTaskModal,
 }
