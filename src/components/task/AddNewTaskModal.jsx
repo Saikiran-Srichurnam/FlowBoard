@@ -9,7 +9,7 @@ function AddNewTaskModal() {
   // Task statuses
   const tasksStatuses = [
     { value: "All" },
-    { value: "Todo" },
+    { value: "To Do" },
     { value: "In Progress" },
     { value: "Review" },
     { value: "Done" },
@@ -51,23 +51,22 @@ function AddNewTaskModal() {
               <div>
                 {/* Selected value */}
                 <button id='All Projects'
-                  className="flex justify-between items-center h-10 text-heading text-xs md:text-sm bg-background w-24 lg:w-32 focus-visible:bg-background rounded-md border border-primary/30 outline-none px-4 py-2 focus:border-primary/30 focus:ring-2 focus:ring-primary/10 cursor-pointer"
+                  className="flex justify-between items-center h-10 text-heading text-xs md:text-sm bg-background w-24 lg:w-32 focus-visible:bg-background rounded-md border border-primary/30 outline-none px-4 py-2 focus:border-primary/30 focus:ring-2 focus:ring-primary/10 cursor-pointer" onClick={() => setIsOpen(!isOpen)}
                 >
-                  <span>{optionSelect}</span>
+                  <span className="text-xs">{optionSelect}</span>
                   <ChevronDown size={24} className={`transition-transform transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
                 </button>
 
                 {isOpen && (
                   <ul
-                    className="absolute mt-2 w-48 flex flex-col z-50 rounded-md border border-primary/10 bg-background shadow-md
-          text-xs">
+                    className="absolute mt-2 w-48 flex flex-col z-50 rounded-md border border-primary/10 bg-background shadow-md">
                     {
-                      tasksStatuses.map((taskStatus => (
-                        <li key={taskStatus.value} className=" text-primary/60 pl-2 py-1 hover:bg-primary/10 hover:text-primary hover:font-semibold duration-300 cursor-pointer"
+                      tasksStatuses.map((tasksStatus => (
+                        <li key={tasksStatus.value} value={tasksStatus.value} className=" text-primary/60 pl-2 py-1 hover:bg-primary/10 hover:text-primary hover:font-semibold duration-300 cursor-pointer"
                           onClick={() => {
-                            setOptionSelect(taskStatus.value)
+                            setOptionSelect(tasksStatus.value)
                             setIsOpen(false)
-                          }}>{taskStatus.value}</li>
+                          }}>{tasksStatus.value}</li>
                       )))
                     }
                   </ul>

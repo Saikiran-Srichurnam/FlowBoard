@@ -27,7 +27,7 @@ function TasksCard({
         {/* Status */}
         <div className="flex items-center gap-2">
           <span
-            className={`h-2.5 w-2.5 rounded-full ${status === "Todo"
+            className={`h-2.5 w-2.5 rounded-full ${status === "To Do"
               ? "bg-red-400"
               : status === "In Progress"
                 ? "bg-yellow-500"
