@@ -1,12 +1,12 @@
-import { useState } from "react"
 import Button from "../ui/Button"
 import { Plus } from "lucide-react"
 import AddNewTaskModal from "./AddNewTaskModal"
+import { useTasks } from "../../context/TasksContext"
 
 function TasksHeader() {
 
   // show task modal
-  const [showModal, setShowModal] = useState(false)
+  const { showModal, setShowModal } = useTasks()
 
   const handleAddTaskBtn = () => {
     document.body.style.overflow = "hidden"
@@ -22,7 +22,7 @@ function TasksHeader() {
       <Button onClick={handleAddTaskBtn} ><Plus size={24} />New Task</Button>
 
       {/* conditional rendering of modal */}
-      {showModal && <AddNewTaskModal />}
+      {showModal && <AddNewTaskModal showModal={showModal} setShowModal={setShowModal} />}
     </section >
   )
 }

@@ -11,7 +11,7 @@ function TasksSearchAndFilter({
   setSelectedPriorityOption
 }) {
 
-  // project statuses
+  // task statuses
   const tasksStatuses = [
     { value: "All" },
     { value: "Todo" },

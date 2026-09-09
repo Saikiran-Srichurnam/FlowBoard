@@ -34,9 +34,31 @@ export function TaskProvider({ children }) {
     }
   }, [tasks]);
 
+  // add tasks
+  const addTasks = (newTask) => {
+    setTasks([...tasks, newTask])
+  }
+
+  const [showModal, setShowModal] = useState(false);
+
+  // handle close button of add new task modal
+  const handleCloseModal = () => {
+    document.body.style.overflow = "";
+    setShowModal(false);
+  };
+
 
   return (
-    <TasksContext.Provider value={{ tasks, setTasks }}>
+    <TasksContext.Provider value={{
+      tasks,
+      setTasks,
+
+      // add task
+      showModal,
+      setShowModal,
+      handleCloseModal
+
+    }}>
       {children}
     </TasksContext.Provider>
   )
