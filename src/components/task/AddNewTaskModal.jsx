@@ -21,6 +21,38 @@ function AddNewTaskModal() {
   // importing functions from the task context
   const { handleCloseModal } = useTasks()
 
+  // function for due date
+  const getDueDate = () => {
+    const date = new Date();
+    date.setDate(date.getDate() + 7); // Add 7 days
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  }
+
+  // total members present in development team
+  const allTaskMembers = ["Saikiran", "Rahul", "Priya", "Ankit"]
+
+  const [taskMembers, setTaskMembers] = useState([])
+
+  // handling checkbox of selecting tasks members
+  const pickSelectedTaskMember = (event) => {
+    const value = event.target.value;
+    const isChecked = event.target.checked;
+
+    let newMembers;
+    if (isChecked) {
+      newMembers = [...taskMembers, value]
+    } else {
+      newMembers = taskMembers.filter(member => member !== value)
+    }
+
+    console.log(newMembers);
+    setTaskMembers(newMembers)
+  }
+
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-[6vh]">
       {/* Background overlay */}
@@ -88,12 +120,30 @@ function AddNewTaskModal() {
 
           </div>
           <div className='flex items-center gap-2'>
-            <h2>Due Date</h2>
-            {/* <p>{getDueDate()}</p> */}
+            <h2>Due Date :</h2>
+            <p>{getDueDate()}</p>
           </div>
           <div className=''>
             <h2>Members</h2>
             <div className='grid grid-cols-3 space-x-2'>
+              {allTaskMembers && allTaskMembers.map((member) => (
+                <span key={member} className='space-x-2'>
+                  <input
+                    type="checkbox"
+                    name=""
+                    id={member}
+                    value={member}
+                    onChange={pickSelectedTaskMember}
+                    checked={taskMembers.includes(member)}
+                  />
+                  <label htmlFor={member}>{member}</label>
+                </span>
+              ))}
+              {taskMembers.length > 0 && (
+                <p className='text-xs text-muted-foreground mt-1'>
+                  Selected: {taskMembers.join(", ")}
+                </p>
+              )}
             </div>
           </div>
         </div>
