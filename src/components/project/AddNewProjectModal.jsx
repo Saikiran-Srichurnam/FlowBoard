@@ -104,7 +104,7 @@ function AddNewProjectModal() {
       />
 
       {/* Modal */}
-      <div className="relative z-10 w-full max-w-sm px-6 py-4 text-black bg-background border rounded-lg shadow-xl space-y-2 overflow-hidden text-sm">
+      <div className="relative z-10 w-full max-w-sm px-6 py-4 text-black bg-background border rounded-lg shadow-xl space-y-2 overflow-hidden text-xs">
 
         <button className='absolute right-4 top-4' onClick={handleCloseModal}><X size={24} /></button>
         <h1 className='text-center text-2xl'>Add Project</h1>
@@ -133,13 +133,13 @@ function AddNewProjectModal() {
                 <button id='All Projects' onClick={() => setIsOpen(!isOpen)}
                   className="flex justify-between items-center h-10 text-heading text-xs md:text-sm bg-background w-24 lg:w-32 focus-visible:bg-background rounded-md border border-primary/30 outline-none px-4 py-2 focus:border-primary/30 focus:ring-2 focus:ring-primary/10 cursor-pointer"
                 >
-                  <span>{optionSelect}</span>
+                  <span className='text-xs'>{optionSelect}</span>
                   <ChevronDown size={24} className={`transition-transform transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
                 </button>
 
                 {isOpen && (
                   <ul
-                    className="absolute mt-2 w-48 flex flex-col z-50 rounded-md border border-primary/10 bg-background shadow-md
+                    className="absolute mt-2 lg:w-32 flex flex-col z-50 rounded-md border border-primary/10 bg-background shadow-md
           ">
                     {
                       projectStatuses.map((projectStatus => (
@@ -163,7 +163,7 @@ function AddNewProjectModal() {
                 type="text"
                 min={0}
                 max={100}
-                className='border border-border'
+                className='bg-background rounded-md border border-primary/30 focus-visible:ring-1 focus-visible:border-primary/50 outline-none px-4 py-2 w-16 h-10'
                 value={projectProgress}
                 onChange={(e) => setProjectProgress(Number(e.target.value))}
               />
@@ -174,7 +174,7 @@ function AddNewProjectModal() {
             <h2>Due Date</h2>
             <p>{getDueDate()}</p>
           </div>
-          <div className=''>
+          <div className='space-y-2'>
             <h2>Members</h2>
             <div className='grid grid-cols-3 space-x-2'>
               {allProjectMembers && allProjectMembers.map((member) => (
