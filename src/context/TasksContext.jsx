@@ -56,7 +56,8 @@ export function TaskProvider({ children }) {
       // add task
       showModal,
       setShowModal,
-      handleCloseModal
+      handleCloseModal,
+      addTasks,
 
     }}>
       {children}

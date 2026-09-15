@@ -33,7 +33,7 @@ function AddNewTaskModal() {
   const [taskProgress, setTaskProgress] = useState(0)
 
   // importing functions from the task context
-  const { handleCloseModal } = useTasks()
+  const { handleCloseModal, addTasks } = useTasks()
 
   // function for due date
   const getDueDate = () => {
@@ -83,11 +83,21 @@ function AddNewTaskModal() {
       description: taskDescription.trim() || "",
       status: statusOptionSelect,
       priority: priorityOptionSelect,
-      projectId: 1,
-      assignee: ["Saikiran"],
-      dueDate: "2026-09-03",
+      projectId: Number(projectId),
+      assignee: [...taskMembers],
+      dueDate: getDueDate(),
     }
-    console.log("task saved");
+
+    addTasks(newTaskData)
+
+    setTaskTitle("")
+    setTaskDescription("")
+    setStatusOptionSelect("All")
+    setPriorityOptionSelect("All")
+    setTaskProgress(0)
+    setProjectId(0)
+
+    handleCloseModal()
   }
 
   return (

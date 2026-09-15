@@ -14,7 +14,7 @@ function TasksRow({
   // Helper to get status color
   const getStatusColor = (status) => {
     switch (status) {
-      case 'Todo':
+      case 'To Do':
         return "bg-red-400"
       case 'In Progress':
         return "bg-yellow-500"

@@ -14,7 +14,7 @@ function TasksSearchAndFilter({
   // task statuses
   const tasksStatuses = [
     { value: "All" },
-    { value: "Todo" },
+    { value: "To Do" },
     { value: "In Progress" },
     { value: "Review" },
     { value: "Done" },
