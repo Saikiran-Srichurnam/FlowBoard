@@ -4,6 +4,7 @@ import {
   User,
   Flag,
 } from "lucide-react"
+import { Trash2 } from "lucide-react"
 
 function TasksCard({
   id,
@@ -144,10 +145,16 @@ function TasksCard({
         </div>
       </div>
 
-      {/* Due date */}
-      <div className="mt-4 flex items-center gap-1.5 border-t border-border pt-4 text-xs text-muted">
-        <CalendarDays size={15} />
-        <span>Due {dueDate}</span>
+
+      <div className="flex justify-between items-center">
+        {/* Due date */}
+        <div className="mt-4 flex items-center gap-1.5 border-t border-border pt-4 text-xs text-muted">
+          <CalendarDays size={15} />
+          <span>Due {dueDate}</span>
+        </div>
+        <button className="hover:bg-red-100 hover:text-danger text-muted p-1 rounded-md cursor-pointer" >
+          <Trash2 size={24} />
+        </button>
       </div>
     </div>
   )

@@ -39,6 +39,11 @@ export function TaskProvider({ children }) {
     setTasks([...tasks, newTask])
   }
 
+  // delete task
+  const deleteTask = (taskId) => {
+    setTasks((allTasks) => allTasks.filter(task => task.id !== taskId))
+  }
+
   const [showModal, setShowModal] = useState(false);
 
   // handle close button of add new task modal
@@ -58,6 +63,10 @@ export function TaskProvider({ children }) {
       setShowModal,
       handleCloseModal,
       addTasks,
+
+
+      // delete task
+      deleteTask
 
     }}>
       {children}
