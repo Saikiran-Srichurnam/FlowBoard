@@ -5,6 +5,7 @@ import {
   Flag,
 } from "lucide-react"
 import { Trash2 } from "lucide-react"
+import { useTasks } from "../../context/TasksContext"
 
 function TasksCard({
   id,
@@ -16,6 +17,19 @@ function TasksCard({
   assignee = [],
   dueDate,
 }) {
+
+  const { tasks, deleteTask } = useTasks()
+
+  const handleDeleteTask = () => {
+    const task = tasks.find(task => task.id === id);
+    const confirmed = window.confirm(
+      `Would you like to Delete ${task.title}`
+    )
+    if (confirmed) {
+      deleteTask(id)
+    }
+    console.log(task.projectId);
+  }
 
   return (
     <div
@@ -152,7 +166,7 @@ function TasksCard({
           <CalendarDays size={15} />
           <span>Due {dueDate}</span>
         </div>
-        <button className="hover:bg-red-100 hover:text-danger text-muted p-1 rounded-md cursor-pointer" >
+        <button className="hover:bg-red-100 hover:text-danger text-muted p-1 rounded-md cursor-pointer" onClick={handleDeleteTask}>
           <Trash2 size={24} />
         </button>
       </div>

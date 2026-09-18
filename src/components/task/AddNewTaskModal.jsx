@@ -8,7 +8,6 @@ function AddNewTaskModal() {
 
   // Task statuses
   const tasksStatuses = [
-    { value: "All" },
     { value: "To Do" },
     { value: "In Progress" },
     { value: "Review" },
