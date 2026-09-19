@@ -6,6 +6,7 @@ import {
 } from "lucide-react"
 import { Trash2 } from "lucide-react"
 import { useTasks } from "../../context/TasksContext"
+import { useState } from "react"
 
 function TasksCard({
   id,
@@ -18,8 +19,9 @@ function TasksCard({
   dueDate,
 }) {
 
-  const { tasks, deleteTask } = useTasks()
+  const { tasks, deleteTask, handleEditTask } = useTasks()
 
+  // delete task functionality
   const handleDeleteTask = () => {
     const task = tasks.find(task => task.id === id);
     const confirmed = window.confirm(
@@ -28,7 +30,19 @@ function TasksCard({
     if (confirmed) {
       deleteTask(id)
     }
-    console.log(task.projectId);
+  }
+
+  // edit task functionality
+  const [activeMenu, setActiveMenu] = useState(false);
+
+  const handleMenuButton = () => {
+    setActiveMenu(prev => !prev)
+  }
+
+  const handleEdit = () => {
+    handleEditTask(id)
+    setActiveMenu(false)
+    console.log("task editing ...");
   }
 
   return (
@@ -64,9 +78,15 @@ function TasksCard({
           type="button"
           className="rounded-md p-1.5 text-muted transition-colors hover:bg-slate-100 hover:text-heading"
           aria-label={`More options for ${title}`}
+          onClick={handleMenuButton}
         >
           <MoreVertical size={18} />
         </button>
+        {activeMenu ? (
+          <div className="absolute right-6 mt-8 w-24 bg-background border border-border  rounded-lg text-sm font-semibold z-10 space-y-2 flex flex-col ">
+            <button className="hover:text-primary hover:bg-primary/10 p-1 rounded-lg " onClick={handleEdit}>Edit</button>
+          </div>
+        ) : ""}
       </div>
 
       {/* Task information */}
@@ -170,7 +190,7 @@ function TasksCard({
           <Trash2 size={24} />
         </button>
       </div>
-    </div>
+    </div >
   )
 }
 

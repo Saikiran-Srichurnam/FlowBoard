@@ -52,6 +52,28 @@ export function TaskProvider({ children }) {
     setShowModal(false);
   };
 
+  // handle edit button functionality
+  const [editTaskId, setEditTaskId] = useState(null)
+
+  const handleEditTask = (taskId) => {
+    document.body.style.overflow = "hidden"
+    setEditTaskId(taskId)
+  }
+
+  const handleCloseEditModal = () => {
+    document.body.style.overflow = ""
+    setEditTaskId("")
+  }
+
+  const updateTask = (editedTaskId, updatedTaskData) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === editedTaskId
+          ? { ...task, ...updatedTaskData }
+          : task))
+  }
+
+
 
   return (
     <TasksContext.Provider value={{
@@ -66,7 +88,17 @@ export function TaskProvider({ children }) {
 
 
       // delete task
-      deleteTask
+      deleteTask,
+
+      // edit task
+      editTaskId,
+      setEditTaskId,
+      handleEditTask,
+      handleCloseEditModal,
+
+      // update Task
+      updateTask,
+
 
     }}>
       {children}

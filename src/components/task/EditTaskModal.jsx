@@ -4,7 +4,14 @@ import Button from "../ui/Button"
 import { useState } from "react"
 import { useTasks } from "../../context/TasksContext";
 
-function AddNewTaskModal() {
+function EditTaskModal({ editTaskId }) {
+
+  // importing functions from the task context
+  const { tasks, handleCloseEditModal, updateTask } = useTasks()
+
+  // extracting edit task details at updating task details
+  const taskDetails = tasks.find((t) => t.id === editTaskId);
+  console.log(taskDetails);
 
   // Task statuses
   const tasksStatuses = [
@@ -22,17 +29,15 @@ function AddNewTaskModal() {
 
   const [isStatusOpen, setIsStatusOpen] = useState(false)
   const [isPriorityOpen, setIsPriorityOpen] = useState(false)
-  const [statusOptionSelect, setStatusOptionSelect] = useState("All")
-  const [priorityOptionSelect, setPriorityOptionSelect] = useState("All")
-  const [projectId, setProjectId] = useState(0)
 
   //Modal Data
-  const [taskTitle, setTaskTitle] = useState("")
-  const [taskDescription, setTaskDescription] = useState("")
-  const [taskProgress, setTaskProgress] = useState(0)
+  const [statusOptionSelect, setStatusOptionSelect] = useState(taskDetails.status)
+  const [priorityOptionSelect, setPriorityOptionSelect] = useState(taskDetails.priority)
+  const [projectId, setProjectId] = useState(taskDetails.projectId)
+  const [taskTitle, setTaskTitle] = useState(taskDetails.title)
+  const [taskDescription, setTaskDescription] = useState(taskDetails.description)
+  const [taskProgress, setTaskProgress] = useState(taskDetails.taskProgress)
 
-  // importing functions from the task context
-  const { handleCloseModal, addTasks } = useTasks()
 
   // function for due date
   const getDueDate = () => {
@@ -47,7 +52,7 @@ function AddNewTaskModal() {
 
   // total members present in development team
   const allTaskMembers = ["Saikiran", "Rahul", "Priya", "Ankit"]
-  const [taskMembers, setTaskMembers] = useState([])
+  const [taskMembers, setTaskMembers] = useState(taskDetails?.assignee || [])
 
   // handling checkbox of selecting tasks members
   const pickSelectedTaskMember = (event) => {
@@ -65,6 +70,7 @@ function AddNewTaskModal() {
     setTaskMembers(newMembers)
   }
 
+
   // handle save task functionality
   const handleSaveTaskBtn = () => {
     if (!taskTitle) {
@@ -76,19 +82,18 @@ function AddNewTaskModal() {
       alert(`Please add atleast one Task Member for the ${taskTitle} Task`)
     }
 
-    const newTaskData = {
-      id: Date.now(), // Use timestamp for unique ID
+    const updatedTaskData = {
       title: taskTitle.trim(),
       description: taskDescription.trim() || "",
       status: statusOptionSelect,
       priority: priorityOptionSelect,
-      progress: taskProgress,
-      projectId: Number(projectId),
+      projectId: Number(projectId) || 0,
+      progress: Number(taskProgress) || 0,
       assignee: [...taskMembers],
       dueDate: getDueDate(),
     }
 
-    addTasks(newTaskData)
+    updateTask(editTaskId, updatedTaskData)
 
     setTaskTitle("")
     setTaskDescription("")
@@ -97,19 +102,20 @@ function AddNewTaskModal() {
     setTaskProgress(0)
     setProjectId(0)
 
-    handleCloseModal()
+    handleCloseEditModal()
   }
+
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-[6vh]">
       {/* Background overlay */}
-      <div className="absolute inset-0 bg-black/10 backdrop-blur-sm" onClick={handleCloseModal} />
+      <div className="absolute inset-0 bg-black/10 backdrop-blur-sm" onClick={handleCloseEditModal} />
 
       {/* Modal */}
       <div className="relative z-10 w-full max-w-sm px-6 py-4 text-black bg-background border rounded-lg shadow-xl space-y-2 overflow-hidden text-xs">
 
-        <button className='absolute right-4 top-4 cursor-pointer' onClick={handleCloseModal}><X size={24} /></button>
-        <h1 className='text-center text-2xl'>Add Task</h1>
+        <button className='absolute right-4 top-4 cursor-pointer' onClick={handleCloseEditModal}><X size={24} /></button>
+        <h1 className='text-center text-2xl'>Update Task</h1>
         <div className='flex flex-col gap-2'>
           <Input
             type="text"
@@ -217,7 +223,7 @@ function AddNewTaskModal() {
             <h2>Members</h2>
             <div className='grid grid-cols-3 space-x-2'>
               {allTaskMembers && allTaskMembers.map((member) => (
-                <span key={`edit-${member}`} className='space-x-2'>
+                <span key={member} className='space-x-2'>
                   <input
                     type="checkbox"
                     name=""
@@ -259,4 +265,4 @@ function AddNewTaskModal() {
   )
 }
 
-export default AddNewTaskModal
+export default EditTaskModal

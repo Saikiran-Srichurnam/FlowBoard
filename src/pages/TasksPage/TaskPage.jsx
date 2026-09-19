@@ -1,6 +1,7 @@
 import { TasksGrid, TasksHeader, TasksList, TasksSearchAndFilter, TasksViewToggle } from "../../components/task"
 import { useState } from "react"
 import { useTasks } from "../../context/TasksContext";
+import EditTaskModal from "../../components/task/EditTaskModal";
 
 function TaskPage() {
 
@@ -9,7 +10,7 @@ function TaskPage() {
   const [selectedOption, setSelectedOption] = useState("All")
   const [selectedPriorityOption, setSelectedPriorityOption] = useState("All")
 
-  const { tasks = [] } = useTasks();
+  const { tasks = [], editTaskId } = useTasks();
 
   const filteredTasks = tasks.filter((t) => {
     const matchedTask = t.title
@@ -48,6 +49,12 @@ function TaskPage() {
           : <TasksList filteredTasks={filteredTasks} />
         }
       </div>
+      {
+        editTaskId !== null && (
+          <EditTaskModal editTaskId={editTaskId} />
+        )
+      }
+
     </section>
   )
 }

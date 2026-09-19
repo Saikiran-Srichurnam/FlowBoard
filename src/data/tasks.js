@@ -116,7 +116,7 @@ export const tasks = [
     status: "To Do",
     priority: "Low",
     projectId: 2,
-    assignee: ["Saikiran", "Agit", "sugere", "vamshi"],
+    assignee: ["Saikiran", "Agit", "vamshi"],
     dueDate: "2026-09-12",
   },
 ];
