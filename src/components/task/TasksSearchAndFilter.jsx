@@ -37,8 +37,8 @@ function TasksSearchAndFilter({
   return (
     <section id='TasksSearchAndFilter' className='flex gap-2'>
       <Input
-        name="search"
-        id="search"
+        name="task search"
+        id="Task Search"
         type="text"
         placeholder="Search Tasks ..."
         className="h-10 w-80 lg:w-96 px-3 text-xs"

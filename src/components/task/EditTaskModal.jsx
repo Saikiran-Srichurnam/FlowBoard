@@ -11,7 +11,13 @@ function EditTaskModal({ editTaskId }) {
 
   // extracting edit task details at updating task details
   const taskDetails = tasks.find((t) => t.id === editTaskId);
-  console.log(taskDetails);
+
+  if (!taskDetails) {
+    return null;
+  }
+
+  console.log("editTaskId:", editTaskId);
+  console.log("taskDetails:", taskDetails);
 
   // Task statuses
   const tasksStatuses = [
@@ -36,7 +42,7 @@ function EditTaskModal({ editTaskId }) {
   const [projectId, setProjectId] = useState(taskDetails.projectId)
   const [taskTitle, setTaskTitle] = useState(taskDetails.title)
   const [taskDescription, setTaskDescription] = useState(taskDetails.description)
-  const [taskProgress, setTaskProgress] = useState(taskDetails.taskProgress)
+  const [taskProgress, setTaskProgress] = useState(taskDetails.progress)
 
 
   // function for due date
@@ -102,6 +108,7 @@ function EditTaskModal({ editTaskId }) {
     setTaskProgress(0)
     setProjectId(0)
 
+    console.log(updatedTaskData);
     handleCloseEditModal()
   }
 
@@ -223,7 +230,7 @@ function EditTaskModal({ editTaskId }) {
             <h2>Members</h2>
             <div className='grid grid-cols-3 space-x-2'>
               {allTaskMembers && allTaskMembers.map((member) => (
-                <span key={member} className='space-x-2'>
+                <span key={`edit-task-${member}`} className='space-x-2'>
                   <input
                     type="checkbox"
                     name=""
@@ -232,7 +239,7 @@ function EditTaskModal({ editTaskId }) {
                     onChange={pickSelectedTaskMember}
                     checked={taskMembers.includes(member)}
                   />
-                  <label htmlFor={member}>{member}</label>
+                  <label htmlFor={`edit-task-${member}`}>{member}</label>
                 </span>
               ))}
               {taskMembers.length > 0 && (

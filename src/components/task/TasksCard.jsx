@@ -180,15 +180,17 @@ function TasksCard({
       </div>
 
 
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mt-4 border-t border-border pt-2">
         {/* Due date */}
-        <div className="mt-4 flex items-center gap-1.5 border-t border-border pt-4 text-xs text-muted">
+        <div className=" flex items-center gap-1.5 text-xs text-muted">
           <CalendarDays size={15} />
           <span>Due {dueDate}</span>
         </div>
-        <button className="hover:bg-red-100 hover:text-danger text-muted p-1 rounded-md cursor-pointer" onClick={handleDeleteTask}>
-          <Trash2 size={24} />
-        </button>
+        <div>
+          <button className="hover:bg-red-100 hover:text-danger text-muted p-1 rounded-md cursor-pointer" onClick={handleDeleteTask}>
+            <Trash2 size={24} />
+          </button>
+        </div>
       </div>
     </div >
   )

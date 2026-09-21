@@ -217,7 +217,7 @@ function AddNewTaskModal() {
             <h2>Members</h2>
             <div className='grid grid-cols-3 space-x-2'>
               {allTaskMembers && allTaskMembers.map((member) => (
-                <span key={`edit-${member}`} className='space-x-2'>
+                <span key={`add-task-${member}`} className='space-x-2'>
                   <input
                     type="checkbox"
                     name=""
@@ -226,7 +226,7 @@ function AddNewTaskModal() {
                     onChange={pickSelectedTaskMember}
                     checked={taskMembers.includes(member)}
                   />
-                  <label htmlFor={member}>{member}</label>
+                  <label htmlFor={`add-task-${member}`}>{member}</label>
                 </span>
               ))}
               {taskMembers.length > 0 && (
