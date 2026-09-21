@@ -21,6 +21,20 @@ function TasksCard({
 
   const { tasks, deleteTask, handleEditTask } = useTasks()
 
+  
+  // edit task functionality
+  const [activeMenu, setActiveMenu] = useState(false);
+  
+  const handleMenuButton = () => {
+    setActiveMenu(prev => !prev)
+  }
+  
+  const handleEdit = () => {
+    handleEditTask(id)
+    setActiveMenu(false)
+    console.log("task editing ...");
+  }
+  
   // delete task functionality
   const handleDeleteTask = () => {
     const task = tasks.find(task => task.id === id);
@@ -30,19 +44,6 @@ function TasksCard({
     if (confirmed) {
       deleteTask(id)
     }
-  }
-
-  // edit task functionality
-  const [activeMenu, setActiveMenu] = useState(false);
-
-  const handleMenuButton = () => {
-    setActiveMenu(prev => !prev)
-  }
-
-  const handleEdit = () => {
-    handleEditTask(id)
-    setActiveMenu(false)
-    console.log("task editing ...");
   }
 
   return (

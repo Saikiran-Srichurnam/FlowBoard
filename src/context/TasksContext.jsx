@@ -39,10 +39,6 @@ export function TaskProvider({ children }) {
     setTasks([...tasks, newTask])
   }
 
-  // delete task
-  const deleteTask = (taskId) => {
-    setTasks((allTasks) => allTasks.filter(task => task.id !== taskId))
-  }
 
   const [showModal, setShowModal] = useState(false);
 
@@ -73,6 +69,10 @@ export function TaskProvider({ children }) {
           : task))
   }
 
+  // delete task
+  const deleteTask = (taskId) => {
+    setTasks((allTasks) => allTasks.filter(task => task.id !== taskId))
+  }
 
 
   return (
