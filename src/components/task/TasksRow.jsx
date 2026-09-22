@@ -1,5 +1,6 @@
 import { MoreVertical } from "lucide-react"
 import { useState } from "react"
+import { useTasks } from "../../context/TasksContext"
 
 function TasksRow({
   id,
@@ -32,6 +33,25 @@ function TasksRow({
   const handleMenuButton = () => {
     setActiveMenu(prev => !prev)
   }
+
+  const { handleEditTask, tasks, deleteTask } = useTasks()
+
+  const handleEdit = () => {
+    handleEditTask(id)
+    setActiveMenu(null)
+  }
+
+  const handleDeleteTask = () => {
+    const task = tasks.find((t) => t.id === id)
+    const confirmed = window.confirm(
+      `Would you like to Delete ${task.title}`
+    )
+
+    if (confirmed) {
+      deleteTask(id)
+    }
+  }
+
   return (
     < div
       id={id}
@@ -97,7 +117,7 @@ function TasksRow({
         activeMenu ? (
           <div className="absolute right-28 mt-10 bg-slate-200 border text-xs z-10  flex flex-col">
             <button className="hover:bg-primary hover:text-surface text-heading py-1 px-2 cursor-pointer" onClick={handleEdit}>Edit</button>
-            <button className="hover:bg-red-100 hover:text-danger text-muted py-1 rounded-md px-2 cursor-pointer" onClick={handleDelete}>Delete</button>
+            <button className="hover:bg-red-100 hover:text-danger text-muted py-1 rounded-md px-2 cursor-pointer" onClick={handleDeleteTask}>Delete</button>
           </div>
         ) : ""
       }
