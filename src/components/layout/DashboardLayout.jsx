@@ -1,7 +1,5 @@
-import React from 'react'
 import { Outlet } from 'react-router-dom'
 import { Header, SideBar } from '../common'
-import { DashboardPage, ProjectPage } from '../../pages'
 function DashboardLayout() {
   return (
     <div className='w-full h-full bg-background p-2'>

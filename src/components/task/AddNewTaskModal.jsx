@@ -74,6 +74,7 @@ function AddNewTaskModal() {
 
     if (taskMembers.length === 0) {
       alert(`Please add atleast one Task Member for the ${taskTitle} Task`)
+      return;
     }
 
     const newTaskData = {
@@ -217,16 +218,18 @@ function AddNewTaskModal() {
             <h2>Members</h2>
             <div className='grid grid-cols-3 space-x-2'>
               {allTaskMembers && allTaskMembers.map((member) => (
-                <span key={`add-task-${member}`} className='space-x-2'>
+                <span key={member} className='space-x-2'>
                   <input
+                    id={`add-task-${member}`}
                     type="checkbox"
-                    name=""
-                    id={member}
+                    name="add task"
                     value={member}
                     onChange={pickSelectedTaskMember}
                     checked={taskMembers.includes(member)}
+                    className="cursor-pointer"
                   />
-                  <label htmlFor={`add-task-${member}`}>{member}</label>
+                  <label htmlFor={`add-task-${member}`} className="cursor-pointer" onChange={pickSelectedTaskMember}
+                    checked={taskMembers.includes(member)}>{member}</label>
                 </span>
               ))}
               {taskMembers.length > 0 && (

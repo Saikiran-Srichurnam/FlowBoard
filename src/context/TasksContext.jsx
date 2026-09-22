@@ -13,7 +13,7 @@ export function TaskProvider({ children }) {
       if (saved) {
         const parsed = JSON.parse(saved);
 
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        if (Array.isArray(parsed)) {
           return parsed;
         }
       }
@@ -36,7 +36,7 @@ export function TaskProvider({ children }) {
 
   // add tasks
   const addTasks = (newTask) => {
-    setTasks([...tasks, newTask])
+    setTasks((prevTasks) => [...prevTasks, newTask])
   }
 
 
@@ -58,7 +58,7 @@ export function TaskProvider({ children }) {
 
   const handleCloseEditModal = () => {
     document.body.style.overflow = ""
-    setEditTaskId("")
+    setEditTaskId(null)
   }
 
   const updateTask = (editedTaskId, updatedTaskData) => {
