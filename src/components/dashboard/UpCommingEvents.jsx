@@ -44,7 +44,7 @@ function UpCommingEvents() {
 
       <div className='mt-2'>
         {eventsData.map((event) => (
-          <div className='flex justify-between items-center'>
+          <div key={event.title} className='flex justify-between items-center'>
             <div className='flex justify-start items-center gap-2 space-y-2'>
               <span className={` flex flex-col justify-center items-center p-2 w-12 h-12 rounded-lg ${event.eventClass}`}>
                 <p className='text-xs'>{event.month}</p>

@@ -3,6 +3,7 @@ import Input from "../ui/Input/Input"
 import Button from "../ui/Button"
 import { useState } from "react"
 import { useTasks } from "../../context/TasksContext";
+import { useProjects } from "../../context/ProjectContext";
 
 function AddNewTaskModal() {
 
@@ -46,7 +47,9 @@ function AddNewTaskModal() {
   }
 
   // total members present in development team
-  const allTaskMembers = ["Saikiran", "Rahul", "Priya", "Ankit"]
+  const { projects } = useProjects()
+  const seletedProject = projects.find((project) => project.id === Number(projectId))
+  const allTaskMembers = seletedProject?.members || []
   const [taskMembers, setTaskMembers] = useState([])
 
   // handling checkbox of selecting tasks members
@@ -218,7 +221,7 @@ function AddNewTaskModal() {
             <h2>Members</h2>
             <div className='grid grid-cols-3 space-x-2'>
               {allTaskMembers && allTaskMembers.map((member) => (
-                <span key={member} className='space-x-2'>
+                <span key={`add-task-${member}`} className='space-x-2'>
                   <input
                     id={`add-task-${member}`}
                     type="checkbox"

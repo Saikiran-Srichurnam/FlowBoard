@@ -1,8 +1,10 @@
 import { ChevronDown, X } from "lucide-react"
 import Input from "../ui/Input/Input"
 import Button from "../ui/Button"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useTasks } from "../../context/TasksContext";
+import { useProjects } from "../../context/ProjectContext";
+
 
 function EditTaskModal({ editTaskId }) {
 
@@ -57,24 +59,50 @@ function EditTaskModal({ editTaskId }) {
   }
 
   // total members present in development team
-  const allTaskMembers = ["Saikiran", "Rahul", "Priya", "Ankit"]
-  const [taskMembers, setTaskMembers] = useState(taskDetails?.assignee || [])
+  const { projects } = useProjects()
+  const [taskMembers, setTaskMembers] = useState(
+    taskDetails?.assignee || []
+  );
+
+  const selectedProject = projects.find(
+    (project) => project.id === Number(projectId)
+  );
+
+  const projectMembers = selectedProject?.members || [];
+
+
+  // Load members when a different task is opened
+  useEffect(() => {
+    setTaskMembers(taskDetails?.assignee || []);
+  }, [editTaskId]);
+
+
+  // When project changes, preserve common members
+  useEffect(() => {
+    if (!projectId) return;
+
+    setTaskMembers((prevMembers) =>
+      prevMembers.filter((member) =>
+        projectMembers.includes(member)
+      )
+    );
+  }, [projectId]);
+
 
   // handling checkbox of selecting tasks members
   const pickSelectedTaskMember = (event) => {
-    const value = event.target.value;
-    const isChecked = event.target.checked;
+    const { value, checked } = event.target;
 
-    let newMembers;
-    if (isChecked) {
-      newMembers = [...taskMembers, value]
-    } else {
-      newMembers = taskMembers.filter(member => member !== value)
-    }
+    setTaskMembers((prevMembers) => {
+      if (checked) {
+        return [...prevMembers, value];
+      }
 
-    console.log(newMembers);
-    setTaskMembers(newMembers)
-  }
+      return prevMembers.filter(
+        (member) => member !== value
+      );
+    });
+  };
 
 
   // handle save task functionality
@@ -86,6 +114,7 @@ function EditTaskModal({ editTaskId }) {
 
     if (taskMembers.length === 0) {
       alert(`Please add atleast one Task Member for the ${taskTitle} Task`)
+      return
     }
 
     const updatedTaskData = {
@@ -101,14 +130,14 @@ function EditTaskModal({ editTaskId }) {
 
     updateTask(editTaskId, updatedTaskData)
 
-    setTaskTitle("")
-    setTaskDescription("")
-    setStatusOptionSelect("All")
-    setPriorityOptionSelect("All")
-    setTaskProgress(0)
-    setProjectId(0)
+    // setTaskTitle("")
+    // setTaskDescription("")
+    // setStatusOptionSelect("All")
+    // setPriorityOptionSelect("All")
+    // setTaskProgress(0)
+    // setProjectId(0)
 
-    console.log(updatedTaskData);
+    // console.log(updatedTaskData);
     handleCloseEditModal()
   }
 
@@ -229,12 +258,12 @@ function EditTaskModal({ editTaskId }) {
           <div className='space-y-2'>
             <h2>Members</h2>
             <div className='grid grid-cols-3 space-x-2'>
-              {allTaskMembers && allTaskMembers.map((member) => (
+              {projectMembers && projectMembers.map((member) => (
                 <span key={`edit-task-${member}`} className='space-x-2'>
                   <input
                     type="checkbox"
                     name=""
-                    id={member}
+                    id={`edit-task-${member}`}
                     value={member}
                     onChange={pickSelectedTaskMember}
                     checked={taskMembers.includes(member)}
