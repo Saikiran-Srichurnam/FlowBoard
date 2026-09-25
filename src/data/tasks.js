@@ -96,7 +96,7 @@ export const tasks = [
     status: "To Do",
     priority: "Low",
     projectId: 2,
-    assignee: ["Saikiran"],
+    assignee: ["Rahul"],
     dueDate: "2026-09-10",
   },
   {
@@ -106,7 +106,7 @@ export const tasks = [
     status: "In Progress",
     priority: "Medium",
     projectId: 2,
-    assignee: ["Saikiran"],
+    assignee: ["Priya"],
     dueDate: "2026-09-08",
   },
   {
@@ -116,7 +116,7 @@ export const tasks = [
     status: "To Do",
     priority: "Low",
     projectId: 2,
-    assignee: ["Saikiran", "Agit", "vamshi"],
+    assignee: ["Priya", "Rahul", "Ankit"],
     dueDate: "2026-09-12",
   },
 ];

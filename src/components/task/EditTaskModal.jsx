@@ -73,7 +73,15 @@ function EditTaskModal({ editTaskId }) {
 
   // Load members when a different task is opened
   useEffect(() => {
-    setTaskMembers(taskDetails?.assignee || []);
+    const savedMembers = Array.isArray(taskDetails?.assignee)
+      ? taskDetails.assignee
+      : []
+
+    const validMembers = savedMembers.filter((member) =>
+      projectMembers.includes(member)
+    )
+
+    setTaskMembers(validMembers);
   }, [editTaskId]);
 
 

@@ -31,7 +31,7 @@ function EditProjectModal({ projectId }) {
   const [projectTasks, setProjectTasks] = useState(projectDetails.tasks || 0)
 
   // total members present in development team
-  const allProjectMembers = ["Saikiran", "Rahul", "Priya", "Ankit"]
+  const allProjectMembers = ["Saikiran", "Rahul", "Priya", "Ankit", "Vamshi", "Ram", "Paru"]
   const [projectMembers, setProjectMembers] = useState(projectDetails?.members || [])
 
   // handling checkbox of selecting project members
