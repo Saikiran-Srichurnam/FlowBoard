@@ -1,7 +1,7 @@
-import KanbanBoard from "./KanbanBoard";
+import KanbanColumn from "./KanbanColumn";
 import KanbanHeader from "./KanbanHeader";
 
 export {
   KanbanHeader,
-  KanbanBoard
+  KanbanColumn
 }

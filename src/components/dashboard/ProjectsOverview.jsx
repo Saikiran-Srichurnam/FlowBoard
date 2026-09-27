@@ -5,7 +5,7 @@ import Button from '../ui/Button'
 function ProjectOverview() {
 
   const kanbanCardsDetails = [
-    { title: "To Do", total: 6, kanbanClass: "bg-red-50 text-red-400", },
+    { title: "To Do", total: 6, kanbanClass: "bg-red-50 text-red-500", },
     { title: "In Progress", total: 4, kanbanClass: "bg-yellow-50 text-yellow-500", },
     { title: "Review", total: 4, kanbanClass: "bg-blue-50 text-blue-500", },
     { title: "Done", total: 4, kanbanClass: "bg-success/10 text-success", },

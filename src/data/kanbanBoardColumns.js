@@ -1,4 +1,4 @@
-const kanbanBoardcolumns = [
+export const kanbanBoardcolumnsData = [
   { title: "To Do", status: "To Do" },
   { title: "In Progress", status: "In Progress" },
   { title: "Review", status: "Review" },
