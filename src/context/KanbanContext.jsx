@@ -35,7 +35,9 @@ export function KanbanProvider({ children }) {
   return (
     <kanbanContext.Provider value={{
       kanban,
-      setKanban
+      setKanban,
+
+      kanbanColumnsData,
     }}>
       {children}
     </kanbanContext.Provider>

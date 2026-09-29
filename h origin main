@@ -1,0 +1,5 @@
+[33m87a9454[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m added the all tasks to the kanbanboard
+[33m14fe86b[m add the columns of the kanban board
+[33m5794815[m feat: add kanban board header and context setup
+[33m9f33ac6[m fix: maintain task assignees when editing project
+[33ma892d08[m fix: preserve task members when changing projects

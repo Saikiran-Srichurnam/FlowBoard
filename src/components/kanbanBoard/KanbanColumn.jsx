@@ -4,7 +4,7 @@ import KanbanTaskCard from "./KanbanTaskCard"
 
 
 function kanbanColumn() {
-  const { kanban } = useKanban()
+  const { kanban, kanbanColumnsData } = useKanban()
 
   // Helper to get status color
   const getStatusColor = (status) => {
@@ -31,19 +31,22 @@ function kanbanColumn() {
       <div className="grid lg:grid-cols-4 text-surface gap-1">
         {kanban.map((column) => (
           <div key={`kanban-${column.status}`} className={`p-2 text-sm font-semibold  border border-border shadow-sm rounded-md ${getStatusColor(column.status)}`}>
-            <div title={column.title} className="space-x-2">
+            <div title={column.title}>
               <h1>{column.status}</h1>
               {tasks && tasks.map((task) => (
-                <KanbanTaskCard
-                  id={task.id}
-                  key={task.id}
-                  title={task.title}
-                  description={task.description}
-                  priority={task.priority}
-                  dueDate={task.dueDate}
-                  assignee={task.assignee}
-                  className={getStatusColor(column.status)}
-                />
+                column.status === task.status &&
+                (
+                  <KanbanTaskCard
+                    id={task.id}
+                    key={task.id}
+                    title={task.title}
+                    description={task.description}
+                    priority={task.priority}
+                    dueDate={task.dueDate}
+                    assignee={task.assignee}
+                    className={getStatusColor(column.status)}
+                  />
+                )
               ))}
             </ div>
           </div>
