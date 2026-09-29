@@ -2,9 +2,8 @@ import { useKanban } from "../../context/KanbanContext"
 import { useTasks } from "../../context/TasksContext"
 import KanbanTaskCard from "./KanbanTaskCard"
 
-
 function kanbanColumn() {
-  const { kanban, kanbanColumnsData } = useKanban()
+  const { kanban } = useKanban()
 
   // Helper to get status color
   const getStatusColor = (status) => {
