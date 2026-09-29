@@ -1,8 +1,7 @@
 import { useKanban } from "../../context/KanbanContext"
-import { useTasks } from "../../context/TasksContext"
 import KanbanTaskCard from "./KanbanTaskCard"
 
-function kanbanColumn() {
+function kanbanColumn({ filteredTasks }) {
   const { kanban } = useKanban()
 
   // Helper to get status color
@@ -22,8 +21,6 @@ function kanbanColumn() {
   }
 
   // getting tasks from the useTasks
-  const { tasks } = useTasks()
-  console.log(tasks);
 
   return (
     <div className="bg-background h-full ">
@@ -32,7 +29,7 @@ function kanbanColumn() {
           <div key={`kanban-${column.status}`} className={`p-2 text-sm font-semibold  border border-border shadow-sm rounded-md ${getStatusColor(column.status)}`}>
             <div title={column.title}>
               <h1>{column.status}</h1>
-              {tasks && tasks.map((task) => (
+              {filteredTasks && filteredTasks.map((task) => (
                 column.status === task.status &&
                 (
                   <KanbanTaskCard

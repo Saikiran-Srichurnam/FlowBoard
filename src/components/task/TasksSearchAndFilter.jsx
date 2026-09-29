@@ -32,8 +32,6 @@ function TasksSearchAndFilter({
   // dropdown for sorting
   const [isSortOpen, setIsSortOpen] = useState(false)
 
-
-
   return (
     <section id='TasksSearchAndFilter' className='flex gap-2'>
       <Input

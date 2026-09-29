@@ -1,10 +1,10 @@
 import KanbanColumn from "./KanbanColumn";
-import KanbanHeader from "./KanbanHeader";
+import KanbanHeaderAndSearch from "./KanbanHeaderAndSearch";
 import KanbanTaskCard from "./KanbanTaskCard";
 
 
 export {
-  KanbanHeader,
+  KanbanHeaderAndSearch,
   KanbanColumn,
   KanbanTaskCard
 }
