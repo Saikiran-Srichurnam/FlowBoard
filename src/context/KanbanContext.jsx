@@ -26,7 +26,7 @@ export function KanbanProvider({ children }) {
 
   useEffect(() => {
     try {
-      localStorage.setItem("myKanBanData", localStorage.Stringify(kanban))
+      localStorage.setItem("myKanBanData", JSON.stringify(kanban))
     } catch (error) {
       console.error("Error loading kanban data from localStorage:", error)
     }

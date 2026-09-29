@@ -1,4 +1,7 @@
 import { useKanban } from "../../context/KanbanContext"
+import { useTasks } from "../../context/TasksContext"
+import KanbanTaskCard from "./KanbanTaskCard"
+
 
 function kanbanColumn() {
   const { kanban } = useKanban()
@@ -19,14 +22,29 @@ function kanbanColumn() {
     }
   }
 
+  // getting tasks from the useTasks
+  const { tasks } = useTasks()
+  console.log(tasks);
 
   return (
     <div className="bg-background h-full ">
       <div className="grid lg:grid-cols-4 text-surface gap-1">
         {kanban.map((column) => (
-          <div className={`p-2 text-sm font-semibold  border border-border shadow-sm rounded-md ${getStatusColor(column.status)}`}>
-            <div id='kanban Columns' title={column.title} className="space-x-2">
+          <div key={`kanban-${column.status}`} className={`p-2 text-sm font-semibold  border border-border shadow-sm rounded-md ${getStatusColor(column.status)}`}>
+            <div title={column.title} className="space-x-2">
               <h1>{column.status}</h1>
+              {tasks && tasks.map((task) => (
+                <KanbanTaskCard
+                  id={task.id}
+                  key={task.id}
+                  title={task.title}
+                  description={task.description}
+                  priority={task.priority}
+                  dueDate={task.dueDate}
+                  assignee={task.assignee}
+                  className={getStatusColor(column.status)}
+                />
+              ))}
             </ div>
           </div>
         ))}
