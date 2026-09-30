@@ -1,6 +1,5 @@
-import { Calendar, Flag, MoreVertical } from "lucide-react"
+import { Calendar, Clock, Edit, Flag, MoreVertical, Trash2 } from "lucide-react"
 import { useState } from "react";
-
 
 function KanbanTaskCard({
   id,
@@ -10,17 +9,30 @@ function KanbanTaskCard({
   className,
   dueDate,
   assignee,
+  status,
 }) {
 
   // edit task functionality
   const [activeMenu, setActiveMenu] = useState(false);
+  const [changeStatus, setChangeStatus] = useState(false)
+  const [changePriority, setChangePriority] = useState(false)
 
   const handleMenuButton = () => {
     setActiveMenu(prev => !prev)
   }
+
+  const handleChangePriority = () => {
+    setChangePriority(prev => !prev)
+  }
+
+  const handleChangeStatus = () => {
+    setChangeStatus(prev => !prev)
+  }
+
+
   return (
     <div key={id}
-      className="group relative rounded-2xl border border-border bg-surface p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl mt-2" >
+      className={`group relative rounded-2xl border bg-surface p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl mt-2 ${activeMenu ? "border-black/40 duration-500 z-50" : "border-border"} z-10`} >
       {/* showing title, edit button and description */}
       <div className="space-y-2">
         <span className="flex justify-between items-center">
@@ -28,15 +40,91 @@ function KanbanTaskCard({
           {/* More button */}
           <button
             type="button"
-            className="rounded-md p-1.5 text-muted transition-colors hover:bg-slate-100 hover:text-heading"
+            className="rounded-md p-1.5 text-muted transition-colors hover:bg-slate-100 hover:text-heading cursor-pointer"
             aria-label={`More options for ${title}`}
             onClick={handleMenuButton}
           >
             <MoreVertical size={18} />
           </button>
           {activeMenu ? (
-            <div className="absolute right-8 mt-12 w-24 bg-background border border-border  rounded-lg text-sm font-semibold z-10 space-y-2 flex flex-col ">
-              <button className="hover:text-primary hover:bg-primary/10 p-1 rounded-lg " onClick="">Edit</button>
+            <div className="absolute top-16 right-0 w-36 bg-background border border-border rounded-lg text-[10px] shadow-lg z-20">
+              <button className={`bg-surface text-gray-600 hover:bg-slate-200 hover:text-heading duration-300 transition-all w-full p-2 cursor-pointer border-b border-border flex items-center gap-2`} onClick="">
+                <Edit size={15} />
+                <span>Edit</span>
+              </button>
+              <button className={`bg-surface text-gray-600 hover:bg-slate-200 hover:text-heading duration-300 transition-all w-full p-2 cursor-pointer border-b border-border flex items-center gap-2`} onClick={handleChangeStatus}>
+                <Clock size={15} />
+                <span>Change Status</span>
+              </button>
+              {changeStatus && (
+                <div className="absolute top-16 -right-1 w-28 bg-background border border-border rounded-lg text-[10px] shadow-lg text-gray-600">
+
+                  <button
+                    type="button"
+                    className="w-full p-2 flex items-center gap-2 hover:bg-slate-200 hover:text-heading cursor-pointer"
+                  >
+                    <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
+                    <span>To Do</span>
+                  </button>
+                  <button
+                    type="button"
+                    className="w-full p-2 flex items-center gap-2 hover:bg-slate-200 hover:text-heading cursor-pointer"
+                  >
+                    <span className="h-2.5 w-2.5 rounded-full bg-yellow-500" />
+                    <span>In Progress</span>
+                  </button>
+                  <button
+                    type="button"
+                    className="w-full p-2 flex items-center gap-2 hover:bg-slate-200 hover:text-heading cursor-pointer"
+                  >
+                    <span className="h-2.5 w-2.5 rounded-full bg-blue-500" />
+                    <span>Review</span>
+                  </button>
+                  <button
+                    type="button"
+                    className="w-full p-2 flex items-center gap-2 hover:bg-slate-200 hover:text-heading cursor-pointer"
+                  >
+                    <span className="h-2.5 w-2.5 rounded-full bg-success" />
+                    <span>Done</span>
+                  </button>
+                </div>
+              )}
+              <button className={`bg-surface text-gray-600 hover:bg-slate-200 hover:text-heading duration-300 transition-all w-full p-2 cursor-pointer border-b border-border flex items-center gap-2`} onClick={handleChangePriority}>
+                <Clock size={15} />
+                <span>Change Priority</span>
+              </button>
+              {changePriority && (
+                <div className="absolute top-24 -right-1 w-28 bg-background border border-border rounded-lg text-[10px] shadow-lg text-gray-600">
+
+                  <button
+                    type="button"
+                    className="w-full p-2 flex items-center gap-2 hover:bg-slate-200 hover:text-heading cursor-pointer"
+                  >
+                    <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
+                    <span>High</span>
+                  </button>
+                  <button
+                    type="button"
+                    className="w-full p-2 flex items-center gap-2 hover:bg-slate-200 hover:text-heading cursor-pointer"
+                  >
+                    <span className="h-2.5 w-2.5 rounded-full bg-yellow-500" />
+                    <span>Medium</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    className="w-full p-2 flex items-center gap-2 hover:bg-slate-200 hover:text-heading cursor-pointer"
+                  >
+                    <span className="h-2.5 w-2.5 rounded-full bg-success" />
+                    <span>Low</span>
+                  </button>
+                </div>
+              )}
+              <button className={`bg-surface text-gray-600 hover:bg-slate-200 hover:text-heading duration-300 transition-all w-full p-2 cursor-pointer border-b border-border flex items-center gap-2`} onClick="">
+                <Trash2 size={15} />
+                <span>Delete</span>
+              </button>
+
             </div>
           ) : ""}
         </span>

@@ -23,10 +23,10 @@ function kanbanColumn({ filteredTasks }) {
   // getting tasks from the useTasks
 
   return (
-    <div className="bg-background h-full ">
+    <div className="bg-background h-full">
       <div className="grid lg:grid-cols-4 text-surface gap-1">
         {kanban.map((column) => (
-          <div key={`kanban-${column.status}`} className={`p-2 text-sm font-semibold  border border-border shadow-sm rounded-md ${getStatusColor(column.status)}`}>
+          <div key={`kanban-${column.status}`} className={`relative p-2 text-sm font-semibold  border border-border shadow-sm rounded-md ${getStatusColor(column.status)} z-0` }>
             <div title={column.title}>
               <h1>{column.status}</h1>
               {filteredTasks && filteredTasks.map((task) => (
@@ -40,6 +40,7 @@ function kanbanColumn({ filteredTasks }) {
                     priority={task.priority}
                     dueDate={task.dueDate}
                     assignee={task.assignee}
+                    status={task.status}
                     className={getStatusColor(column.status)}
                   />
                 )
