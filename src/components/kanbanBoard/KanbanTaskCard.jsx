@@ -1,16 +1,18 @@
 import { Calendar, Clock, Edit, Flag, MoreVertical, Trash2 } from "lucide-react"
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useTasks } from "../../context/TasksContext";
 
 function KanbanTaskCard({
   id,
   title,
   description,
   priority,
-  className,
   dueDate,
   assignee,
   status,
 }) {
+
+  
 
   // edit task functionality
   const [activeMenu, setActiveMenu] = useState(false);
@@ -18,14 +20,52 @@ function KanbanTaskCard({
   const [changePriority, setChangePriority] = useState(false)
 
   const handleMenuButton = () => {
+    if (!activeMenu) {
+      setChangePriority(false)
+      setChangeStatus(false)
+    }
     setActiveMenu(prev => !prev)
   }
 
-  const handleChangePriority = () => {
+  //Task Priority
+  const priorityOrder = [
+    { value: "High", priorityColor: "bg-red-400" },
+    { value: "Medium", priorityColor: "bg-yellow-500" },
+    { value: "Low", priorityColor: "bg-success" }
+  ]
+
+  const handlePriorityBtn = () => {
     setChangePriority(prev => !prev)
   }
 
-  const handleChangeStatus = () => {
+  const { setTasks } = useTasks()
+
+  const handleChangePriorityOfTask = (value) => {
+    console.log("changePriority:", value);
+    try {
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.id === id
+            ? { ...task, priority: value }
+            : task))
+
+      // instead of making only the setChangePriority to false i made the activemenu to false so after clicking the priority the 3 dots button automatically closes
+      setActiveMenu(false)
+    } catch (error) {
+      console.log("Error occured when priority updating", error);
+    }
+  }
+
+
+  // Task statuses
+  const tasksStatuses = [
+    { value: "To Do", taskColor: "bg-red-400" },
+    { value: "In Progress", taskColor: "bg-yellow-500" },
+    { value: "Review", taskColor: "bg-blue-500" },
+    { value: "Done", taskColor: "bg-success" },
+  ];
+
+  const handleStatusBtn = () => {
     setChangeStatus(prev => !prev)
   }
 
@@ -48,82 +88,55 @@ function KanbanTaskCard({
           </button>
           {activeMenu ? (
             <div className="absolute top-16 right-0 w-36 bg-background border border-border rounded-lg text-[10px] shadow-lg z-20">
-              <button className={`bg-surface text-gray-600 hover:bg-slate-200 hover:text-heading duration-300 transition-all w-full p-2 cursor-pointer border-b border-border flex items-center gap-2`} onClick="">
+              {/* <button className={`bg-surface text-gray-600 hover:bg-slate-200 hover:text-heading duration-300 transition-all w-full p-2 cursor-pointer border-b border-border flex items-center gap-2`} onClick="">
                 <Edit size={15} />
                 <span>Edit</span>
-              </button>
-              <button className={`bg-surface text-gray-600 hover:bg-slate-200 hover:text-heading duration-300 transition-all w-full p-2 cursor-pointer border-b border-border flex items-center gap-2`} onClick={handleChangeStatus}>
+              </button> */}
+
+              {/* Change status button */}
+              <button className={`bg-surface text-gray-600 hover:bg-slate-200 hover:text-heading duration-300 transition-all w-full p-2 cursor-pointer border-b border-border flex items-center gap-2`} onClick={handleStatusBtn}>
                 <Clock size={15} />
                 <span>Change Status</span>
               </button>
-              {changeStatus && (
+              {!changePriority && changeStatus && (
                 <div className="absolute top-16 -right-1 w-28 bg-background border border-border rounded-lg text-[10px] shadow-lg text-gray-600">
-
-                  <button
-                    type="button"
-                    className="w-full p-2 flex items-center gap-2 hover:bg-slate-200 hover:text-heading cursor-pointer"
-                  >
-                    <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
-                    <span>To Do</span>
-                  </button>
-                  <button
-                    type="button"
-                    className="w-full p-2 flex items-center gap-2 hover:bg-slate-200 hover:text-heading cursor-pointer"
-                  >
-                    <span className="h-2.5 w-2.5 rounded-full bg-yellow-500" />
-                    <span>In Progress</span>
-                  </button>
-                  <button
-                    type="button"
-                    className="w-full p-2 flex items-center gap-2 hover:bg-slate-200 hover:text-heading cursor-pointer"
-                  >
-                    <span className="h-2.5 w-2.5 rounded-full bg-blue-500" />
-                    <span>Review</span>
-                  </button>
-                  <button
-                    type="button"
-                    className="w-full p-2 flex items-center gap-2 hover:bg-slate-200 hover:text-heading cursor-pointer"
-                  >
-                    <span className="h-2.5 w-2.5 rounded-full bg-success" />
-                    <span>Done</span>
-                  </button>
+                  {tasksStatuses.map((task) => (
+                    <button
+                      key={`task-${task.value}`}
+                      type="button"
+                      className="w-full p-2 flex items-center gap-2 hover:bg-slate-200 hover:text-heading cursor-pointer"
+                    >
+                      <span className={`h-2.5 w-2.5 rounded-full ${task.taskColor}`} />
+                      <span>{task.value}</span>
+                    </button>
+                  ))}
                 </div>
               )}
-              <button className={`bg-surface text-gray-600 hover:bg-slate-200 hover:text-heading duration-300 transition-all w-full p-2 cursor-pointer border-b border-border flex items-center gap-2`} onClick={handleChangePriority}>
+
+              {/* Change priority button */}
+              <button className={`bg-surface text-gray-600 hover:bg-slate-200 hover:text-heading duration-300 transition-all w-full p-2 cursor-pointer border-b border-border flex items-center gap-2`} onClick={handlePriorityBtn}>
                 <Clock size={15} />
                 <span>Change Priority</span>
               </button>
-              {changePriority && (
-                <div className="absolute top-24 -right-1 w-28 bg-background border border-border rounded-lg text-[10px] shadow-lg text-gray-600">
-
-                  <button
-                    type="button"
-                    className="w-full p-2 flex items-center gap-2 hover:bg-slate-200 hover:text-heading cursor-pointer"
-                  >
-                    <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
-                    <span>High</span>
-                  </button>
-                  <button
-                    type="button"
-                    className="w-full p-2 flex items-center gap-2 hover:bg-slate-200 hover:text-heading cursor-pointer"
-                  >
-                    <span className="h-2.5 w-2.5 rounded-full bg-yellow-500" />
-                    <span>Medium</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    className="w-full p-2 flex items-center gap-2 hover:bg-slate-200 hover:text-heading cursor-pointer"
-                  >
-                    <span className="h-2.5 w-2.5 rounded-full bg-success" />
-                    <span>Low</span>
-                  </button>
+              {!changeStatus && changePriority && (
+                <div className="absolute top-16 -right-1 w-28 bg-background border border-border rounded-lg text-[10px] shadow-lg text-gray-600">
+                  {priorityOrder.map((priority) => (
+                    <button
+                      key={`priority-${priority.value}`}
+                      type="button"
+                      className="w-full p-2 flex items-center gap-2 hover:bg-slate-200 hover:text-heading cursor-pointer"
+                      onClick={() => handleChangePriorityOfTask(priority.value)}
+                    >
+                      <span className={`h-2.5 w-2.5 rounded-full ${priority.priorityColor}`} />
+                      <span>{priority.value}</span>
+                    </button>
+                  ))}
                 </div>
               )}
-              <button className={`bg-surface text-gray-600 hover:bg-slate-200 hover:text-heading duration-300 transition-all w-full p-2 cursor-pointer border-b border-border flex items-center gap-2`} onClick="">
+              {/* <button className={`bg-surface text-gray-600 hover:bg-slate-200 hover:text-heading duration-300 transition-all w-full p-2 cursor-pointer border-b border-border flex items-center gap-2`} onClick="">
                 <Trash2 size={15} />
                 <span>Delete</span>
-              </button>
+              </button> */}
 
             </div>
           ) : ""}
