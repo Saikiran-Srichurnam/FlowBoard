@@ -12,7 +12,19 @@ function KanbanTaskCard({
   status,
 }) {
 
-  
+  // Helper to get priority color
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case 'High':
+        return 'bg-red-50 text-red-500'
+      case 'Medium':
+        return 'bg-yellow-50 text-yellow-500'
+      case 'Low':
+        return 'bg-success/10 text-success'
+      default:
+        return 'bg-gray-400 text-primary'
+    }
+  }
 
   // edit task functionality
   const [activeMenu, setActiveMenu] = useState(false);
@@ -56,7 +68,6 @@ function KanbanTaskCard({
     }
   }
 
-
   // Task statuses
   const tasksStatuses = [
     { value: "To Do", taskColor: "bg-red-400" },
@@ -67,6 +78,22 @@ function KanbanTaskCard({
 
   const handleStatusBtn = () => {
     setChangeStatus(prev => !prev)
+  }
+
+  const handleChangeStatusOfTask = (value) => {
+    console.log("changePriority:", value);
+    try {
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.id === id
+            ? { ...task, status: value }
+            : task))
+
+      // instead of making only the setChangePriority to false i made the activemenu to false so after clicking the priority the 3 dots button automatically closes
+      setActiveMenu(false)
+    } catch (error) {
+      console.log("Error occured when priority updating", error);
+    }
   }
 
 
@@ -105,6 +132,7 @@ function KanbanTaskCard({
                       key={`task-${task.value}`}
                       type="button"
                       className="w-full p-2 flex items-center gap-2 hover:bg-slate-200 hover:text-heading cursor-pointer"
+                      onClick={() => handleChangeStatusOfTask(task.value)}
                     >
                       <span className={`h-2.5 w-2.5 rounded-full ${task.taskColor}`} />
                       <span>{task.value}</span>
@@ -147,8 +175,8 @@ function KanbanTaskCard({
       {/* showing priority, members and last date */}
       <div className="mt-4 flex justify-between items-center text-[10px]">
         <div className="flex items-center  gap-1">
-          <Flag size={15} />
-          <span className={`px-2 py-1 ${className} border rounded-lg`}>{priority}</span>
+          <Flag size={15} className={getPriorityColor(priority)} />
+          <span className={`px-2 py-1 ${getPriorityColor(priority)} border rounded-lg`}>{priority}</span>
         </div>
         <div className="flex justify-between items-center text-[10px] gap-1 text-gray-500">
           <Calendar size={15} />
