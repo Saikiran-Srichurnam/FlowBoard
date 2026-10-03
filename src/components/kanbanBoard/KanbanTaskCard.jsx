@@ -1,5 +1,5 @@
 import { Calendar, Clock, Edit, Flag, MoreVertical, Trash2 } from "lucide-react"
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTasks } from "../../context/TasksContext";
 
 function KanbanTaskCard({
@@ -9,7 +9,6 @@ function KanbanTaskCard({
   priority,
   dueDate,
   assignee,
-  status,
 }) {
 
   // Helper to get priority color
