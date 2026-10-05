@@ -104,7 +104,6 @@ function KanbanTaskCard({
   return (
     <div
       ref={setNodeRef}
-      {...listeners}
       {...attributes}
       key={id}
 
@@ -114,10 +113,11 @@ function KanbanTaskCard({
           : "border-border"
         } 
         z-10`} >
+
       {/* showing title, edit button and description */}
       <div className="space-y-2">
         <span className="flex justify-between items-center">
-          <h1 className="text-heading ">{title}</h1>
+          <h1 {...listeners} className="text-heading cursor-grab active:cursor-grabbing">{title}</h1>
           {/* More button */}
           <button
             type="button"

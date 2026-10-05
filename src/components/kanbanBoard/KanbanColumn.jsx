@@ -25,14 +25,14 @@ function kanbanColumn({ filteredTasks }) {
     <div className="bg-background h-full">
       <div className="grid lg:grid-cols-4 text-surface gap-1">
         {kanban.map((column) => {
-          const { setNodeRef } = useDroppable({
+          const { setNodeRef, isOver } = useDroppable({
             id: column.status,
           })
           return (
             <div
               ref={setNodeRef}
               key={`kanban-${column.status}`}
-              className={`relative p-2 text-sm font-semibold  border border-border shadow-sm rounded-md ${getStatusColor(column.status)} z-0`}>
+              className={`relative p-2 text-sm font-semibold  border border-border shadow-sm rounded-md ${getStatusColor(column.status)} ${isOver ? "border-primary/20 ring-2 ring-primary/40" : "border-border"} z-0`}>
               <div title={column.title}>
                 <h1>{column.status}</h1>
                 {filteredTasks && filteredTasks.map((task) => (
