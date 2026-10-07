@@ -1,4 +1,4 @@
-import { Calendar, Clock, Edit, Flag, MoreVertical, Trash2 } from "lucide-react"
+import { Calendar, Clock, Flag, MoreVertical,} from "lucide-react"
 import { useState } from "react";
 import { useTasks } from "../../context/TasksContext";
 import { useDraggable } from "@dnd-kit/core"
@@ -12,8 +12,13 @@ function KanbanTaskCard({
   assignee,
 }) {
 
-  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
-    id: id,
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    isDragging,
+  } = useDraggable({
+    id,
   })
 
   // Helper to get priority color
@@ -104,9 +109,7 @@ function KanbanTaskCard({
   return (
     <div
       ref={setNodeRef}
-      {...attributes}
       key={id}
-
       className={`${isDragging ? "opacity-0" : ""} group relative rounded-2xl border bg-surface p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl mt-2 
       ${activeMenu
           ? "border-black/40 duration-500 z-50"
@@ -117,7 +120,9 @@ function KanbanTaskCard({
       {/* showing title, edit button and description */}
       <div className="space-y-2">
         <span className="flex justify-between items-center">
-          <h1 {...listeners} className="text-heading cursor-grab active:cursor-grabbing">{title}</h1>
+          <h1 {...listeners}
+            {...attributes}
+            className="text-heading cursor-grab active:cursor-grabbing touch-none">{title}</h1>
           {/* More button */}
           <button
             type="button"

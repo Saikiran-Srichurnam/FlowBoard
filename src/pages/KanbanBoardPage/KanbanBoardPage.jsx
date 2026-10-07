@@ -4,6 +4,9 @@ import { useTasks } from "../../context/TasksContext";
 import {
   DndContext,
   DragOverlay,
+  PointerSensor,
+  useSensor,
+  useSensors,
 } from "@dnd-kit/core";
 
 
@@ -61,12 +64,21 @@ function KanbanBoardPage() {
     setActiveTask(null)
   }
 
+  const sensors = useSensors(
+  useSensor(PointerSensor, {
+    activationConstraint: {
+      distance: 8,
+    },
+  })
+)
+
   return (
     <DndContext
+      sensors={sensors}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       onDragCancel={handleDragCancel}>
-      <section id='TasksPage' className='bg-surface h-full w-full p-6 shadow-sm border border-border rounded-md space-y-2'>
+      <section id='TasksPage' className='bg-surface h-full w-full min-w-0 p-3 sm:p-4 lg:p-6 shadow-sm border border-border rounded-md space-y-2'>
         <KanbanHeaderAndSearch
           search={search}
           setSearch={setSearch}
