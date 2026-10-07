@@ -2,10 +2,10 @@ import TasksRow from "./TasksRow"
 
 function TasksList({ filteredTasks }) {
   return (
-    <div className="overflow-hidden rounded-lg border border-border bg-surface">
+    <div className="overflow-x-auto rounded-lg border border-border bg-surface">
 
       {/* Header */}
-      <div className="grid grid-cols-[repeat(6,1fr)_40px] border-b border-border px-5 py-3 text-sm font-medium text-muted gap-2">
+      <div className="min-w-[900px] grid grid-cols-[minmax(220px,2fr)_1fr_1fr_1fr_1fr_1fr_40px] border-b border-border px-5 py-3 text-sm font-medium text-muted gap-2">
         <span>Title</span>
         <span>Status</span>
         <span>Priority</span>
@@ -17,8 +17,8 @@ function TasksList({ filteredTasks }) {
 
       {/* Rows */}
       {filteredTasks.length === 0 ? (
-        <div className="col-span-6 text-center py-8 text-muted">
-          No projects found. Create your first project!
+        <div className="py-8 text-center text-muted">
+          No tasks found.
         </div>
       ) : (
         filteredTasks.map((task) => (
@@ -35,6 +35,7 @@ function TasksList({ filteredTasks }) {
           />
         ))
       )}
+
     </div>
   )
 }
