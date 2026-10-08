@@ -1,12 +1,11 @@
 import ProjectRow from "./ProjectRow"
 
-
 function ProjectList({ sortedProjects }) {
   return (
-    <div className="overflow-hidden rounded-lg border border-border bg-surface">
+    <div className="overflow-x-auto rounded-lg border border-border bg-surface">
 
       {/* Header */}
-      <div className="grid grid-cols-[repeat(6,1fr)_40px] border-b border-border px-5 py-3 text-sm font-medium text-muted gap-2">
+      <div className="min-w-[900px] grid grid-cols-[minmax(220px,2fr)_1fr_1fr_1fr_1fr_1fr_40px] items-center gap-2 border-b border-border px-5 py-3 text-sm font-medium text-muted">
         <span>Project</span>
         <span>Status</span>
         <span>Progress</span>
@@ -18,7 +17,7 @@ function ProjectList({ sortedProjects }) {
 
       {/* Rows */}
       {sortedProjects.length === 0 ? (
-        <div className="col-span-6 text-center py-8 text-muted">
+        <div className="flex min-h-55 min-w-225 items-center justify-center px-6 py-8 text-center text-sm text-muted">
           No projects found. Create your first project!
         </div>
       ) : (

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Input from '../ui/Input/Input'
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown } from 'lucide-react'
+import ProjectViewToggle from './ProjectViewToggle'
 
 function ProjectSearchAndFilter({
   search,
@@ -8,16 +9,17 @@ function ProjectSearchAndFilter({
   selectedOption,
   setSelectedOption,
   selectedSortOption,
-  setSelectedSortOption
+  setSelectedSortOption,
+  view,
+  setView,
 }) {
 
-  // project statuses
   const projectStatuses = [
     { value: "All" },
     { value: "Active" },
     { value: "Completed" },
     { value: "On Hold" },
-  ];
+  ]
 
   const sortOrder = [
     { value: "latest", label: "Latest" },
@@ -25,78 +27,118 @@ function ProjectSearchAndFilter({
     { value: "oldest", label: "Oldest" }
   ]
 
-  // dropdown of status
   const [isOpen, setIsOpen] = useState(false)
-  // dropdown for sorting
   const [isSortOpen, setIsSortOpen] = useState(false)
 
-
-
   return (
-    <section id='ProjectSearchAndFilter' className='flex gap-2'>
-      <Input
-        name="search"
-        id="search"
-        type="text"
-        placeholder="Search Projects ..."
-        className="h-10 w-80 lg:w-96 px-3 text-xs"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+    <section
+      id="ProjectSearchAndFilter"
+      className="flex flex-col lg:flex-row gap-2 w-full"
+    >
 
-      {/* project status filter */}
-      <div>
-        {/* Selected value */}
-        <button id='All Projects' onClick={() => setIsOpen(!isOpen)}
-          className="flex justify-between items-center h-10 text-heading text-xs md:text-sm bg-background w-24 lg:w-32 focus-visible:bg-background rounded-md border border-primary/30 outline-none px-4 py-2 focus:border-primary/30 focus:ring-2 focus:ring-primary/10 cursor-pointer"
-        >
-          <span className='text-xs'>{selectedOption}</span>
-          <ChevronDown size={24} className={`transition-transform transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
-        </button>
+      {/* Search + All Projects */}
+      <div className="flex items-center gap-2 w-full lg:flex-1">
 
-        {isOpen && (
-          <ul
-            className="absolute mt-2 w-48 flex flex-col z-50 rounded-md border border-primary/10 bg-background shadow-md
-          text-xs">
-            {
-              projectStatuses.map((projectStatus => (
-                <li key={projectStatus.value} value={projectStatus.value} className=" text-primary/60 pl-2 py-1 hover:bg-primary/10 hover:text-primary hover:font-semibold duration-300 cursor-pointer"
+        {/* Search */}
+        <div className="min-w-0 flex-1">
+          <Input
+            name="search"
+            id="search"
+            type="text"
+            placeholder="Search Projects ..."
+            className="h-10 w-full px-3 text-xs"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+
+        {/* All Projects */}
+        <div className="relative shrink-0">
+          <button
+            type="button"
+            onClick={() => setIsOpen(!isOpen)}
+            className="flex h-10 w-24 sm:w-32 items-center justify-between rounded-md border border-primary/30 bg-background px-3 text-xs text-heading cursor-pointer"
+          >
+            <span className="truncate">
+              {selectedOption}
+            </span>
+
+            <ChevronDown
+              size={18}
+              className={`shrink-0 transition-transform duration-300 ${
+                isOpen ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+
+          {isOpen && (
+            <ul className="absolute left-0 mt-2 z-50 w-40 sm:w-48 rounded-md border border-primary/10 bg-background text-xs shadow-md">
+              {projectStatuses.map((projectStatus) => (
+                <li
+                  key={projectStatus.value}
+                  className="cursor-pointer px-2 py-2 text-primary/60 hover:bg-primary/10 hover:text-primary hover:font-semibold"
                   onClick={() => {
                     setSelectedOption(projectStatus.value)
                     setIsOpen(false)
-                  }}>{projectStatus.value}</li>
-              )))
-            }
-          </ul>
-        )}
+                  }}
+                >
+                  {projectStatus.value}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
       </div>
-      <div>
-        <button id='Sort' onClick={() => setIsSortOpen(!isSortOpen)}
-          className="flex justify-between items-center h-10 text-heading text-xs md:text-sm bg-background w-24 lg:w-32 focus-visible:bg-background rounded-md border border-primary/30 outline-none px-4 py-2 focus:border-primary/30 focus:ring-2 focus:ring-primary/10 cursor-pointer"
-        >
-          <span className='text-xs'>{selectedSortOption}</span>
-          <ChevronDown size={24} className={`transition-transform transform duration-300 ${isSortOpen ? "rotate-180" : ""}`} />
-        </button>
-        {isSortOpen && (
 
+      {/* Sort + Grid/List */}
+      <div className="flex items-center gap-2 w-full lg:w-auto">
 
-          <ul
-            className="absolute mt-2 w-48 flex flex-col z-50 rounded-md border border-primary/10 bg-background shadow-md
-          text-xs">
-            {sortOrder.map((order) => (
-              <li
-                key={order.value}
-                className="text-primary/60 pl-2 py-1 hover:bg-primary/10 hover:text-primary hover:font-semibold duration-300 cursor-pointer"
-                onClick={() => {
-                  setSelectedSortOption(order.label)
-                  setIsSortOpen(false)
-                }}
-              >
-                {order.label}
-              </li>
-            ))}
-          </ul>
-        )}
+        {/* Sort */}
+        <div className="relative shrink-0">
+          <button
+            type="button"
+            onClick={() => setIsSortOpen(!isSortOpen)}
+            className="flex h-10 w-24 sm:w-32 items-center justify-between rounded-md border border-primary/30 bg-background px-3 text-xs text-heading cursor-pointer"
+          >
+            <span className="truncate">
+              {selectedSortOption}
+            </span>
+
+            <ChevronDown
+              size={18}
+              className={`shrink-0 transition-transform duration-300 ${
+                isSortOpen ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+
+          {isSortOpen && (
+            <ul className="absolute right-0 mt-2 z-50 w-40 sm:w-48 rounded-md border border-primary/10 bg-background text-xs shadow-md">
+              {sortOrder.map((order) => (
+                <li
+                  key={order.value}
+                  className="cursor-pointer px-2 py-2 text-primary/60 hover:bg-primary/10 hover:text-primary hover:font-semibold"
+                  onClick={() => {
+                    setSelectedSortOption(order.label)
+                    setIsSortOpen(false)
+                  }}
+                >
+                  {order.label}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        {/* Grid / List */}
+        <div className="shrink-0">
+          <ProjectViewToggle
+            view={view}
+            setView={setView}
+          />
+        </div>
+
       </div>
 
     </section>

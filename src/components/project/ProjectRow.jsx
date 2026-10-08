@@ -59,7 +59,7 @@ function ProjectRow(
   return (
     < div
       id={id}
-      className="grid grid-cols-[repeat(6,1fr)_40px] items-center border-b border-border px-5 py-4 text-xs last:border-b-0 hover:bg-slate-50 transition-colors gap-2"
+      className="min-w-225 grid grid-cols-[repeat(6,1fr)_40px] items-center border-b border-border px-5 py-4 text-xs last:border-b-0 hover:bg-slate-50 transition-colors gap-2"
     >
       {/* Project Name */}
       < div className="flex items-center gap-2 min-w-0" >

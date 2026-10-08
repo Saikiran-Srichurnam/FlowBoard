@@ -70,7 +70,7 @@ function TasksSearchAndFilter({
           </button>
 
           {isOpen && (
-            <ul className="absolute left-0 mt-2 z-50 w-48 rounded-md border border-primary/10 bg-background text-xs shadow-md">
+            <ul className="absolute left-0 mt-2 z-50 w-28 lg:w-32  rounded-md border border-primary/10 bg-background text-xs shadow-md">
               {tasksStatuses.map((taskStatus) => (
                 <li
                   key={taskStatus.value}
@@ -108,7 +108,7 @@ function TasksSearchAndFilter({
           </button>
 
           {isSortOpen && (
-            <ul className="absolute right-0 mt-2 z-50 w-48 rounded-md border border-primary/10 bg-background text-xs shadow-md">
+            <ul className="absolute left-0 lg:right-0 mt-2 z-50 w-28 lg:w-32 rounded-md border border-primary/10 bg-background text-xs shadow-md">
               {sortOrder.map((order) => (
                 <li
                   key={order.value}
