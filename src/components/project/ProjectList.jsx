@@ -5,7 +5,7 @@ function ProjectList({ sortedProjects }) {
     <div className="overflow-x-auto rounded-lg border border-border bg-surface">
 
       {/* Header */}
-      <div className="min-w-[1020px] grid grid-cols-[280px_140px_160px_100px_140px_160px_40px] items-center gap-2 border-b border-border px-5 py-3 text-sm font-medium text-muted">
+      <div className="min-w-255 grid grid-cols-[280px_140px_160px_100px_140px_160px_40px] items-center gap-2 border-b border-border px-5 py-3 text-sm font-medium text-muted">
         <span>Project</span>
         <span>Status</span>
         <span>Progress</span>

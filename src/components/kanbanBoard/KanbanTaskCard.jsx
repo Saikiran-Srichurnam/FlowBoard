@@ -1,4 +1,4 @@
-import { Calendar, Clock, Flag, MoreVertical,} from "lucide-react"
+import { Calendar, Clock, Flag, MoreVertical, } from "lucide-react"
 import { useState } from "react";
 import { useTasks } from "../../context/TasksContext";
 import { useDraggable } from "@dnd-kit/core"
@@ -59,23 +59,13 @@ function KanbanTaskCard({
     setChangePriority(prev => !prev)
   }
 
-  const { setTasks } = useTasks()
+  const { updateTask } = useTasks()
 
   const handleChangePriorityOfTask = (value) => {
-    console.log("changePriority:", value);
-    try {
-      setTasks((prevTasks) =>
-        prevTasks.map((task) =>
-          task.id === id
-            ? { ...task, priority: value }
-            : task))
-
-      // instead of making only the setChangePriority to false i made the activemenu to false so after clicking the priority the 3 dots button automatically closes
-      setActiveMenu(false)
-    } catch (error) {
-      console.log("Error occured when priority updating", error);
-    }
-  }
+    updateTask(id, { priority: value });
+    setActiveMenu(false);
+    setChangePriority(false);
+  };
 
   // Task statuses
   const tasksStatuses = [
@@ -90,20 +80,10 @@ function KanbanTaskCard({
   }
 
   const handleChangeStatusOfTask = (value) => {
-    console.log("changePriority:", value);
-    try {
-      setTasks((prevTasks) =>
-        prevTasks.map((task) =>
-          task.id === id
-            ? { ...task, status: value }
-            : task))
-
-      // instead of making only the setChangePriority to false i made the activemenu to false so after clicking the priority the 3 dots button automatically closes
-      setActiveMenu(false)
-    } catch (error) {
-      console.log("Error occured when priority updating", error);
-    }
-  }
+    updateTask(id, { status: value });
+    setActiveMenu(false);
+    setChangeStatus(false);
+  };
 
 
   return (

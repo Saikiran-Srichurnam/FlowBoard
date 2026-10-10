@@ -22,7 +22,7 @@ function kanbanColumn({ filteredTasks }) {
   }
 
   return (
-    <div className="bg-background h-full w-full min-w-0">
+    <div className="bg-background h-full w-full min-w-0 ">
       {!filteredTasks?.length ? (
         <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-surface/50 text-center">
           <p className="text-sm font-semibold text-heading">
@@ -34,7 +34,7 @@ function kanbanColumn({ filteredTasks }) {
           </p>
         </div>
       ) : (
-        <div className="flex gap-3 overflow-x-auto pb-2">
+        <div className="flex gap-3 overflow-x-auto p-2">
           {kanban.map((column) => {
             const { setNodeRef, isOver } = useDroppable({
               id: column.status,
@@ -49,10 +49,10 @@ function kanbanColumn({ filteredTasks }) {
               <div
                 ref={setNodeRef}
                 key={`kanban-${column.status}`}
-                className={`w-[320px] min-w-[320px] shrink-0 sm:w-[360px] p-2 lg:w-auto lg:min-w-0 lg:flex-1 text-sm font-semibold border shadow-sm rounded-md 
+                className={`w-[320px] min-w-[320px] shrink-0 sm:w-90 p-2 lg:w-auto lg:min-w-0 lg:flex-1 text-sm font-semibold border shadow-sm rounded-md transition-transform duration-200
               ${getStatusColor(column.status)}
               ${isOver
-                    ? "border-primary ring-2 ring-primary/40 scale-[1.01] duration-300 transition-all"
+                    ? "border-primary/20 ring-2 ring-primary/40 scale-[1.01] duration-300 transition-all"
                     : "border-border"
                   }`}
               >

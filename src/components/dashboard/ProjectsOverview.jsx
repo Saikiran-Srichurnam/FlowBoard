@@ -1,71 +1,171 @@
-import React from 'react'
-import { BookOpenText, ArrowRight, Plus } from 'lucide-react'
-import Button from '../ui/Button'
+import { BookOpenText, ArrowRight, Plus } from "lucide-react";
+import { useProjects } from "../../context/ProjectContext";
+import { useTasks } from "../../context/TasksContext";
+import Button from "../ui/Button";
 
 function ProjectOverview() {
+  const { projects = [] } = useProjects();
+  const { tasks = [], setShowModal } = useTasks();
 
-  const kanbanCardsDetails = [
-    { title: "To Do", total: 6, kanbanClass: "bg-red-50 text-red-500", },
-    { title: "In Progress", total: 4, kanbanClass: "bg-yellow-50 text-yellow-500", },
-    { title: "Review", total: 4, kanbanClass: "bg-blue-50 text-blue-500", },
-    { title: "Done", total: 4, kanbanClass: "bg-success/10 text-success", },
-  ]
+  const columns = [
+    {
+      title: "To Do",
+      colorClass: "bg-red-50 text-red-500",
+      borderClass: "border-l-red-500",
+    },
+    {
+      title: "In Progress",
+      colorClass: "bg-yellow-50 text-yellow-600",
+      borderClass: "border-l-yellow-500",
+    },
+    {
+      title: "Review",
+      colorClass: "bg-blue-50 text-blue-500",
+      borderClass: "border-l-blue-500",
+    },
+    {
+      title: "Done",
+      colorClass: "bg-green-50 text-green-600",
+      borderClass: "border-l-green-500",
+    },
+  ];
 
-  const projectDetails = [
-    { title: "Design Landing Page", projectName: "FlowBoard Website", membersAllocated: "1", date: "May 22" },
-    { title: "Create Wireframes", projectName: "Mobile App", membersAllocated: "2", date: "May 23" },
-    { title: "User Research", projectName: "Marketing Site", membersAllocated: "2", date: "May 25" }
-  ]
+  const getProjectName = (projectId) => {
+    const project = projects.find(
+      (project) => String(project.id) === String(projectId)
+    );
+
+    return project?.name ?? "Unknown Project";
+  };
+
+  const formatDate = (date) => {
+    if (!date) return "No due date";
+
+    const parsedDate = new Date(date);
+
+    if (Number.isNaN(parsedDate.getTime())) return date;
+
+    return parsedDate.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+    });
+  };
+
+  const getMemberCount = (assignee) => {
+    if (Array.isArray(assignee)) return assignee.length;
+    return assignee ? 1 : 0;
+  };
 
   return (
-    <div id='ProjectOverview' className='bg-surface h-full w-full p-6 shadow-sm border border-border rounded-md space-y-2'>
-      <div className='flex justify-between items-center'>
-        <div className='flex gap-2 text-center'>
-          <BookOpenText size={24} />
-          <h1 className='font-semibold text-heading'>Project Overview</h1>
+    <section
+      id="ProjectOverview"
+      className="w-full space-y-5 rounded-xl border border-border bg-surface p-4 shadow-sm sm:p-6"
+    >
+      {/* Header */}
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-2">
+          <BookOpenText size={22} className="shrink-0 text-primary" />
+          <h2 className="truncate font-semibold text-heading">
+            Project Overview
+          </h2>
         </div>
-        <button className='text-primary font-semibold flex gap-2 hover:cursor-pointer'>
-          <p>View Board</p>
-          <span><ArrowRight /></span>
+
+        <button
+          type="button"
+          onClick={() => {
+            window.location.href = "/kanban-board";
+          }}
+          className="flex shrink-0 items-center gap-1 text-sm font-medium text-primary"
+        >
+          View Board <ArrowRight size={16} />
         </button>
       </div>
 
-      {/* kanban cards */}
-      <section id='kanban-cards'>
-        <div className='grid grid-cols-2 md:grid-cols-4 gap-2'>
-          {kanbanCardsDetails.map((kanban) => (
-            <div key={kanban.title}>
-              <div className={`p-2 text-sm font-semibold  border border-border shadow-sm rounded-md ${kanban.kanbanClass}`}>
-                <div className='flex flex-row justify-between items-center'>
-                  <h1>{kanban.title} </h1>
-                  <p className="shadow-sm h-6 w-6 text-center rounded-full">{kanban.total} </p>
-                </div>
-                {projectDetails.map((project) => (
-                  <div className={`bg-surface p-4 shadow-sm mt-2 rounded-md border-l-2 border-l-${kanban.kanbanClass} space-y-2`}>
-                    <div className='text-xs space-y-2'>
-                      <h1 className='text-heading'>{project.title}</h1>
-                      <p className='text-muted'>{project.projectName}</p>
-                    </div>
-                    <div className='flex justify-between items-center'>
-                      <p className='text-body'>{project.membersAllocated}</p>
-                      <h2>{project.date}</h2>
-                    </div>
-                  </div>
-                ))}
+      {/* Task status columns */}
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {columns.map((column) => {
+          const columnTasks = tasks.filter(
+            (task) => task.status === column.title
+          );
 
+          return (
+            <div
+              key={column.title}
+              className="min-w-0 rounded-lg border border-border bg-background p-2"
+            >
+              {/* Column header */}
+              <div
+                className={`flex items-center justify-between gap-2 rounded-md border border-border p-3 text-sm font-semibold ${column.colorClass}`}
+              >
+                <h3 className="text-xs">{column.title}</h3>
+
+                <span className="flex h-6 min-w-6 items-center justify-center rounded-full bg-surface px-1 text-xs">
+                  {columnTasks.length}
+                </span>
               </div>
 
-              {/* Add Task button */}
-              <Button variant="secondary" className='w-full mt-2 flex justify-start'>
-                <Plus className='text-body' />
-                <p>Add Task</p>
-              </Button>
+              {/* Tasks */}
+              <div className="mt-2 space-y-2">
+                {columnTasks.length === 0 ? (
+                  <div className="flex min-h-24 items-center justify-center rounded-md border border-dashed border-border px-3 text-center text-xs text-muted">
+                    No tasks in this column
+                  </div>
+                ) : (
+                  columnTasks.slice(0, 3).map((task) => {
+                    const memberCount = getMemberCount(task.assignee);
+
+                    return (
+                      <div
+                        key={task.id}
+                        className={`space-y-3 rounded-md border border-border border-l-2 ${column.borderClass} bg-surface p-3 shadow-sm transition-shadow hover:shadow-md`}
+                      >
+                        <div className="space-y-1">
+                          <h4 className="wrap-break-words text-sm font-medium text-heading">
+                            {task.title}
+                          </h4>
+
+                          <p className="truncate text-xs text-muted">
+                            {getProjectName(task.projectId)}
+                          </p>
+                        </div>
+
+                        <div className="flex items-center justify-between gap-2 text-xs text-muted">
+                          <span>
+                            {memberCount}{" "}
+                            {memberCount === 1 ? "member" : "members"}
+                          </span>
+
+                          <span className="shrink-0">
+                            {formatDate(task.dueDate)}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+
+                {columnTasks.length > 3 && (
+                  <p className="px-2 py-1 text-center text-xs text-muted">
+                    +{columnTasks.length - 3} more tasks
+                  </p>
+                )}
+              </div>
+
+              {/* Add Task */}
+              {/* <Button
+                variant="secondary"
+                onClick={() => setShowModal(true)}
+                className="mt-2 flex w-full justify-start gap-2"
+              >
+                <Plus size={16} className="text-body" />
+                <span>Add Task</span>
+              </Button> */}
             </div>
-          ))}
-        </div>
-      </section>
-    </div>
-  )
+          );
+        })}
+      </div>
+    </section>
+  );
 }
 
-export default ProjectOverview
+export default ProjectOverview;

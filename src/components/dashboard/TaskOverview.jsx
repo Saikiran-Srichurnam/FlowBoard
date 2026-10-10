@@ -71,7 +71,7 @@ function TaskOverview() {
   return (
     <section
       id="TaskOverview"
-      className="h-64 md:h-full rounded-md border border-border bg-surface p-5 shadow-sm">
+      className="h-64 md:h-full rounded-md border border-border bg-surface p-5 shadow-sm w-full">
 
       {/* Header */}
       <div className="flex items-center justify-between">

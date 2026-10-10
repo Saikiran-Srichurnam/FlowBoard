@@ -1,5 +1,3 @@
-import React from 'react'
-import Input from '../../components/ui/Input/Input';
 import {
   DateRangePicker,
   StatsOverview,
@@ -18,8 +16,8 @@ function DashboardPage() {
   const storedUserName = localStorage.getItem("userName")
 
   return (
-    <section id="dashboard" >
-      <div className='flex justify-between items-center p-4'>
+    <section id="dashboard" className="w-full min-w-0">
+      <div className='flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:justify-between'>
         {/* welcome message and username */}
         <div>
           <h1 className='font-semibold text-black text-lg'>Dashboard</h1>
@@ -33,24 +31,30 @@ function DashboardPage() {
       </div>
 
       {/* stats overview */}
-      <div className='mt-4 mb-6'>
+      <div className='mt-4 mb-6 min-w-0'>
         <StatsOverview />
       </div>
 
       {/* project overview, taskoverview and upcomming events*/}
-      <div className='flex gap-2 w-full'>
-        <ProjectOverview className="w-8/12" />
-        <div className='w-4/12 flex flex-col gap-2'>
-          <TaskOverview className="w-full" />
-          <UpCommingEvents className="w-full" />
+      <div className='flex min-w-0 flex-col gap-3 xl:flex-row'>
+        <div className="w-full min-w-0 xl:w-8/12">
+          <ProjectOverview />
+        </div>
+        <div className="flex w-full min-w-0 flex-col gap-3 lg:flex-row xl:w-4/12 xl:flex-col ">
+          <TaskOverview/>
+          <UpCommingEvents />
         </div>
       </div>
 
-      {/* RecentActivity */}
-      <div className='flex flex-row my-2 w-full gap-2'>
-        <RecentActivity className="w-4/12" />
-        <Productivity className="w-4/12" />
-        <TeamsMembersList className="w-4/12" />
+      {/* Recent Activity and Team Members */}
+      <div className="my-2 grid w-full grid-cols-1 gap-3 md:grid-cols-2">
+        <RecentActivity />
+        <TeamsMembersList />
+      </div>
+
+      {/* Productivity */}
+      <div className="mt-3 min-w-0 w-full">
+        <Productivity />
       </div>
 
 
