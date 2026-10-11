@@ -45,6 +45,7 @@ function DateRangePicker() {
           shadow-sm
           transition
           hover:bg-gray-50
+          cursor-pointer
         "
       >
         <CalendarDays size={14} />

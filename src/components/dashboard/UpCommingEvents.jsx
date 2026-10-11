@@ -1,70 +1,100 @@
-import React from 'react'
-import Button from '../ui/Button'
-import { div } from 'framer-motion/client'
-
+import { useTasks } from "../../context/TasksContext";
 
 function UpCommingEvents() {
 
-  const eventsData = [
-    {
-      month: "May", date: 22, title: "Project Planning Meeting", scheduledTime: "10:00 AM - 11:00 AM", totalMembers: 5,
-      eventClass: "bg-primary/10 text-primary"
-    },
-    {
-      month: "May", date: 24, title: "Sprint Review", scheduledTime: "2:00 PM - 3:30 PM", totalMembers: 7, eventClass: "bg-yellow-50 text-yellow-500"
-    },
-    {
-      month: "May", date: 26, title: "Client Presentation", scheduledTime: "11:00 AM - 12:00 PM", totalMembers: 7, eventClass: "bg-success/10 text-success"
-    },
+  const getEventClass = (status) => {
+    switch (status) {
+      case "To Do":
+        return "bg-red-50 text-red-500";
 
+      case "In Progress":
+        return "bg-yellow-50 text-yellow-500";
 
-  ]
+      case "Review":
+        return "bg-primary/10 text-primary";
+
+      default:
+        return "bg-gray-100 text-gray-500";
+    }
+  };
+
+  const { tasks = [] } = useTasks();
+
+  const parseDate = (value) => {
+    if (!value) return null;
+
+    // Handles date strings such as "2026-10-15"
+    if (
+      typeof value === "string" &&
+      /^\d{4}-\d{2}-\d{2}$/.test(value)
+    ) {
+      const [year, month, day] = value.split("-").map(Number);
+      return new Date(year, month - 1, day);
+    }
+
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? null : date;
+  };
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const upcomingTasks = tasks
+    .map((task) => ({
+      ...task,
+      deadline: parseDate(task.dueDate),
+    }))
+    .filter(
+      (task) =>
+        task.deadline &&
+        task.deadline >= today &&
+        task.status !== "Done"
+    )
+    .sort((a, b) => a.deadline - b.deadline)
+    .slice(0, 3);
+
   return (
     <section
-      id="UpCommingEvents"
-      className="h-64 md:h-full rounded-md border border-border bg-surface p-5 shadow-sm w-full"
+      id="upcoming-deadlines"
+      className="h-64 w-full rounded-md border border-border bg-surface p-5 shadow-sm md:h-full"
     >
-      {/* header*/}
-      <div className="flex items-center justify-between mb-1">
-
-        <h2 className="text-sm text-heading font-semibold">
-          UpComming Events
+      <div className="mb-3 flex items-center justify-between">
+        <h2 className="text-sm font-semibold text-heading">
+          Upcoming Deadlines
         </h2>
-
-        <Button
-          variant="ghost"
-          className="text-xs text-primary"
-        >
-          View Calender
-        </Button>
-
       </div>
 
-      <hr className='text-muted opacity-20' />
+      <hr className="border-border opacity-50" />
 
-      <div className='mt-2'>
-        {eventsData.map((event) => (
-          <div key={event.title} className='flex justify-between items-center'>
-            <div className='flex justify-start items-center gap-2 space-y-2'>
-              <span className={` flex flex-col justify-center items-center p-2 w-12 h-12 rounded-lg ${event.eventClass}`}>
-                <p className='text-xs'>{event.month}</p>
-                <h1 className='text-lg'>{event.date}</h1>
+      {upcomingTasks.length > 0 ? (
+        <div className="mt-3 flex flex-col gap-4">
+          {upcomingTasks.map((task) => (
+            <div
+              key={task.id}
+              className="flex items-center gap-3"
+            >
+              <span
+                className={`flex h-12 w-12 flex-col items-center justify-center rounded-lg p-2 ${getEventClass(task.status)}`}
+              >
+                <p className="text-xs">{task.deadline.toLocaleString("en-US", { month: "short" })}</p>
+                <h1 className="text-lg">{task.deadline.getDate()}</h1>
               </span>
-              <div className='w-full '>
-                <h1 className='text-sm text-heading'>{event.title}</h1>
-                <p className='text-muted text-xs'>{event.scheduledTime}</p>
-              </div>
 
+              <h3 className="min-w-0 flex-1 truncate text-sm font-medium text-heading">
+                {task.title}
+              </h3>
             </div>
-            <span className=' h-6 w-6 text-center bg-gray-100 rounded-full'>
-              {event.totalMembers}
-            </span>
-          </div>
-        ))}
-      </div>
-
+          ))}
+        </div>
+      ) : (
+        <div className="flex min-h-36 items-center justify-center text-center">
+          <p className="text-sm text-muted">
+            No upcoming task deadlines
+          </p>
+        </div>
+      )}
     </section>
-  )
+  );
 }
 
-export default UpCommingEvents
+export default UpCommingEvents;
