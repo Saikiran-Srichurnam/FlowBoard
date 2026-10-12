@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { tasks as initialTasks } from "../data/tasks"
+import { useActivity } from "./ActivityContext";
 
 // creating taskscontext using create Context
 const TasksContext = createContext()
@@ -34,10 +35,14 @@ export function TaskProvider({ children }) {
     }
   }, [tasks]);
 
+  const { addActivity } = useActivity();
+
   // add tasks
   const addTasks = (newTask) => {
-    setTasks((prevTasks) => [...prevTasks, newTask])
-  }
+    setTasks((prevTasks) => [...prevTasks, newTask]);
+
+    addActivity("You created", newTask.title);
+  };
 
 
   const [showModal, setShowModal] = useState(false);
@@ -66,7 +71,17 @@ export function TaskProvider({ children }) {
       prevTasks.map((task) =>
         task.id === editedTaskId
           ? { ...task, ...updatedTaskData }
-          : task))
+          : task
+      )
+    )
+    const task = tasks.find(
+      (task) => String(task.id) === String(editedTaskId)
+    );
+
+    if (task) {
+      addActivity("You updated", task.title);
+    }
+
   }
 
   // delete task
