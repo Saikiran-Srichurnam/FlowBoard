@@ -4,6 +4,7 @@ import Button from "../ui/Button"
 import { useEffect, useState } from "react"
 import { useTasks } from "../../context/TasksContext";
 import { useProjects } from "../../context/ProjectContext";
+import { useActivity } from "../../context/ActivityContext";
 
 
 function EditTaskModal({ editTaskId }) {
@@ -14,12 +15,7 @@ function EditTaskModal({ editTaskId }) {
   // extracting edit task details at updating task details
   const taskDetails = tasks.find((t) => t.id === editTaskId);
 
-  if (!taskDetails) {
-    return null;
-  }
-
-  console.log("editTaskId:", editTaskId);
-  console.log("taskDetails:", taskDetails);
+  const { addActivity } = useActivity();
 
   // Task statuses
   const tasksStatuses = [
@@ -45,7 +41,11 @@ function EditTaskModal({ editTaskId }) {
   const [taskTitle, setTaskTitle] = useState(taskDetails.title)
   const [taskDescription, setTaskDescription] = useState(taskDetails.description)
   const [taskProgress, setTaskProgress] = useState(taskDetails.progress)
+  const [dueDate, setDueDate] = useState(taskDetails?.dueDate ?? "");
 
+  if (!taskDetails) {
+    return null;
+  }
 
   // function for due date
   const getDueDate = () => {
@@ -87,14 +87,18 @@ function EditTaskModal({ editTaskId }) {
 
   // When project changes, preserve common members
   useEffect(() => {
-    if (!projectId) return;
+    const selectedProject = projects.find(
+      (project) => project.id === Number(projectId)
+    );
+
+    const projectMembers = selectedProject?.members || [];
 
     setTaskMembers((prevMembers) =>
       prevMembers.filter((member) =>
         projectMembers.includes(member)
       )
     );
-  }, [projectId]);
+  }, [projectId, projects]);
 
 
   // handling checkbox of selecting tasks members
@@ -133,8 +137,17 @@ function EditTaskModal({ editTaskId }) {
       projectId: Number(projectId) || 0,
       progress: Number(taskProgress) || 0,
       assignee: [...taskMembers],
-      dueDate: getDueDate(),
+      dueDate,
     }
+
+    const previousProject = projects.find(
+      (project) => project.id === taskDetails.projectId
+    );
+
+    const nextProject = projects.find(
+      (project) => project.id === Number(projectId)
+    );
+
 
     updateTask(editTaskId, updatedTaskData)
 
@@ -145,7 +158,13 @@ function EditTaskModal({ editTaskId }) {
     // setTaskProgress(0)
     // setProjectId(0)
 
-    // console.log(updatedTaskData);
+    if (taskDetails.projectId !== Number(projectId)) {
+      addActivity(
+        `You moved "${taskTitle.trim()}" from "${previousProject?.name || "Unknown Project"}" to "${nextProject?.name || "Unknown Project"}"`,
+        taskTitle.trim()
+      );
+    }
+    console.log(updatedTaskData);
     handleCloseEditModal()
   }
 
@@ -291,15 +310,18 @@ function EditTaskModal({ editTaskId }) {
         {/* project id */}
         <div className="flex justify-start items-center gap-2">
           {/* Priority button */}
-          <h2 className="shrink-0">Related to Project Number :</h2>
-          <Input
-            type="text"
-            placeholder="Eg: 1"
+          <h2 className="shrink-0">Related to Project :</h2>
+          <select
             value={projectId}
             onChange={(e) => setProjectId(Number(e.target.value))}
-            className="h-10 w-24 lg:w-full"
-            required
-          />
+            className="w-full p-2 border border-primary/50 rounded-md outline-none"
+          >
+            {projects.map((project) => (
+              <option key={project.id} value={project.id} className="border border-border text-primary hover:text-surface hover:bg-primary">
+                {project.name}
+              </option>
+            ))}
+          </select>
 
         </div>
         <Button className="w-full mt-2" onClick={handleSaveTaskBtn}>Save</Button>

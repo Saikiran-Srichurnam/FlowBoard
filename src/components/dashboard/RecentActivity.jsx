@@ -66,15 +66,16 @@ function RecentActivity() {
     <>
       <section
         id="RecentActivity"
-        className="min-h-64 w-full rounded-md border border-border bg-surface p-5 shadow-sm"
+        className="flex h-64 w-full flex-col rounded-md border border-border bg-surface p-5 shadow-sm"
       >
         <h2 className="text-sm font-semibold text-heading">
           Recent Activity
         </h2>
 
-        <div className="mt-4">
+        {/* Scrollable activity list */}
+        <div className="mt-2 min-h-0 flex-1 overflow-y-auto">
           {activities.length > 0 ? (
-            activities.slice(0, 3).map((activity) => (
+            activities.map((activity) => (
               <ActivityItem key={activity.id} activity={activity} />
             ))
           ) : (
@@ -86,7 +87,7 @@ function RecentActivity() {
 
         <Button
           variant="ghost"
-          className="mt-3 text-xs text-primary"
+          className="mt-3 shrink-0 text-xs text-primary"
           onClick={() => setShowAll(true)}
         >
           View All Activity
@@ -152,7 +153,8 @@ function RecentActivity() {
             </div>
           </div>
         </div>
-      )}
+      )
+      }
     </>
   );
 }
