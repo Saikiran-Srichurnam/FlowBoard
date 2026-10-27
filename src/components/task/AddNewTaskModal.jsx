@@ -1,7 +1,7 @@
 import { ChevronDown, X } from "lucide-react"
 import Input from "../ui/Input/Input"
 import Button from "../ui/Button"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useTasks } from "../../context/TasksContext";
 import { useProjects } from "../../context/ProjectContext";
 
@@ -35,16 +35,17 @@ function AddNewTaskModal() {
   // importing functions from the task context
   const { handleCloseModal, addTasks } = useTasks()
 
-  // function for due date
-  const getDueDate = () => {
+  // Default due date: 7 days from today
+  const [dueDate, setDueDate] = useState(() => {
     const date = new Date();
-    date.setDate(date.getDate() + 7); // Add 7 days
-    return date.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    });
-  }
+    date.setDate(date.getDate() + 7);
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  });
 
   // total members present in development team
   const { projects } = useProjects()
@@ -89,7 +90,7 @@ function AddNewTaskModal() {
       progress: taskProgress,
       projectId: Number(projectId),
       assignee: [...taskMembers],
-      dueDate: getDueDate(),
+      dueDate,
     }
 
     addTasks(newTaskData)
@@ -197,8 +198,13 @@ function AddNewTaskModal() {
           <div className='flex justify-between items-center gap-2'>
             {/* due date */}
             <div className='flex items-center gap-2'>
-              <h2>Due Date :</h2>
-              <p>{getDueDate()}</p>
+              <h2 className="">Due Date :</h2>
+              <input
+                type="date"
+                value={dueDate}
+                onChange={(e) => setDueDate(e.target.value)}
+                className="rounded-md border border-gray-300 px-2 py-1 text-[10px] w-24"
+              />
             </div>
 
             {/* progress */}
@@ -247,12 +253,12 @@ function AddNewTaskModal() {
         {/* project id */}
         <div className="flex justify-start items-center gap-2">
           {/* Priority button */}
-          <h2 className="shrink-0">Related to Project Number :</h2>
+          <h2 className="shrink-0">Related to Project :</h2>
           <Input
             type="text"
             placeholder="Eg: 1"
             value={projectId}
-            onChange={(e) => setProjectId(Number(e.target.value))}
+            onChange={(e) => setProjectId(e.target.value)}
             className="h-10 w-24 lg:w-full"
             required
           />
