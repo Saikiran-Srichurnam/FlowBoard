@@ -3,11 +3,8 @@ import Layout from "./components/layout/Layout";
 import Login from "./pages/authentication/Login";
 import Register from "./pages/authentication/Register";
 import ForgotPassword from "./pages/authentication/ForgotPassword"
-import { DashboardPage, ProjectPage } from "./pages";
 import DashboardLayout from "./components/layout/DashboardLayout";
-import TaskPage from "./pages/TasksPage/TaskPage";
-// import { KanbanBoard } from "./components/kanbanBoard";
-import KanbanBoardPage from "./pages/KanbanBoardPage/KanbanBoardPage";
+import { DashboardPage, ProjectPage, TaskPage, KanbanBoardPage, CalendarPage } from "./pages";
 
 export default function App() {
   return (
@@ -26,6 +23,7 @@ export default function App() {
           <Route path="projects" element={<ProjectPage />} />
           <Route path="tasks" element={<TaskPage />} />
           <Route path="kanban-Board" element={<KanbanBoardPage />} />
+          <Route path="calendar" element={<CalendarPage />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
