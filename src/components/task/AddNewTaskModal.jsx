@@ -254,14 +254,17 @@ function AddNewTaskModal() {
         <div className="flex justify-start items-center gap-2">
           {/* Priority button */}
           <h2 className="shrink-0">Related to Project :</h2>
-          <Input
-            type="text"
-            placeholder="Eg: 1"
+          <select
             value={projectId}
-            onChange={(e) => setProjectId(e.target.value)}
-            className="h-10 w-24 lg:w-full"
-            required
-          />
+            onChange={(e) => setProjectId(Number(e.target.value))}
+            className="w-full p-2 border border-primary/50 rounded-md outline-none"
+          >
+            {projects.map((project) => (
+              <option key={project.id} value={project.id} className="border border-border text-primary hover:text-surface hover:bg-primary">
+                {project.name}
+              </option>
+            ))}
+          </select>
 
         </div>
         <Button className="w-full mt-2" onClick={handleSaveTaskBtn}>Save</Button>

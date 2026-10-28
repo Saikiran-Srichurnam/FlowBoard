@@ -5,7 +5,7 @@ import {
   Flag,
 } from "lucide-react"
 import { Trash2 } from "lucide-react"
-import { useTasks } from "../../context/TasksContext"
+import { useTasks, useProjects } from "../../context"
 import { useState } from "react"
 
 function TasksCard({
@@ -21,20 +21,20 @@ function TasksCard({
 
   const { tasks, deleteTask, handleEditTask } = useTasks()
 
-  
+
   // edit task functionality
   const [activeMenu, setActiveMenu] = useState(false);
-  
+
   const handleMenuButton = () => {
     setActiveMenu(prev => !prev)
   }
-  
+
   const handleEdit = () => {
     handleEditTask(id)
     setActiveMenu(false)
     console.log("task editing ...");
   }
-  
+
   // delete task functionality
   const handleDeleteTask = () => {
     const task = tasks.find(task => task.id === id);
@@ -46,6 +46,12 @@ function TasksCard({
     }
   }
 
+  // show the project name in the task card
+  const { projects } = useProjects();
+
+  const project = projects.find((p) => p.id === Number(projectId))
+
+  const projectName = project?.name || "Unknown Project"
   return (
     <div
       id={id}
@@ -133,7 +139,7 @@ function TasksCard({
       </div>
 
       {/* Footer */}
-      <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
+      <div className="mt-6 flex flex-col border-t border-border pt-4 space-y-2">
 
         {/* Assignee */}
         <div className="flex items-center gap-3">
@@ -164,7 +170,7 @@ function TasksCard({
           {/* Assignee names */}
           <div className="flex flex-col">
             <span className="text-[11px] text-muted">
-              Assigned to
+              Assigned to :
             </span>
 
             <span className="text-[10px] font-medium text-heading">
@@ -174,9 +180,12 @@ function TasksCard({
         </div>
 
         {/* Project */}
-        <div className="flex items-center gap-1.5 text-xs text-muted">
+        <div className="flex items-center gap-3 text-xs text-muted ml-2">
           <User size={15} />
-          <span>Project {projectId}</span>
+          <div className="ml-2">
+            <p className="text-muted flex ">Project Name : </p>
+            <span className="text-heading truncate"> {projectName}</span>
+          </div>
         </div>
       </div>
 
