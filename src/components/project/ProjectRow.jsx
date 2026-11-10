@@ -1,145 +1,242 @@
-import { useState } from "react"
-import { MoreVertical } from "lucide-react"
-import { useProjects } from "../../context/ProjectContext"
 
-function ProjectRow(
-  {
-    id,
-    image,
-    name,
-    description,
-    status,
-    progress,
-    dueDate,
-    tasks,
-    members,
-  }
-) {
+import { useEffect, useRef, useState } from "react";
+import { MoreVertical } from "lucide-react";
+import { useProjects } from "../../context/ProjectContext";
 
+function ProjectRow({
+  id,
+  image,
+  name,
+  description,
+  status,
+  progress,
+  dueDate,
+  tasks,
+  members = [],
+  columns,
+}) {
+  const [activeMenu, setActiveMenu] = useState(false);
+  const menuRef = useRef(null);
 
-  // Helper to get status color
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'Active':
-        return 'bg-green-500'
-      case 'Completed':
-        return 'bg-blue-500'
-      case 'On Hold':
-        return 'bg-yellow-500'
+  const { handleEditProject, deleteProject, projects } = useProjects();
+
+  const safeMembers = Array.isArray(members) ? members : [];
+  const safeProgress = Math.min(100, Math.max(0, Number(progress) || 0));
+
+  const getStatusColor = (value) => {
+    switch (value) {
+      case "Active":
+        return "bg-success";
+      case "Completed":
+        return "bg-primary";
+      case "On Hold":
+        return "bg-warning";
       default:
-        return 'bg-gray-400'
+        return "bg-muted";
     }
-  }
+  };
 
-  const [activeMenu, setActiveMenu] = useState(null);
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setActiveMenu(false);
+      }
+    };
 
-  const handleMenuButton = () => {
-    setActiveMenu(prev => !prev)
-  }
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        setActiveMenu(false);
+      }
+    };
 
-  const { handleEditProject, deleteProject, projects } = useProjects()
+    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener("keydown", handleEscape);
 
-  // handle the edit project button
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, []);
+
   const handleEdit = () => {
-    handleEditProject(id)
-    setActiveMenu(false)
-  }
+    setActiveMenu(false);
+    handleEditProject(id);
+  };
 
   const handleDelete = () => {
-    const project = projects.find(project => project.id === id)
+    const project = projects.find(
+      (item) => String(item.id) === String(id)
+    );
+
+    if (!project) return;
+
     const confirmed = window.confirm(
-      `Would you like to Delete ${project.name}`
-    )
+      `Would you like to delete "${project.name}"?`
+    );
+
     if (confirmed) {
-      deleteProject(id)
+      deleteProject(id);
     }
-    console.log(project);
-  }
+
+    setActiveMenu(false);
+  };
 
   return (
-    < div
-      id={id}
-      className="relative min-w-255 grid grid-cols-[280px_140px_160px_100px_140px_160px_40px] items-center gap-2 border-b border-border px-5 py-4 text-xs last:border-b-0 hover:bg-slate-50 transition-colors"
+    <div
+      id={String(id)}
+      className={`relative grid ${columns} min-w-[1020px] items-center gap-3 border-b border-border px-5 py-4 text-xs text-body transition-colors last:border-b-0 hover:bg-surface-hover`}
     >
-      {/* Project Name */}
-      < div className="flex items-center gap-2 min-w-0" >
-        {
-          image && (
-            <img
-              src={image}
-              alt={name}
-              className="w-8 h-8 rounded object-cover"
-            />
-          )
-        }
-        < span className="font-medium truncate" > {name}</span >
-      </div >
+      {/* Project */}
+      <div className="flex min-w-0 items-center gap-3">
+        {image ? (
+          <img
+            src={image}
+            alt={`${name} project`}
+            className="h-9 w-9 shrink-0 rounded-lg border border-border object-cover"
+          />
+        ) : (
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 font-semibold text-primary">
+            {name?.charAt(0)?.toUpperCase() || "P"}
+          </div>
+        )}
 
-      {/* Status with color indicator */}
-      < div className="flex items-center gap-2" >
-        <span className={`h-2 w-2 rounded-full ${getStatusColor(status)}`} />
-        <span>{status}</span>
-      </div >
+        <div className="min-w-0">
+          <p
+            className="truncate font-semibold text-heading"
+            title={name}
+          >
+            {name}
+          </p>
 
-      {/* Progress with bar */}
-      < div className="flex items-center gap-2" >
-        <div className="w-16 h-2 bg-gray-200 rounded-full overflow-hidden">
+          {description && (
+            <p
+              className="mt-0.5 truncate text-[10px] text-muted"
+              title={description}
+            >
+              {description}
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* Status */}
+      <div className="flex min-w-0 items-center gap-2">
+        <span
+          className={`h-2.5 w-2.5 shrink-0 rounded-full ${getStatusColor(status)}`}
+        />
+        <span className="truncate font-medium text-body">
+          {status}
+        </span>
+      </div>
+
+      {/* Progress */}
+      <div className="flex items-center gap-2">
+        <div className="h-2 w-16 shrink-0 overflow-hidden rounded-full bg-border">
           <div
-            className="h-full bg-primary rounded-full transition-all duration-500"
-            style={{ width: `${progress}%` }}
+            className="h-full rounded-full bg-primary transition-all duration-500"
+            style={{ width: `${safeProgress}%` }}
           />
         </div>
-        <span className="text-xs font-medium">{progress}%</span>
-      </div >
+
+        <span className="text-xs font-semibold text-body">
+          {safeProgress}%
+        </span>
+      </div>
 
       {/* Tasks */}
-      < div className="flex items-center gap-1" >
-        <span>{tasks}</span>
-      </div >
+      <div className="font-medium text-body">
+        {tasks ?? 0}
+      </div>
 
       {/* Due Date */}
-      < div className="text-sm" >
-        {dueDate}
-      </div >
+      <div className="truncate text-xs text-body" title={dueDate || ""}>
+        {dueDate || "No due date"}
+      </div>
 
-      {/* Team Members */}
-      < div className="flex items-center gap-1" >
-        <div className="flex -space-x-2">
-          {members && members.slice(0, 3).map((member, index) => (
-            <div
-              key={index}
-              className="h-6 w-6 rounded-full bg-primary/10 border-2 border-white flex items-center justify-center text-xs font-medium text-primary"
-              title={member}
-            >
-              {member.charAt(0)}
+      {/* Team */}
+      <div className="flex min-w-0 items-center">
+        {safeMembers.length > 0 ? (
+          <>
+            <div className="flex shrink-0 -space-x-2">
+              {safeMembers.slice(0, 3).map((member, index) => {
+                const memberName =
+                  typeof member === "string"
+                    ? member
+                    : member?.name || "Member";
+
+                const initials = memberName
+                  .split(" ")
+                  .map((word) => word[0])
+                  .join("")
+                  .slice(0, 2)
+                  .toUpperCase();
+
+                return (
+                  <div
+                    key={`${memberName}-${index}`}
+                    title={memberName}
+                    className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-surface bg-primary/10 text-[10px] font-bold text-primary shadow-sm"
+                  >
+                    {initials}
+                  </div>
+                );
+              })}
             </div>
-          ))}
-        </div>
-        {
-          members && members.length > 3 && (
-            <span className="text-xs text-muted ml-1">
-              +{members.length - 3}
-            </span>
-          )
-        }
-      </div >
-      <button
-        type="button"
-        className="flex justify-center items-center rounded-md cursor-pointer p-2 text-muted transition-colors hover:bg-slate-100 hover:text-heading"
-      >
-        <MoreVertical size={18} onClick={handleMenuButton} />
-      </button>
-      {
-        activeMenu ? (
-          <div className="absolute right-28 mt-10 bg-slate-200 border text-xs z-10  flex flex-col">
-            <button className="hover:bg-primary hover:text-surface text-heading py-1 px-2 cursor-pointer" onClick={handleEdit}>Edit</button>
-            <button className="hover:bg-red-100 hover:text-danger text-muted py-1 rounded-md px-2 cursor-pointer" onClick={handleDelete}>Delete</button>
+
+            {safeMembers.length > 3 && (
+              <span
+                title={`${safeMembers.length - 3} more members`}
+                className="ml-2 shrink-0 rounded-md bg-surface-hover px-1.5 py-1 text-[10px] font-bold text-muted"
+              >
+                +{safeMembers.length - 3}
+              </span>
+            )}
+          </>
+        ) : (
+          <span className="text-xs text-muted">No members</span>
+        )}
+      </div>
+
+      {/* Actions */}
+      <div className="relative flex justify-center" ref={menuRef}>
+        <button
+          type="button"
+          aria-label={`More options for ${name}`}
+          aria-expanded={activeMenu}
+          aria-haspopup="menu"
+          onClick={() => setActiveMenu((prev) => !prev)}
+          className="flex h-8 w-8 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface-hover hover:text-heading focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        >
+          <MoreVertical size={18} />
+        </button>
+
+        {activeMenu && (
+          <div
+            role="menu"
+            className="absolute right-0 top-full z-50 mt-2 flex min-w-32 flex-col overflow-hidden rounded-lg border border-border bg-surface p-1 shadow-xl"
+          >
+            <button
+              type="button"
+              role="menuitem"
+              onClick={handleEdit}
+              className="rounded-md px-3 py-2.5 text-left text-xs font-medium text-body transition-colors hover:bg-surface-hover hover:text-primary"
+            >
+              Edit Project
+            </button>
+
+            <button
+              type="button"
+              role="menuitem"
+              onClick={handleDelete}
+              className="rounded-md px-3 py-2.5 text-left text-xs font-medium text-danger transition-colors hover:bg-danger/10"
+            >
+              Delete Project
+            </button>
           </div>
-        ) : ""
-      }
-    </div >
-  )
+        )}
+      </div>
+    </div>
+  );
 }
 
-
-export default ProjectRow
+export default ProjectRow;

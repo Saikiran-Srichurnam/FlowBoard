@@ -1,24 +1,24 @@
 import { useTasks } from "../../context/TasksContext";
 
 function UpCommingEvents() {
+  const { tasks = [] } = useTasks();
 
+  // Theme-aware status colors
   const getEventClass = (status) => {
     switch (status) {
       case "To Do":
-        return "bg-red-50 text-red-500";
+        return "bg-danger/10 text-danger";
 
       case "In Progress":
-        return "bg-yellow-50 text-yellow-500";
+        return "bg-warning/10 text-warning";
 
       case "Review":
         return "bg-primary/10 text-primary";
 
       default:
-        return "bg-gray-100 text-gray-500";
+        return "bg-success/10 text-success";
     }
   };
-
-  const { tasks = [] } = useTasks();
 
   const parseDate = (value) => {
     if (!value) return null;
@@ -56,30 +56,41 @@ function UpCommingEvents() {
   return (
     <section
       id="upcoming-deadlines"
-      className="h-64 w-full rounded-md border border-border bg-surface p-5 shadow-sm md:h-full"
+      className="h-64 w-full rounded-xl border border-border bg-surface p-5 shadow-sm md:h-full"
     >
+      {/* Header */}
       <div className="mb-3 flex items-center justify-between">
         <h2 className="text-sm font-semibold text-heading">
           Upcoming Deadlines
         </h2>
       </div>
 
-      <hr className="border-border opacity-50" />
+      <hr className="border-border" />
 
+      {/* Upcoming Events */}
       {upcomingTasks.length > 0 ? (
-        <div className="mt-3 flex flex-col gap-4">
+        <div className="mt-4 flex flex-col gap-4">
           {upcomingTasks.map((task) => (
             <div
               key={task.id}
-              className="flex items-center gap-3"
+              className="flex min-w-0 items-center gap-3 rounded-lg p-1 transition-colors hover:bg-surface-hover"
             >
-              <span
-                className={`flex h-12 w-12 flex-col items-center justify-center rounded-lg p-2 ${getEventClass(task.status)}`}
+              {/* Deadline Date */}
+              <div
+                className={`flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-lg ${getEventClass(task.status)}`}
               >
-                <p className="text-xs">{task.deadline.toLocaleString("en-US", { month: "short" })}</p>
-                <h1 className="text-lg">{task.deadline.getDate()}</h1>
-              </span>
+                <span className="text-xs font-medium">
+                  {task.deadline.toLocaleString("en-US", {
+                    month: "short",
+                  })}
+                </span>
 
+                <span className="text-lg font-bold leading-tight">
+                  {task.deadline.getDate()}
+                </span>
+              </div>
+
+              {/* Task Title */}
               <h3 className="min-w-0 flex-1 truncate text-sm font-medium text-heading">
                 {task.title}
               </h3>

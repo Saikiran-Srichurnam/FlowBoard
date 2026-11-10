@@ -1,5 +1,10 @@
-import { MoreVertical, CalendarDays, CheckSquare, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import {
+  MoreVertical,
+  CalendarDays,
+  CheckSquare,
+  FolderKanban,
+} from "lucide-react";
 import { useProjects } from "../../context/ProjectContext";
 
 function ProjectCard({
@@ -13,157 +18,248 @@ function ProjectCard({
   tasks,
   members = [],
 }) {
-
   const [activeMenu, setActiveMenu] = useState(false);
+  const menuRef = useRef(null);
 
-  const handleMenuButton = () => {
-    setActiveMenu(prev => !prev)
-  }
+  const { handleEditProject, deleteProject, projects } = useProjects();
 
-  const { handleEditProject, deleteProject, projects } = useProjects()
+  const safeMembers = Array.isArray(members) ? members : [];
+  const safeProgress = Math.min(100, Math.max(0, Number(progress) || 0));
 
-  // handle the edit project button
+  // Project status colors
+  const getProjectStatusColor = (status) => {
+    switch (status) {
+      case "Active":
+        return "bg-primary/10 text-primary";
+
+      case "Review":
+        return "bg-warning/10 text-warning";
+
+      case "Completed":
+        return "bg-success/10 text-success";
+
+      case "On Hold":
+        return "bg-danger/10 text-danger";
+
+      default:
+        return "bg-surface-hover text-muted";
+    }
+  };
+
+  const getMemberName = (member) => {
+    if (typeof member === "string") return member;
+    return member?.name || "Team Member";
+  };
+
+  const getMemberInitials = (member) =>
+    getMemberName(member)
+      .trim()
+      .split(/\s+/)
+      .map((word) => word[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase();
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setActiveMenu(false);
+      }
+    };
+
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        setActiveMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, []);
+
   const handleEdit = () => {
-    handleEditProject(id)
-    setActiveMenu(false)
-  }
+    setActiveMenu(false);
+    handleEditProject(id);
+  };
 
   const handleDelete = () => {
-    const project = projects.find(project => project.id === id)
-    const confirmed = window.confirm(
-      `Would you like to Delete ${project.name}`
-    )
-    if (confirmed) {
-      deleteProject(id)
-    }
-    console.log(project);
-  }
+    const project = projects.find(
+      (item) => String(item.id) === String(id)
+    );
 
+    if (!project) return;
+
+    const confirmed = window.confirm(
+      `Would you like to delete "${project.name}"?`
+    );
+
+    if (confirmed) {
+      deleteProject(id);
+    }
+
+    setActiveMenu(false);
+  };
 
   return (
-    <div id={id} className="group border border-border rounded-2xl relative p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl bg-surface">
-
-      <img
-        src={image}
-        alt={name}
-        className="w-full h-44 object-cover mb-2 rounded-md"
-      />
-      {/* Header */}
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <span
-            className={`h-2.5 w-2.5 rounded-full ${status === "Active" ? "bg-primary"
-              : status === "Completed"
-                ? "bg-success"
-                : status === "On Hold"
-                  ? "bg-yellow-500"
-                  : "bg-slate-400"
-              }`}
+    <article
+      id={String(id)}
+      className="group relative flex min-w-0 flex-col overflow-visible rounded-xl border border-border bg-surface p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-lg"
+    >
+      {/* Project image */}
+      <div className="relative mb-4 h-44 shrink-0 overflow-hidden rounded-lg bg-surface-hover">
+        {image ? (
+          <img
+            src={image}
+            alt={`${name} project`}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
           />
-
-          <span className="text-xs font-medium text-muted">
-            {status}
-          </span>
-        </div>
-
-        <button
-          type="button"
-          className="rounded-md p-1.5 text-muted transition-colors hover:bg-slate-100 hover:text-heading"
-          aria-label={`More options for ${name}`}
-        >
-          <MoreVertical size={18} onClick={handleMenuButton} />
-        </button>
-        {activeMenu ? (
-          <div className="absolute right-6 mt-8 w-24 bg-background border border-border  rounded-lg text-sm font-semibold z-10 space-y-2 flex flex-col ">
-            <button className="hover:text-primary hover:bg-primary/10 p-1 rounded-lg " onClick={handleEdit}>Edit</button>
+        ) : (
+          <div className="flex h-full items-center justify-center">
+            <FolderKanban size={32} className="text-muted" />
           </div>
-        ) : ""}
+        )}
+      </div>
 
+      {/* Project header */}
+      <div className="flex items-center justify-between gap-3">
+        <span
+          className={`inline-flex max-w-[75%] items-center truncate rounded-full px-2.5 py-1 text-[11px] font-semibold ${getProjectStatusColor(status)}`}
+        >
+          {status}
+        </span>
+
+        <div className="relative shrink-0" ref={menuRef}>
+          <button
+            type="button"
+            onClick={() => setActiveMenu((prev) => !prev)}
+            aria-label={`More options for ${name}`}
+            aria-expanded={activeMenu}
+            aria-haspopup="menu"
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface-hover hover:text-heading focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            <MoreVertical size={18} />
+          </button>
+
+          {activeMenu && (
+            <div
+              role="menu"
+              className="absolute right-0 top-full z-50 mt-2 flex min-w-36 flex-col overflow-hidden rounded-lg border border-border bg-surface p-1 shadow-xl"
+            >
+              <button
+                type="button"
+                role="menuitem"
+                onClick={handleEdit}
+                className="rounded-md px-3 py-2.5 text-left text-xs font-medium text-body transition-colors hover:bg-surface-hover hover:text-primary"
+              >
+                Edit Project
+              </button>
+
+              <button
+                type="button"
+                role="menuitem"
+                onClick={handleDelete}
+                className="rounded-md px-3 py-2.5 text-left text-xs font-medium text-danger transition-colors hover:bg-danger/10"
+              >
+                Delete Project
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Project information */}
-      <div className="mt-4">
-        <h3 className="truncate text-lg font-semibold text-heading">
+      <div className="mt-3 min-w-0">
+        <h3
+          className="truncate text-base font-semibold text-heading"
+          title={name}
+        >
           {name}
         </h3>
 
-        <p className="mt-1 line-clamp-2 text-sm leading-5 text-body">
-          {description}
+        <p className="mt-1 min-h-10 line-clamp-2 text-sm leading-5 text-muted">
+          {description || "No project description available."}
         </p>
       </div>
 
       {/* Progress */}
       <div className="mt-5">
         <div className="mb-2 flex items-center justify-between">
-          <span className="text-xs font-medium text-body">
-            Progress
-          </span>
-
-          <span className="text-xs font-semibold text-heading">
-            {progress}%
+          <span className="text-xs font-medium text-body">Progress</span>
+          <span className="text-xs font-semibold tabular-nums text-heading">
+            {safeProgress}%
           </span>
         </div>
 
         <div
-          className="h-2 w-full overflow-hidden rounded-full bg-slate-100"
+          className="h-2 w-full overflow-hidden rounded-full bg-border"
           role="progressbar"
-          aria-valuenow={progress}
-          aria-valuemin="0"
-          aria-valuemax="100"
+          aria-valuenow={safeProgress}
+          aria-valuemin={0}
+          aria-valuemax={100}
           aria-label={`${name} progress`}
         >
           <div
             className="h-full rounded-full bg-primary transition-all duration-500"
-            style={{ width: `${progress}%` }}
+            style={{ width: `${safeProgress}%` }}
           />
         </div>
       </div>
 
       {/* Footer */}
-      <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
+      <div className="mt-auto pt-5">
+        <div className="flex items-center justify-between gap-2 border-t border-border pt-4">
+          {/* Team members */}
+          <div className="flex min-w-0 items-center">
+            {safeMembers.length > 0 ? (
+              <>
+                <div className="flex shrink-0 -space-x-2">
+                  {safeMembers.slice(0, 3).map((member, index) => (
+                    <div
+                      key={`${getMemberName(member)}-${index}`}
+                      title={getMemberName(member)}
+                      className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-surface bg-primary/10 text-[10px] font-bold text-primary shadow-sm"
+                    >
+                      {getMemberInitials(member)}
+                    </div>
+                  ))}
+                </div>
 
-        {/* Members */}
-        <div className="flex items-center">
-          <div className="flex -space-x-2">
-            {(members || []).slice(0, 3).map((member, index) => (
-              <div
-                key={index}
-                className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-surface bg-slate-200 text-xs font-semibold text-heading"
-                title={member}
-              >
-                {member
-                  .split(" ")
-                  .map((word) => word[0])
-                  .join("")
-                  .slice(0, 2)
-                  .toUpperCase()}
-              </div>
-            ))}
+                {safeMembers.length > 3 && (
+                  <span
+                    title={`${safeMembers.length - 3} more members`}
+                    className="ml-2 shrink-0 rounded-md bg-surface-hover px-1.5 py-1 text-[10px] font-bold text-muted"
+                  >
+                    +{safeMembers.length - 3}
+                  </span>
+                )}
+              </>
+            ) : (
+              <span className="text-xs text-muted">No members</span>
+            )}
           </div>
 
-          {members && members.length > 3 && (
-            <span className="ml-2 text-xs font-medium text-muted">
-              +{members.length - 3}
-            </span>
-          )}
+          {/* Task count */}
+          <div className="flex shrink-0 items-center gap-1.5 text-xs font-medium text-muted">
+            <CheckSquare size={15} />
+            <span>{tasks ?? 0} Tasks</span>
+          </div>
         </div>
 
-        {/* Task count */}
-        <div className="flex items-center gap-1.5 text-xs text-muted">
-          <CheckSquare size={15} />
-          <span>{tasks} Tasks</span>
+        {/* Due date */}
+        <div className="mt-4 flex min-w-0 items-center gap-1.5 text-xs text-muted">
+          <CalendarDays size={15} className="shrink-0" />
+          <span className="truncate">
+            {dueDate ? `Due ${dueDate}` : "No due date"}
+          </span>
         </div>
       </div>
-
-      {/* Due date */}
-      <div className="flex justify-between items-center">
-        <div className="mt-4 flex items-center gap-1.5 text-xs text-muted">
-          <CalendarDays size={15} />
-          <span>Due {dueDate}</span>
-        </div>
-        <button className="hover:bg-red-100 hover:text-danger text-muted p-1 rounded-md cursor-pointer" onClick={handleDelete}><Trash2 size={24} /></button>
-      </div>
-    </div>
+    </article>
   );
 }
 

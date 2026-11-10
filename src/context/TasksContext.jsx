@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { tasks as initialTasks } from "../data/tasks"
 import { useActivity } from "./ActivityContext";
 
@@ -48,23 +48,20 @@ export function TaskProvider({ children }) {
   const [showModal, setShowModal] = useState(false);
 
   // handle close button of add new task modal
-  const handleCloseModal = () => {
-    document.body.style.overflow = "";
+  const handleCloseModal = useCallback(() => {
     setShowModal(false);
-  };
+  }, []);
 
   // handle edit button functionality
-  const [editTaskId, setEditTaskId] = useState(null)
+  const [editTaskId, setEditTaskId] = useState(null);
 
   const handleEditTask = (taskId) => {
-    document.body.style.overflow = "hidden"
-    setEditTaskId(taskId)
-  }
+    setEditTaskId(taskId);
+  };
 
-  const handleCloseEditModal = () => {
-    document.body.style.overflow = ""
-    setEditTaskId(null)
-  }
+  const handleCloseEditModal = useCallback(() => {
+    setEditTaskId(null);
+  }, []);
 
   const updateTask = (editedTaskId, updatedTaskData) => {
     setTasks((prevTasks) =>

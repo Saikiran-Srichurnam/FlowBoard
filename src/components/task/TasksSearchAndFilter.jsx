@@ -1,6 +1,7 @@
+
 import { useState } from 'react'
+import { Search, ChevronDown } from 'lucide-react'
 import Input from '../ui/Input/Input'
-import { ChevronDown } from 'lucide-react'
 import TasksViewToggle from './TasksViewToggle'
 
 function TasksSearchAndFilter({
@@ -13,7 +14,6 @@ function TasksSearchAndFilter({
   view,
   setView,
 }) {
-
   const tasksStatuses = [
     { value: "All" },
     { value: "To Do" },
@@ -22,65 +22,87 @@ function TasksSearchAndFilter({
     { value: "Done" },
   ]
 
-  const sortOrder = [
-    { value: "All", label: "All" },
-    { value: "High", label: "High" },
-    { value: "Medium", label: "Medium" },
-    { value: "Low", label: "Low" }
+  const priorityOptions = [
+    { value: "All" },
+    { value: "High" },
+    { value: "Medium" },
+    { value: "Low" },
   ]
 
   const [isOpen, setIsOpen] = useState(false)
   const [isSortOpen, setIsSortOpen] = useState(false)
 
+  const dropdownClass =
+    "absolute z-50 mt-2 w-full min-w-32 overflow-hidden rounded-lg border border-border bg-surface py-1 shadow-xl"
+
+  const optionClass = (selected) =>
+    `w-full px-3 py-2.5 text-left text-xs transition-colors hover:bg-surface-hover ${
+      selected
+        ? "bg-primary/10 font-semibold text-primary"
+        : "text-body"
+    }`
+
   return (
     <section
       id="TasksSearchAndFilter"
-      className="flex flex-col lg:flex-row items-center gap-2 w-full"
+      className="flex w-full flex-col gap-3 lg:flex-row lg:items-center"
     >
-      {/* Search + Status */}
-      <div className="flex items-center gap-2 w-full lg:flex-1">
+      {/* Search and Status */}
+      <div className="flex min-w-0 w-full items-center gap-2 lg:flex-1">
 
         {/* Search */}
-        <div className="min-w-0 flex-1">
+        <div className="relative min-w-0 flex-1">
+          <Search
+            size={17}
+            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted"
+          />
+
           <Input
             name="task search"
             id="Task Search"
             type="text"
-            placeholder="Search Tasks ..."
-            className="h-10 w-full min-w-0 px-3 text-xs"
+            placeholder="Search tasks..."
+            className="h-10 w-full min-w-0 pl-9 pr-3 text-xs"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
 
-        {/* Status */}
+        {/* Status Filter */}
         <div className="relative shrink-0">
           <button
             type="button"
-            onClick={() => setIsOpen(!isOpen)}
-            className="flex h-10 w-24 lg:w-32 items-center justify-between rounded-md border border-primary/30 bg-background px-3 text-xs text-heading cursor-pointer"
+            onClick={() => {
+              setIsOpen(!isOpen)
+              setIsSortOpen(false)
+            }}
+            aria-label="Filter tasks by status"
+            aria-expanded={isOpen}
+            className="flex h-10 w-28 items-center justify-between gap-1 rounded-lg border border-border bg-background px-3 text-xs font-medium text-heading transition-colors hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 sm:w-32"
           >
-            <span>{selectedOption}</span>
-
+            <span className="truncate">{selectedOption}</span>
             <ChevronDown
-              size={18}
-              className={`transition-transform duration-300 ${isOpen ? "rotate-180" : ""
-                }`}
+              size={16}
+              className={`shrink-0 text-muted transition-transform duration-200 ${
+                isOpen ? "rotate-180" : ""
+              }`}
             />
           </button>
 
           {isOpen && (
-            <ul className="absolute left-0 mt-2 z-50 w-28 lg:w-32  rounded-md border border-primary/10 bg-background text-xs shadow-md">
-              {tasksStatuses.map((taskStatus) => (
-                <li
-                  key={taskStatus.value}
-                  className="cursor-pointer px-2 py-2 text-primary/60 hover:bg-primary/10 hover:text-primary"
-                  onClick={() => {
-                    setSelectedOption(taskStatus.value)
-                    setIsOpen(false)
-                  }}
-                >
-                  {taskStatus.value}
+            <ul className={dropdownClass}>
+              {tasksStatuses.map((status) => (
+                <li key={status.value}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedOption(status.value)
+                      setIsOpen(false)
+                    }}
+                    className={optionClass(selectedOption === status.value)}
+                  >
+                    {status.value}
+                  </button>
                 </li>
               ))}
             </ul>
@@ -88,51 +110,66 @@ function TasksSearchAndFilter({
         </div>
       </div>
 
-      {/* Priority + Grid/List */}
-      <div className="flex items-center gap-2 w-full lg:w-auto">
+      {/* Priority and View Toggle */}
+      <div className="flex w-full items-center justify-between gap-2 lg:w-auto lg:justify-start">
 
-        {/* Priority */}
+        {/* Priority Filter */}
         <div className="relative shrink-0">
           <button
             type="button"
-            onClick={() => setIsSortOpen(!isSortOpen)}
-            className="flex h-10 w-24 lg:w-32 items-center justify-between rounded-md border border-primary/30 bg-background px-3 text-xs text-heading cursor-pointer"
+            onClick={() => {
+              setIsSortOpen(!isSortOpen)
+              setIsOpen(false)
+            }}
+            aria-label="Filter tasks by priority"
+            aria-expanded={isSortOpen}
+            className="flex h-10 w-28 items-center justify-between gap-1 rounded-lg border border-border bg-background px-3 text-xs font-medium text-heading transition-colors hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 sm:w-32"
           >
-            <span>{selectedPriorityOption}</span>
+            <span className="truncate">
+              {selectedPriorityOption === "All"
+                ? "Priority: All"
+                : selectedPriorityOption}
+            </span>
 
             <ChevronDown
-              size={18}
-              className={`transition-transform duration-300 ${isSortOpen ? "rotate-180" : ""
-                }`}
+              size={16}
+              className={`shrink-0 text-muted transition-transform duration-200 ${
+                isSortOpen ? "rotate-180" : ""
+              }`}
             />
           </button>
 
           {isSortOpen && (
-            <ul className="absolute left-0 lg:right-0 mt-2 z-50 w-28 lg:w-32 rounded-md border border-primary/10 bg-background text-xs shadow-md">
-              {sortOrder.map((order) => (
-                <li
-                  key={order.value}
-                  className="cursor-pointer px-2 py-2 text-primary/60 hover:bg-primary/10 hover:text-primary"
-                  onClick={() => {
-                    setSelectedPriorityOption(order.label)
-                    setIsSortOpen(false)
-                  }}
-                >
-                  {order.label}
+            <ul className={`${dropdownClass} right-0`}>
+              {priorityOptions.map((priority) => (
+                <li key={priority.value}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedPriorityOption(priority.value)
+                      setIsSortOpen(false)
+                    }}
+                    className={optionClass(
+                      selectedPriorityOption === priority.value
+                    )}
+                  >
+                    {priority.value === "All"
+                      ? "All Priorities"
+                      : priority.value}
+                  </button>
                 </li>
               ))}
             </ul>
           )}
         </div>
 
-        {/* Grid / List */}
+        {/* Grid / List Toggle */}
         <div className="shrink-0">
           <TasksViewToggle
             view={view}
             setView={setView}
           />
         </div>
-
       </div>
     </section>
   )

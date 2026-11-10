@@ -36,7 +36,6 @@ function StatsOverview() {
     teamMembers: 3,
   };
 
-  // Calculate percentage change
   const calculatePerformance = (current, previous) => {
     if (previous === 0) return 0;
 
@@ -68,7 +67,7 @@ function StatsOverview() {
     },
     {
       symbol: Hourglass,
-      symbolClass: "bg-yellow-100 text-yellow-600",
+      symbolClass: "bg-warning/10 text-warning",
       name: "In Progress",
       total: inProgressTasks,
       performance: calculatePerformance(
@@ -78,7 +77,7 @@ function StatsOverview() {
     },
     {
       symbol: Users2,
-      symbolClass: "bg-primary/10 text-blue-500",
+      symbolClass: "bg-primary/10 text-primary",
       name: "Team Members",
       total: teamMembers,
       performance: calculatePerformance(
@@ -101,17 +100,17 @@ function StatsOverview() {
         return (
           <div
             key={data.name}
-            className="min-w-0 space-y-4 rounded-xl border border-border bg-surface p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
+            className="min-w-0 space-y-4 rounded-xl border border-border bg-surface p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
           >
             <div className="flex min-w-0 items-center gap-3">
               <div
-                className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-lg ${data.symbolClass}`}
+                className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${data.symbolClass}`}
               >
-                <Icon size={24} />
+                <Icon size={23} />
               </div>
 
               <div className="min-w-0">
-                <h2 className="truncate text-sm text-muted">
+                <h2 className="truncate text-sm font-medium text-muted">
                   {data.name}
                 </h2>
 
@@ -123,8 +122,9 @@ function StatsOverview() {
 
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs sm:text-sm">
               <span
-                className={`inline-flex items-center gap-1 font-medium ${isIncreasing ? "text-success" : "text-danger"
-                  }`}
+                className={`inline-flex items-center gap-1 font-medium ${
+                  isIncreasing ? "text-success" : "text-danger"
+                }`}
               >
                 <ArrowIcon size={16} />
                 {Math.abs(data.performance)}%

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useState, useCallback } from "react"
 import { projects as initialProjects } from "../data/project";
 
 const ProjectContext = createContext()
@@ -13,7 +13,7 @@ export function ProjectProvider({ children }) {
         const parsed = JSON.parse(saved)
 
         // Make sure it's an array
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        if (Array.isArray(parsed)) {
           return parsed
         }
       }
@@ -35,29 +35,25 @@ export function ProjectProvider({ children }) {
   }, [projects])
 
   const addProject = (newProject) => {
-    setProjects([...projects, newProject]); // Auto-saves via useEffect
+    setProjects((prevProjects) => [...prevProjects, newProject]); // Auto-saves via useEffect
   };
 
   const [showModal, setShowModal] = useState(false);
   const [editProjectId, setEditProjectId] = useState(null)
 
-  // Close ADD modal
-  const handleCloseModal = () => {
-    document.body.style.overflow = "";
+  const handleCloseModal = useCallback(() => {
     setShowModal(false);
-  };
+  }, []);
 
-  // Open EDIT modal
+
+
   const handleEditProject = (projectId) => {
-    document.body.style.overflow = "hidden";
     setEditProjectId(projectId);
   };
 
-  // Close EDIT modal
-  const handleCloseEditModal = () => {
-    document.body.style.overflow = "";
+  const handleCloseEditModal = useCallback(() => {
     setEditProjectId(null);
-  };
+  }, []);
 
   // updated project details
   const updateProject = (projectId, updatedProjectData) => {

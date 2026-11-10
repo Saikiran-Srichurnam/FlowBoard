@@ -1,30 +1,38 @@
-import { Plus } from 'lucide-react'
-import Button from "../ui/Button"
-import AddNewProjectModal from './AddNewProjectModal'
-import { useProjects } from '../../context/ProjectContext'
+
+import Button from "../ui/Button";
+import { Plus } from "lucide-react";
+import AddNewProjectModal from "./AddNewProjectModal";
+import { useProjects } from "../../context/ProjectContext";
 
 function ProjectHeader() {
-  const {showModal, setShowModal} = useProjects()
+  const { showModal, setShowModal } = useProjects();
 
-  // handle add project btn
-  const handleAddBtn = () => {
-    console.log("adding project", Date.now())
-    document.body.style.overflow = "hidden"
-    setShowModal(true)
-  }
+  const handleAddProjectBtn = () => {
+    setShowModal(true);
+  };
 
   return (
-    <section id='ProjectHeader' className='flex justify-between items-center'>
+    <section
+      id="ProjectHeader"
+      className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+    >
       <div>
-        <h1 className='text-heading text-lg font-semibold'>Project</h1>
-        <p className='text-muted text-sm'>Manage and track all your projects</p>
+        <h1 className="text-lg font-semibold text-heading">
+          Projects
+        </h1>
+        <p className="text-sm text-muted">
+          Manage and track your projects
+        </p>
       </div>
-      <Button onClick={handleAddBtn}><Plus size={24} />New Project</Button>
 
-      {/* conditional rendering of modal */}
+      <Button onClick={handleAddProjectBtn}>
+        <Plus size={18} />
+        New Project
+      </Button>
+
       {showModal && <AddNewProjectModal />}
-    </section >
-  )
+    </section>
+  );
 }
 
-export default ProjectHeader
+export default ProjectHeader;

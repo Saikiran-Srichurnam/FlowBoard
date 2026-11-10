@@ -1,11 +1,10 @@
-
 import { useState, useEffect } from "react";
 import { X, Clock, Activity } from "lucide-react";
 import { useActivity } from "../../context/ActivityContext";
 import Button from "../ui/Button";
 
 function RecentActivity() {
-  const { activities } = useActivity();
+  const { activities = [] } = useActivity();
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
@@ -38,15 +37,14 @@ function RecentActivity() {
   };
 
   const ActivityItem = ({ activity }) => (
-    <div
-      key={activity.id}
-      className="flex items-start justify-between gap-3 border-b border-border py-3 last:border-b-0"
-    >
+    <div className="flex items-start justify-between gap-3 rounded-md border-b border-border py-3 transition-colors last:border-b-0 hover:bg-surface-hover">
       <div className="flex min-w-0 items-start gap-3">
-        <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary" />
+        <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10">
+          <span className="h-2 w-2 rounded-full bg-primary" />
+        </span>
 
         <div className="min-w-0">
-          <p className="text-xs text-muted">
+          <p className="text-xs leading-relaxed text-body">
             {activity.text}{" "}
             <span className="font-semibold text-heading">
               "{activity.task}"
@@ -64,15 +62,16 @@ function RecentActivity() {
 
   return (
     <>
+      {/* Recent Activity Card */}
       <section
         id="RecentActivity"
-        className="flex h-64 w-full flex-col rounded-md border border-border bg-surface p-5 shadow-sm"
+        className="flex h-64 w-full flex-col rounded-xl border border-border bg-surface p-5 shadow-sm"
       >
         <h2 className="text-sm font-semibold text-heading">
           Recent Activity
         </h2>
 
-        {/* Scrollable activity list */}
+        {/* Scrollable Activity List */}
         <div className="mt-2 min-h-0 flex-1 overflow-y-auto">
           {activities.length > 0 ? (
             activities.map((activity) => (
@@ -94,9 +93,10 @@ function RecentActivity() {
         </Button>
       </section>
 
+      {/* All Activities Modal */}
       {showAll && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
           onClick={() => setShowAll(false)}
         >
           <div
@@ -106,16 +106,19 @@ function RecentActivity() {
             className="flex max-h-[80vh] w-full max-w-lg flex-col rounded-xl border border-border bg-surface p-5 shadow-xl"
             onClick={(event) => event.stopPropagation()}
           >
+            {/* Modal Header */}
             <div className="flex items-center justify-between border-b border-border pb-4">
               <div className="flex items-center gap-2">
                 <Activity size={18} className="text-primary" />
+
                 <h2
                   id="activity-modal-title"
                   className="text-base font-semibold text-heading"
                 >
                   All Activities
                 </h2>
-                <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs text-primary">
+
+                <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
                   {activities.length}
                 </span>
               </div>
@@ -124,12 +127,13 @@ function RecentActivity() {
                 type="button"
                 onClick={() => setShowAll(false)}
                 aria-label="Close activity history"
-                className="rounded-md p-2 text-muted hover:bg-background cursor-pointer"
+                className="cursor-pointer rounded-md p-2 text-muted transition-colors hover:bg-surface-hover hover:text-heading"
               >
                 <X size={18} />
               </button>
             </div>
 
+            {/* Activity History */}
             <div className="mt-2 overflow-y-auto">
               {activities.length > 0 ? (
                 activities.map((activity) => (
@@ -142,6 +146,7 @@ function RecentActivity() {
               )}
             </div>
 
+            {/* Modal Footer */}
             <div className="mt-3 flex justify-end border-t border-border pt-3">
               <Button
                 variant="ghost"
@@ -153,8 +158,7 @@ function RecentActivity() {
             </div>
           </div>
         </div>
-      )
-      }
+      )}
     </>
   );
 }

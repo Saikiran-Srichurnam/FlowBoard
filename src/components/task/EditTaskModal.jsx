@@ -1,59 +1,58 @@
-import { ChevronDown, X } from "lucide-react"
-import Input from "../ui/Input/Input"
-import Button from "../ui/Button"
-import { useEffect, useState } from "react"
+
+import { useEffect, useState } from "react";
+import { X, ChevronDown } from "lucide-react";
+import Input from "../ui/Input/Input";
+import Button from "../ui/Button";
 import { useTasks } from "../../context/TasksContext";
 import { useProjects } from "../../context/ProjectContext";
 import { useActivity } from "../../context/ActivityContext";
 
-
 function EditTaskModal({ editTaskId }) {
-
-  // importing functions from the task context
-  const { tasks, handleCloseEditModal, updateTask } = useTasks()
-
-  // extracting edit task details at updating task details
-  const taskDetails = tasks.find((t) => t.id === editTaskId);
-
+  const { tasks, handleCloseEditModal, updateTask } = useTasks();
+  const { projects } = useProjects();
   const { addActivity } = useActivity();
 
-  // Task statuses
-  const tasksStatuses = [
-    { value: "To Do" },
-    { value: "In Progress" },
-    { value: "Review" },
-    { value: "Done" },
-  ];
+  const taskStatuses = ["To Do", "In Progress", "Review", "Done"];
+  const taskPriorities = ["High", "Medium", "Low"];
 
-  const priorityOrder = [
-    { value: "High" },
-    { value: "Medium" },
-    { value: "Low" }
-  ]
+  const taskDetails = tasks.find(
+    (task) => task.id === editTaskId
+  );
 
+  const [isStatusOpen, setIsStatusOpen] = useState(false);
+  const [isPriorityOpen, setIsPriorityOpen] = useState(false);
 
-  const [isStatusOpen, setIsStatusOpen] = useState(false)
-  const [isPriorityOpen, setIsPriorityOpen] = useState(false)
+  const [taskTitle, setTaskTitle] = useState(
+    taskDetails?.title || ""
+  );
+  const [taskDescription, setTaskDescription] = useState(
+    taskDetails?.description || ""
+  );
+  const [status, setStatus] = useState(
+    taskDetails?.status || "To Do"
+  );
+  const [priority, setPriority] = useState(
+    taskDetails?.priority || "Medium"
+  );
+  const [progress, setProgress] = useState(
+    taskDetails?.progress ?? 0
+  );
+  const [projectId, setProjectId] = useState(
+    taskDetails?.projectId ?? ""
+  );
+  const [taskMembers, setTaskMembers] = useState(
+    taskDetails?.assignee || []
+  );
 
-  //Modal Data
-  const [statusOptionSelect, setStatusOptionSelect] = useState(taskDetails.status)
-  const [priorityOptionSelect, setPriorityOptionSelect] = useState(taskDetails.priority)
-  const [projectId, setProjectId] = useState(taskDetails.projectId)
-  const [taskTitle, setTaskTitle] = useState(taskDetails.title)
-  const [taskDescription, setTaskDescription] = useState(taskDetails.description)
-  const [taskProgress, setTaskProgress] = useState(taskDetails.progress)
-  const [taskMembers, setTaskMembers] = useState(taskDetails?.assignee || []);
-
-  // function for due date
   const formatDateForInput = (dateValue) => {
-    if (dateValue === null || dateValue === undefined || dateValue === "") {
-      return "";
+    if (!dateValue) return "";
+
+    // Keep date-only strings unchanged.
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateValue)) {
+      return dateValue;
     }
 
-    // Convert numeric timestamps (milliseconds) to a date
-    const date = new Date(
-      typeof dateValue === "number" ? dateValue : dateValue
-    );
+    const date = new Date(dateValue);
 
     if (Number.isNaN(date.getTime())) return "";
 
@@ -64,288 +63,427 @@ function EditTaskModal({ editTaskId }) {
     return `${year}-${month}-${day}`;
   };
 
-  const [dueDate, setDueDate] = useState(formatDateForInput(taskDetails?.dueDate));
+  const [dueDate, setDueDate] = useState(
+    formatDateForInput(taskDetails?.dueDate)
+  );
 
-
+  // Lock scrolling only while a valid task is being edited.
   useEffect(() => {
-    setDueDate(formatDateForInput(taskDetails?.dueDate));
-  }, [editTaskId, taskDetails?.dueDate]);
+    if (!taskDetails) return;
 
-  if (!taskDetails) return null;
+    const previousOverflow = document.body.style.overflow;
 
-  // total members present in development team
-  const { projects } = useProjects()
+    document.body.style.overflow = "hidden";
+
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        handleCloseEditModal();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [taskDetails?.id, handleCloseEditModal]);
+
+  // Load task details whenever a different task is opened.
+  useEffect(() => {
+    if (!taskDetails) return;
+
+    setTaskTitle(taskDetails.title || "");
+    setTaskDescription(taskDetails.description || "");
+    setStatus(taskDetails.status || "To Do");
+    setPriority(taskDetails.priority || "Medium");
+    setProgress(taskDetails.progress ?? 0);
+    setProjectId(taskDetails.projectId ?? "");
+
+    setTaskMembers(
+      Array.isArray(taskDetails.assignee)
+        ? taskDetails.assignee
+        : []
+    );
+
+    setDueDate(formatDateForInput(taskDetails.dueDate));
+
+    setIsStatusOpen(false);
+    setIsPriorityOpen(false);
+  }, [editTaskId, taskDetails?.id]);
 
   const selectedProject = projects.find(
-    (project) => project.id === Number(projectId)
+    (project) => String(project.id) === String(projectId)
   );
 
   const projectMembers = selectedProject?.members || [];
 
-
-  // Load members when a different task is opened
+  // Keep only members belonging to the selected project.
   useEffect(() => {
-    const savedMembers = Array.isArray(taskDetails?.assignee)
-      ? taskDetails.assignee
-      : []
-
-    const validMembers = savedMembers.filter((member) =>
-      projectMembers.includes(member)
-    )
-
-    setTaskMembers(validMembers);
-  }, [editTaskId]);
-
-
-  // When project changes, preserve common members
-  useEffect(() => {
-    const selectedProject = projects.find(
-      (project) => project.id === Number(projectId)
-    );
-
-    const projectMembers = selectedProject?.members || [];
-
-    setTaskMembers((prevMembers) =>
-      prevMembers.filter((member) =>
+    setTaskMembers((previousMembers) =>
+      previousMembers.filter((member) =>
         projectMembers.includes(member)
       )
     );
   }, [projectId, projects]);
 
-
-  // handling checkbox of selecting tasks members
-  const pickSelectedTaskMember = (event) => {
-    const { value, checked } = event.target;
-
-    setTaskMembers((prevMembers) => {
-      if (checked) {
-        return [...prevMembers, value];
-      }
-
-      return prevMembers.filter(
-        (member) => member !== value
-      );
-    });
+  const handleProjectChange = (event) => {
+    setProjectId(event.target.value);
   };
 
+  const handleMemberSelection = (event) => {
+    const { value, checked } = event.target;
 
-  // handle save task functionality
-  const handleSaveTaskBtn = () => {
-    if (!taskTitle) {
-      alert("Please enter the Task Title!")
+    setTaskMembers((previousMembers) =>
+      checked
+        ? [...previousMembers, value]
+        : previousMembers.filter((member) => member !== value)
+    );
+  };
+
+  const handleSaveTask = () => {
+    if (!taskTitle.trim()) {
+      alert("Please enter a task title.");
+      return;
+    }
+
+    if (!projectId || !selectedProject) {
+      alert("Please select a valid project.");
       return;
     }
 
     if (taskMembers.length === 0) {
-      alert(`Please add atleast one Task Member for the ${taskTitle} Task`)
-      return
+      alert("Please select at least one task member.");
+      return;
     }
 
     const updatedTaskData = {
       title: taskTitle.trim(),
-      description: taskDescription.trim() || "",
-      status: statusOptionSelect,
-      priority: priorityOptionSelect,
-      projectId: Number(projectId) || 0,
-      progress: Number(taskProgress) || 0,
+      description: taskDescription.trim(),
+      status,
+      priority,
+      projectId: Number(projectId),
+      progress: Math.min(100, Math.max(0, Number(progress) || 0)),
       assignee: [...taskMembers],
       dueDate,
-    }
+    };
 
     const previousProject = projects.find(
       (project) => project.id === taskDetails.projectId
     );
 
-    const nextProject = projects.find(
-      (project) => project.id === Number(projectId)
-    );
+    const nextProject = selectedProject;
 
+    updateTask(editTaskId, updatedTaskData);
 
-    updateTask(editTaskId, updatedTaskData)
-
-    // setTaskTitle("")
-    // setTaskDescription("")
-    // setStatusOptionSelect("All")
-    // setPriorityOptionSelect("All")
-    // setTaskProgress(0)
-    // setProjectId(0)
-
-    if (taskDetails.projectId !== Number(projectId)) {
+    // Record activity only when the task moves to another project.
+    if (String(taskDetails.projectId) !== String(projectId)) {
       addActivity(
-        `You moved "${taskTitle.trim()}" from "${previousProject?.name || "Unknown Project"}" to "${nextProject?.name || "Unknown Project"}"`,
+        `You moved "${taskTitle.trim()}" from "${previousProject?.name || "Unknown Project"}" to "${nextProject.name}"`,
         taskTitle.trim()
       );
     }
-    console.log(updatedTaskData);
-    handleCloseEditModal()
-  }
 
+    handleCloseEditModal();
+  };
+
+  const fieldClass =
+    "h-10 w-full rounded-lg border border-border bg-background px-3 text-sm text-heading outline-none transition-colors placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/10";
+
+  if (!taskDetails) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-[6vh]">
-      {/* Background overlay */}
-      <div className="absolute inset-0 bg-black/10 backdrop-blur-sm" onClick={handleCloseEditModal} />
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5">
+      {/* Overlay */}
+      <button
+        type="button"
+        aria-label="Close modal"
+        onClick={handleCloseEditModal}
+        className="absolute inset-0 cursor-default bg-black/50 backdrop-blur-sm"
+      />
 
       {/* Modal */}
-      <div className="relative z-10 w-full max-w-sm px-6 py-4 text-black bg-background border rounded-lg shadow-xl space-y-2 overflow-hidden text-xs">
+      <section
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="edit-task-title"
+        className="relative z-10 flex max-h-[90vh] w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-2xl"
+      >
+        {/* Header */}
+        <header className="flex items-center justify-between border-b border-border px-5 py-4 sm:px-6">
+          <div>
+            <h2
+              id="edit-task-title"
+              className="text-lg font-semibold text-heading"
+            >
+              Edit Task
+            </h2>
+            <p className="mt-1 text-xs text-muted">
+              Update task details and manage your team assignment.
+            </p>
+          </div>
 
-        <button className='absolute right-4 top-4 cursor-pointer' onClick={handleCloseEditModal}><X size={24} /></button>
-        <h1 className='text-center text-2xl'>Update Task</h1>
-        <div className='flex flex-col gap-2'>
+          <button
+            type="button"
+            onClick={handleCloseEditModal}
+            aria-label="Close modal"
+            className="rounded-lg p-2 text-muted transition-colors hover:bg-surface-hover hover:text-heading"
+          >
+            <X size={20} />
+          </button>
+        </header>
+
+        {/* Scrollable content */}
+        <div className="min-h-0 flex-1 space-y-5 overflow-y-auto px-5 py-5 sm:px-6">
+          {/* Task details */}
           <Input
             type="text"
             label="Task Name"
-            placeholder="Eg: E-commerce Platform"
+            placeholder="e.g. Create User Login Page"
             value={taskTitle}
-            onChange={(e) => setTaskTitle(e.target.value)}
-            required
-          />
-          <Input
-            type="text"
-            label="description"
-            placeholder="Eg: Create User Login Page"
-            value={taskDescription}
-            onChange={(e) => setTaskDescription(e.target.value)}
+            onChange={(event) => setTaskTitle(event.target.value)}
             required
           />
 
-          <div className='flex justify-between items-center gap-2'>
-            {/* task status */}
-            <div className="flex justify-center items-center gap-2">
-              {/* status button */}
-              <h2>Status</h2>
-              <div>
-                {/* Selected value */}
-                <button id='All Projects'
-                  className="flex justify-between items-center h-10 text-heading text-xs md:text-sm bg-background w-24 lg:w-32 focus-visible:bg-background rounded-md border border-primary/30 outline-none px-4 py-2 focus:border-primary/30 focus:ring-2 focus:ring-primary/10 cursor-pointer" onClick={() => setIsStatusOpen(!isStatusOpen)}
+          <Input
+            type="text"
+            label="Description"
+            placeholder="Briefly describe your task"
+            value={taskDescription}
+            onChange={(event) =>
+              setTaskDescription(event.target.value)
+            }
+          />
+
+          {/* Status and priority */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {/* Status */}
+            <div className="min-w-0">
+              <label className="mb-2 block text-xs font-medium text-body">
+                Task Status
+              </label>
+
+              <div className="relative">
+                <button
+                  type="button"
+                  aria-expanded={isStatusOpen}
+                  onClick={() => {
+                    setIsStatusOpen((previous) => !previous);
+                    setIsPriorityOpen(false);
+                  }}
+                  className={`${fieldClass} flex items-center justify-between`}
                 >
-                  <span className="text-xs">{statusOptionSelect}</span>
-                  <ChevronDown size={24} className={`transition-transform transform duration-300 ${isStatusOpen ? "rotate-180" : ""}`} />
+                  <span>{status}</span>
+                  <ChevronDown
+                    size={17}
+                    className={`text-muted transition-transform ${isStatusOpen ? "rotate-180" : ""
+                      }`}
+                  />
                 </button>
 
                 {isStatusOpen && (
-                  <ul
-                    className="absolute mt-2 w-32 flex flex-col z-50 rounded-md border border-primary/10 bg-background shadow-md">
-                    {
-                      tasksStatuses.map((tasksStatus => (
-                        <li key={tasksStatus.value} value={tasksStatus.value} className=" text-primary/60 pl-2 py-1 hover:bg-primary/10 hover:text-primary hover:font-semibold duration-300 cursor-pointer"
+                  <ul className="absolute left-0 right-0 top-full z-30 mt-2 rounded-lg border border-border bg-surface p-1 shadow-xl">
+                    {taskStatuses.map((taskStatus) => (
+                      <li key={taskStatus}>
+                        <button
+                          type="button"
                           onClick={() => {
-                            setStatusOptionSelect(tasksStatus.value)
-                            setIsStatusOpen(false)
-                          }}>{tasksStatus.value}</li>
-                      )))
-                    }
+                            setStatus(taskStatus);
+                            setIsStatusOpen(false);
+                          }}
+                          className={`w-full rounded-md px-3 py-2 text-left text-sm transition-colors hover:bg-surface-hover ${status === taskStatus
+                              ? "bg-primary/10 font-medium text-primary"
+                              : "text-body"
+                            }`}
+                        >
+                          {taskStatus}
+                        </button>
+                      </li>
+                    ))}
                   </ul>
                 )}
               </div>
             </div>
 
-            {/* task priority */}
-            <div className="flex justify-start items-center gap-2">
-              {/* Priority button */}
-              <h2 >Priority</h2>
-              <div>
-                {/* Selected value */}
-                <button id='Priority Order'
-                  className="flex justify-between items-center h-10 text-heading text-xs md:text-sm bg-background w-24  focus-visible:bg-background rounded-md border border-primary/30 outline-none px-4 py-2 focus:border-primary/30 focus:ring-2 focus:ring-primary/10 cursor-pointer" onClick={() => setIsPriorityOpen(!isPriorityOpen)}
+            {/* Priority */}
+            <div className="min-w-0">
+              <label className="mb-2 block text-xs font-medium text-body">
+                Task Priority
+              </label>
+
+              <div className="relative">
+                <button
+                  type="button"
+                  aria-expanded={isPriorityOpen}
+                  onClick={() => {
+                    setIsPriorityOpen((previous) => !previous);
+                    setIsStatusOpen(false);
+                  }}
+                  className={`${fieldClass} flex items-center justify-between`}
                 >
-                  <span className="text-xs">{priorityOptionSelect}</span>
-                  <ChevronDown size={24} className={`transition-transform transform duration-300 ${isPriorityOpen ? "rotate-180" : ""}`} />
+                  <span>{priority}</span>
+                  <ChevronDown
+                    size={17}
+                    className={`text-muted transition-transform ${isPriorityOpen ? "rotate-180" : ""
+                      }`}
+                  />
                 </button>
 
                 {isPriorityOpen && (
-                  <ul
-                    className="absolute mt-2 w-24 flex flex-col z-50 rounded-md border border-primary/10 bg-background shadow-md">
-                    {
-                      priorityOrder.map((priority => (
-                        <li key={priority.value} value={priority.value} className=" text-primary/60 pl-2 py-1 hover:bg-primary/10 hover:text-primary hover:font-semibold duration-300 cursor-pointer"
+                  <ul className="absolute left-0 right-0 top-full z-30 mt-2 rounded-lg border border-border bg-surface p-1 shadow-xl">
+                    {taskPriorities.map((taskPriority) => (
+                      <li key={taskPriority}>
+                        <button
+                          type="button"
                           onClick={() => {
-                            setPriorityOptionSelect(priority.value)
-                            setIsPriorityOpen(false)
-                          }}>{priority.value}</li>
-                      )))
-                    }
+                            setPriority(taskPriority);
+                            setIsPriorityOpen(false);
+                          }}
+                          className={`w-full rounded-md px-3 py-2 text-left text-sm transition-colors hover:bg-surface-hover ${priority === taskPriority
+                              ? "bg-primary/10 font-medium text-primary"
+                              : "text-body"
+                            }`}
+                        >
+                          {taskPriority}
+                        </button>
+                      </li>
+                    ))}
                   </ul>
                 )}
               </div>
             </div>
           </div>
 
-          <div className='flex justify-between items-center gap-2'>
-            {/* due date */}
-            <div className="flex items-center gap-2">
-              <h2>Due Date:</h2>
+          {/* Due date and progress */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="min-w-0">
+              <label
+                htmlFor="edit-task-due-date"
+                className="mb-2 block text-xs font-medium text-body"
+              >
+                Due Date
+              </label>
+
               <input
+                id="edit-task-due-date"
                 type="date"
                 value={dueDate}
-                onChange={(e) => setDueDate(e.target.value)}
-                className="rounded-md border border-gray-300 px-2 py-1 text-[10px] w-24"
+                onChange={(event) => setDueDate(event.target.value)}
+                className={fieldClass}
               />
             </div>
 
-            {/* progress */}
-            <div className='flex justify-center items-center gap-2'>
-              <label htmlFor="progress">Progress</label>
+            <div className="min-w-0">
+              <label
+                htmlFor="edit-task-progress"
+                className="mb-2 block text-xs font-medium text-body"
+              >
+                Progress (%)
+              </label>
+
               <input
-                id='progress'
-                type="text"
-                min={0}
-                max={100}
-                className='bg-background rounded-md border border-primary/30 focus-visible:ring-1 focus-visible:border-primary/50 outline-none px-4 py-2 w-16 lg:w-24 h-10'
-                value={taskProgress}
-                onChange={(e) => setTaskProgress(Number(e.target.value))}
+                id="edit-task-progress"
+                type="number"
+                min="0"
+                max="100"
+                value={progress}
+                onChange={(event) => setProgress(event.target.value)}
+                className={fieldClass}
               />
             </div>
           </div>
 
-          {/* Task Members */}
-          <div className='space-y-2'>
-            <h2>Members</h2>
-            <div className='grid grid-cols-3 space-x-2'>
-              {projectMembers && projectMembers.map((member) => (
-                <span key={`edit-task-${member}`} className='space-x-2'>
-                  <input
-                    type="checkbox"
-                    name=""
-                    id={`edit-task-${member}`}
-                    value={member}
-                    onChange={pickSelectedTaskMember}
-                    checked={taskMembers.includes(member)}
-                  />
-                  <label htmlFor={`edit-task-${member}`}>{member}</label>
-                </span>
+          {/* Related project */}
+          <div>
+            <label
+              htmlFor="edit-task-project"
+              className="mb-2 block text-xs font-medium text-body"
+            >
+              Related Project
+            </label>
+
+            <select
+              id="edit-task-project"
+              value={projectId}
+              onChange={handleProjectChange}
+              className={fieldClass}
+            >
+              <option value="" disabled>
+                Select a project
+              </option>
+
+              {projects.map((project) => (
+                <option key={project.id} value={project.id}>
+                  {project.name}
+                </option>
               ))}
-              {taskMembers.length > 0 && (
-                <p className='text-xs text-muted-foreground mt-1'>
-                  Selected: {taskMembers.join(", ")}
-                </p>
-              )}
+            </select>
+          </div>
+
+          {/* Team members */}
+          <div>
+            <div className="mb-3 flex items-center justify-between">
+              <label className="text-xs font-medium text-body">
+                Assign Members
+              </label>
+
+              <span className="text-xs text-muted">
+                {taskMembers.length} selected
+              </span>
             </div>
+
+            {projectMembers.length > 0 ? (
+              <div className="grid grid-cols-2 gap-2">
+                {projectMembers.map((member) => {
+                  const isSelected = taskMembers.includes(member);
+
+                  return (
+                    <label
+                      key={member}
+                      className={`flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition-colors ${isSelected
+                          ? "border-primary/50 bg-primary/5"
+                          : "border-border bg-background hover:bg-surface-hover"
+                        }`}
+                    >
+                      <input
+                        type="checkbox"
+                        value={member}
+                        checked={isSelected}
+                        onChange={handleMemberSelection}
+                        className="h-4 w-4 accent-primary"
+                      />
+
+                      <span className="text-sm font-medium text-heading">
+                        {member}
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+            ) : (
+              <p className="rounded-lg border border-border bg-background px-4 py-3 text-sm text-muted">
+                No team members found in this project.
+              </p>
+            )}
           </div>
         </div>
 
-        {/* project id */}
-        <div className="flex justify-start items-center gap-2">
-          {/* Priority button */}
-          <h2 className="shrink-0">Related to Project :</h2>
-          <select
-            value={projectId}
-            onChange={(e) => setProjectId(Number(e.target.value))}
-            className="w-full p-2 border border-primary/50 rounded-md outline-none"
+        {/* Footer */}
+        <footer className="flex items-center justify-end gap-3 border-t border-border bg-surface px-5 py-4 sm:px-6">
+          <Button
+            onClick={handleCloseEditModal}
+            className="border border-border"
           >
-            {projects.map((project) => (
-              <option key={project.id} value={project.id} className="border border-border text-primary hover:text-surface hover:bg-primary">
-                {project.name}
-              </option>
-            ))}
-          </select>
+            Cancel
+          </Button>
 
-        </div>
-        <Button className="w-full mt-2" onClick={handleSaveTaskBtn}>Save</Button>
-      </div>
+          <Button onClick={handleSaveTask}>
+            Save Changes
+          </Button>
+        </footer>
+      </section>
     </div>
-
-  )
+  );
 }
 
-export default EditTaskModal
+export default EditTaskModal;

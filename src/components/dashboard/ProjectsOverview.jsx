@@ -1,32 +1,31 @@
-import { BookOpenText, ArrowRight, Plus } from "lucide-react";
+import { BookOpenText, ArrowRight } from "lucide-react";
 import { useProjects } from "../../context/ProjectContext";
 import { useTasks } from "../../context/TasksContext";
-import Button from "../ui/Button";
 
 function ProjectOverview() {
   const { projects = [] } = useProjects();
-  const { tasks = [], setShowModal } = useTasks();
+  const { tasks = [] } = useTasks();
 
   const columns = [
     {
       title: "To Do",
-      colorClass: "bg-red-50 text-red-500",
-      borderClass: "border-l-red-500",
+      colorClass: "bg-danger/10 text-danger",
+      borderClass: "border-l-danger",
     },
     {
       title: "In Progress",
-      colorClass: "bg-yellow-50 text-yellow-600",
-      borderClass: "border-l-yellow-500",
+      colorClass: "bg-warning/10 text-warning",
+      borderClass: "border-l-warning",
     },
     {
       title: "Review",
-      colorClass: "bg-blue-50 text-blue-500",
-      borderClass: "border-l-blue-500",
+      colorClass: "bg-primary/10 text-primary",
+      borderClass: "border-l-primary",
     },
     {
       title: "Done",
-      colorClass: "bg-green-50 text-green-600",
-      borderClass: "border-l-green-500",
+      colorClass: "bg-success/10 text-success",
+      borderClass: "border-l-success",
     },
   ];
 
@@ -59,12 +58,13 @@ function ProjectOverview() {
   return (
     <section
       id="ProjectOverview"
-      className="w-full space-y-5 rounded-xl border border-border bg-surface p-4 shadow-sm sm:p-6"
+      className="w-full min-w-0 space-y-5 rounded-xl border border-border bg-surface p-4 shadow-sm sm:p-6"
     >
       {/* Header */}
       <div className="flex items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-2">
           <BookOpenText size={22} className="shrink-0 text-primary" />
+
           <h2 className="truncate font-semibold text-heading">
             Project Overview
           </h2>
@@ -73,15 +73,16 @@ function ProjectOverview() {
         <button
           type="button"
           onClick={() => {
-            window.location.href = "/kanban-board";
+            window.location.href = "/kanban-Board";
           }}
-          className="flex shrink-0 items-center gap-1 text-sm font-medium text-primary"
+          className="flex shrink-0 items-center gap-1 rounded-md text-sm font-medium text-primary transition-colors hover:text-primary-hover"
         >
-          View Board <ArrowRight size={16} />
+          View Board
+          <ArrowRight size={16} />
         </button>
       </div>
 
-      {/* Task status columns */}
+      {/* Task Status Columns */}
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {columns.map((column) => {
           const columnTasks = tasks.filter(
@@ -93,7 +94,7 @@ function ProjectOverview() {
               key={column.title}
               className="min-w-0 rounded-lg border border-border bg-background p-2"
             >
-              {/* Column header */}
+              {/* Column Header */}
               <div
                 className={`flex items-center justify-between gap-2 rounded-md border border-border p-3 text-sm font-semibold ${column.colorClass}`}
               >
@@ -117,7 +118,7 @@ function ProjectOverview() {
                     return (
                       <div
                         key={task.id}
-                        className={`space-y-3 rounded-md border border-border border-l-2 ${column.borderClass} bg-surface p-3 shadow-sm transition-shadow hover:shadow-md`}
+                        className={`space-y-3 rounded-md border border-border border-l-2 ${column.borderClass} bg-surface p-3 shadow-sm transition-all duration-200 hover:shadow-md`}
                       >
                         <div className="space-y-1">
                           <h4 className="wrap-break-words text-sm font-medium text-heading">
@@ -150,16 +151,6 @@ function ProjectOverview() {
                   </p>
                 )}
               </div>
-
-              {/* Add Task */}
-              {/* <Button
-                variant="secondary"
-                onClick={() => setShowModal(true)}
-                className="mt-2 flex w-full justify-start gap-2"
-              >
-                <Plus size={16} className="text-body" />
-                <span>Add Task</span>
-              </Button> */}
             </div>
           );
         })}

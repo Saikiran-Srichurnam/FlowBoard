@@ -1,12 +1,15 @@
+
 import {
   MoreVertical,
   CalendarDays,
-  User,
   Flag,
-} from "lucide-react"
-import { Trash2 } from "lucide-react"
-import { useTasks, useProjects } from "../../context"
-import { useState } from "react"
+  Trash2,
+  FolderKanban,
+  Pencil,
+} from "lucide-react";
+
+import { useTasks, useProjects } from "../../context";
+import { useEffect, useRef, useState } from "react";
 
 function TasksCard({
   id,
@@ -18,137 +21,169 @@ function TasksCard({
   assignee = [],
   dueDate,
 }) {
+  const { tasks, deleteTask, handleEditTask } = useTasks();
+  const { projects = [] } = useProjects();
 
-  const { tasks, deleteTask, handleEditTask } = useTasks()
-
-
-  // edit task functionality
   const [activeMenu, setActiveMenu] = useState(false);
+  const menuRef = useRef(null);
 
-  const handleMenuButton = () => {
-    setActiveMenu(prev => !prev)
-  }
+  const project = projects.find(
+    (p) => String(p.id) === String(projectId)
+  );
+  const projectName = project?.name || "Unknown Project";
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setActiveMenu(false);
+      }
+    };
+
+    const handleEscape = (event) => {
+      if (event.key === "Escape") setActiveMenu(false);
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, []);
+
+  const statusStyles = {
+    "To Do": "bg-danger",
+    "In Progress": "bg-warning",
+    Review: "bg-primary",
+    Done: "bg-success",
+  };
+
+  const priorityStyles = {
+    High: "bg-danger/10 text-danger",
+    Medium: "bg-warning/10 text-warning",
+    Low: "bg-success/10 text-success",
+  };
+
+  const priorityIconStyles = {
+    High: "text-danger",
+    Medium: "text-warning",
+    Low: "text-success",
+  };
 
   const handleEdit = () => {
-    handleEditTask(id)
-    setActiveMenu(false)
-    console.log("task editing ...");
-  }
+    setActiveMenu(false);
+    handleEditTask(id);
+  };
 
-  // delete task functionality
   const handleDeleteTask = () => {
-    const task = tasks.find(task => task.id === id);
+    const task = tasks.find(
+      (task) => String(task.id) === String(id)
+    );
+
+    if (!task) return;
+
     const confirmed = window.confirm(
-      `Would you like to Delete ${task.title}`
-    )
-    if (confirmed) {
-      deleteTask(id)
-    }
-  }
+      `Would you like to delete "${task.title}"?`
+    );
 
-  // show the project name in the task card
-  const { projects } = useProjects();
+    if (confirmed) deleteTask(id);
+  };
 
-  const project = projects.find((p) => p.id === Number(projectId))
-
-  const projectName = project?.name || "Unknown Project"
   return (
-    <div
-      id={id}
-      className="group relative rounded-2xl border border-border bg-surface p-4 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl"
-    >
-      {/* Header */}
-      <div className="flex items-start justify-between gap-3">
+    <article className="group relative flex h-full min-w-0 flex-col rounded-xl border border-border bg-surface p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg sm:p-5">
 
-        {/* Status */}
-        <div className="flex items-center gap-2">
+      {/* Header */}
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-2">
           <span
-            className={`h-2.5 w-2.5 rounded-full ${status === "To Do"
-              ? "bg-red-400"
-              : status === "In Progress"
-                ? "bg-yellow-500"
-                : status === "Review"
-                  ? "bg-blue-500"
-                  : status === "Done"
-                    ? "bg-success"
-                    : "bg-slate-400"
+            className={`h-2.5 w-2.5 shrink-0 rounded-full ${statusStyles[status] || "bg-muted"
               }`}
           />
-
-          <span className="text-xs font-medium text-muted">
+          <span className="truncate text-xs font-medium text-body">
             {status}
           </span>
         </div>
 
-        {/* More button */}
-        <button
-          type="button"
-          className="rounded-md p-1.5 text-muted transition-colors hover:bg-slate-100 hover:text-heading"
-          aria-label={`More options for ${title}`}
-          onClick={handleMenuButton}
-        >
-          <MoreVertical size={18} />
-        </button>
-        {activeMenu ? (
-          <div className="absolute right-6 mt-8 w-24 bg-background border border-border  rounded-lg text-sm font-semibold z-10 space-y-2 flex flex-col ">
-            <button className="hover:text-primary hover:bg-primary/10 p-1 rounded-lg " onClick={handleEdit}>Edit</button>
-          </div>
-        ) : ""}
+        <div className="relative shrink-0" ref={menuRef}>
+          <button
+            type="button"
+            onClick={() => setActiveMenu((prev) => !prev)}
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface-hover hover:text-heading focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            aria-label={`More options for ${title}`}
+            aria-expanded={activeMenu}
+            aria-haspopup="menu"
+          >
+            <MoreVertical size={18} />
+          </button>
+
+          {activeMenu && (
+            <div
+              role="menu"
+              className="absolute right-0 top-full z-30 mt-2 w-36 overflow-hidden rounded-lg border border-border bg-surface p-1 shadow-xl"
+            >
+              <button
+                type="button"
+                role="menuitem"
+                onClick={handleEdit}
+                className="flex w-full items-center gap-2 rounded-md px-3 py-2.5 text-left text-xs font-medium text-body transition-colors hover:bg-surface-hover hover:text-primary"
+              >
+                <Pencil size={15} />
+                Edit Task
+              </button>
+              <button
+                type="button"
+                role="menuitem"
+                onClick={handleDeleteTask}
+                className="flex w-full items-center gap-2 rounded-md px-3 py-2.5 text-left text-xs font-medium text-danger transition-colors hover:bg-danger/10"
+              >
+                <Trash2 size={15} />
+                Delete Task
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Task information */}
-      <div className="mt-4">
-        <h3 className="truncate text-lg font-semibold text-heading">
+      {/* Task Information */}
+      <div className="mt-4 min-w-0">
+        <h3 className="truncate text-base font-semibold text-heading sm:text-lg">
           {title}
         </h3>
 
-        <p className="mt-1 line-clamp-2 text-sm leading-5 text-body">
-          {description}
+        <p className="mt-1 line-clamp-2 min-h-10 text-sm leading-5 text-body">
+          {description || "No description provided."}
         </p>
       </div>
 
       {/* Priority */}
-      <div className="mt-5 flex items-center justify-between">
-        <div className="flex items-center gap-1.5">
+      <div className="mt-5 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2 text-muted">
           <Flag
             size={15}
-            className={
-              priority === "High"
-                ? "text-danger"
-                : priority === "Medium"
-                  ? "text-yellow-500"
-                  : "text-success"
-            }
+            className={priorityIconStyles[priority] || "text-muted"}
           />
-
-          <span className="text-xs font-medium text-muted">
-            Priority
-          </span>
+          <span className="text-xs font-medium">Priority</span>
         </div>
 
         <span
-          className={`rounded-full px-2.5 py-1 text-xs font-semibold ${priority === "High"
-            ? "bg-red-100 text-danger"
-            : priority === "Medium"
-              ? "bg-yellow-100 text-yellow-700"
-              : "bg-green-100 text-success"
+          className={`rounded-md px-2.5 py-1 text-xs font-semibold ${priorityStyles[priority] || "bg-background text-muted"
             }`}
         >
-          {priority}
+          {priority || "None"}
         </span>
       </div>
 
-      {/* Footer */}
-      <div className="mt-6 flex flex-col border-t border-border pt-4 space-y-2">
+      {/* Assignees and Project */}
+      <div className="mt-5 space-y-4 border-t border-border pt-4">
 
-        {/* Assignee */}
-        <div className="flex items-center gap-3">
-          {/* Avatars */}
-          <div className="flex -space-x-2">
+        {/* Members */}
+        <div className="flex min-w-0 items-center gap-3">
+          <div className="flex shrink-0 -space-x-2">
             {assignee.slice(0, 3).map((member, index) => (
               <div
-                key={index}
-                className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-surface bg-slate-200 text-xs font-semibold text-heading"
+                key={`${member}-${index}`}
+                className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-surface bg-primary/10 text-[10px] font-bold text-primary shadow-sm"
                 title={member}
               >
                 {member
@@ -161,49 +196,64 @@ function TasksCard({
             ))}
 
             {assignee.length > 3 && (
-              <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-surface bg-slate-100 text-xs font-semibold text-muted">
+              <div
+                className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-surface bg-surface-hover text-[10px] font-bold text-muted shadow-sm"
+                title={`${assignee.length - 3} more members`}
+              >
                 +{assignee.length - 3}
               </div>
             )}
           </div>
 
-          {/* Assignee names */}
-          <div className="flex flex-col">
-            <span className="text-[11px] text-muted">
-              Assigned to :
-            </span>
-
-            <span className="text-[10px] font-medium text-heading">
-              {assignee.join(", ")}
-            </span>
+          <div className="min-w-0">
+            <p className="text-[11px] text-muted">Assigned to</p>
+            <p
+              className="truncate text-xs font-medium text-heading"
+              title={assignee.join(", ")}
+            >
+              {assignee.length > 0
+                ? assignee.join(", ")
+                : "Unassigned"}
+            </p>
           </div>
         </div>
 
         {/* Project */}
-        <div className="flex items-center gap-3 text-xs text-muted ml-2">
-          <User size={15} />
-          <div className="ml-2">
-            <p className="text-muted flex ">Project Name : </p>
-            <span className="text-heading truncate"> {projectName}</span>
+        <div className="flex min-w-0 items-center gap-3">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <FolderKanban size={16} />
+          </div>
+
+          <div className="min-w-0">
+            <p className="text-[11px] text-muted">Project</p>
+            <p className="truncate text-xs font-medium text-heading">
+              {projectName}
+            </p>
           </div>
         </div>
       </div>
 
+      {/* Footer */}
+      <div className="mt-4 flex items-center justify-between gap-2 border-t border-border pt-3">
+        <div className="flex min-w-0 items-center gap-2 text-muted">
+          <CalendarDays size={15} className="shrink-0" />
+          <span className="truncate text-xs">
+            {dueDate ? `Due ${dueDate}` : "No due date"}
+          </span>
+        </div>
 
-      <div className="flex justify-between items-center mt-4 border-t border-border pt-2">
-        {/* Due date */}
-        <div className=" flex items-center gap-1.5 text-xs text-muted">
-          <CalendarDays size={15} />
-          <span>Due {dueDate}</span>
-        </div>
-        <div>
-          <button className="hover:bg-red-100 hover:text-danger text-muted p-1 rounded-md cursor-pointer" onClick={handleDeleteTask}>
-            <Trash2 size={24} />
-          </button>
-        </div>
+        {/* <button
+          type="button"
+          onClick={handleDeleteTask}
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-muted transition-colors hover:bg-danger/10 hover:text-danger focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger"
+          aria-label={`Delete ${title}`}
+          title="Delete task"
+        >
+          <Trash2 size={17} />
+        </button> */}
       </div>
-    </div >
-  )
+    </article>
+  );
 }
 
-export default TasksCard
+export default TasksCard;

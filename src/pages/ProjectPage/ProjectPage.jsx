@@ -1,62 +1,67 @@
-import { useState } from "react"
+
+import { useMemo, useState } from "react";
+
 import {
   ProjectHeader,
   ProjectSearchAndFilter,
   ProjectGrid,
   ProjectList,
   EditProjectModal,
-} from "../../components/project"
-import { useProjects } from "../../context/ProjectContext"
+} from "../../components/project";
+
+import { useProjects } from "../../context/ProjectContext";
 
 function ProjectPage() {
-  const [view, setView] = useState("grid")
-  const [search, setSearch] = useState("")
-  const [selectedOption, setSelectedOption] = useState("All")
-  const [selectedSortOption, setSelectedSortOption] = useState("latest")
+  const [view, setView] = useState("grid");
+  const [search, setSearch] = useState("");
+  const [selectedOption, setSelectedOption] = useState("All");
+  const [selectedSortOption, setSelectedSortOption] = useState("Latest");
 
-  const { projects = [], editProjectId } = useProjects()
+  const { projects = [], editProjectId } = useProjects();
 
-  const filteredProjects = projects.filter((p) => {
-    const matchedSearch = p.name
-      .toLowerCase()
-      .includes(search.toLowerCase())
+  // Search and filter projects
+  const sortedProjects = useMemo(() => {
+    const filteredProjects = projects.filter((project) => {
+      const projectName = project.name || "";
 
-    const matchedStatus =
-      selectedOption === "All" || p.status === selectedOption
+      const matchedSearch = projectName
+        .toLowerCase()
+        .includes(search.trim().toLowerCase());
 
-    return matchedSearch && matchedStatus
-  })
+      const matchedStatus =
+        selectedOption === "All" ||
+        project.status === selectedOption;
 
-  const sortedProjects = [...filteredProjects].sort((a, b) => {
-    if (selectedSortOption === "Alphabetical") {
-      // negative number → a comes before b
-      // positive number → b comes before a
-      // 0               → same order
-      return a.name.localeCompare(b.name);
-    }
+      return matchedSearch && matchedStatus;
+    });
 
-    if (selectedSortOption === "Latest") {
-      // 3 - 1 = 2 -> Put b before a.
-      return b.id - a.id
-    }
+    return [...filteredProjects].sort((a, b) => {
+      if (selectedSortOption === "Alphabetical") {
+        return (a.name || "").localeCompare(b.name || "");
+      }
 
-    if (selectedSortOption === "Oldest") {
-      // 1 - 3 = -2 -> Put a before b
-      return a.id - b.id
-    }
+      if (selectedSortOption === "Latest") {
+        return Number(b.id) - Number(a.id);
+      }
 
-    return 0
+      if (selectedSortOption === "Oldest") {
+        return Number(a.id) - Number(b.id);
+      }
 
-  })
+      return 0;
+    });
+  }, [projects, search, selectedOption, selectedSortOption]);
 
   return (
     <section
       id="ProjectPage"
-      className="h-full w-full rounded-md border border-border bg-surface p-6 shadow-sm space-y-2"
+      className="flex min-h-full w-full min-w-0 flex-col gap-6 px-4 py-5 sm:px-6"
     >
+      {/* Projects Header */}
       <ProjectHeader />
 
-      <div className="mt-8">
+      {/* Search, Filter and View Controls */}
+      <div className="min-w-0">
         <ProjectSearchAndFilter
           search={search}
           setSearch={setSearch}
@@ -69,7 +74,8 @@ function ProjectPage() {
         />
       </div>
 
-      <div className="mt-6">
+      {/* Projects Display */}
+      <div className="min-w-0 flex-1">
         {view === "grid" ? (
           <ProjectGrid sortedProjects={sortedProjects} />
         ) : (
@@ -77,11 +83,12 @@ function ProjectPage() {
         )}
       </div>
 
+      {/* Edit Project Modal */}
       {editProjectId !== null && (
         <EditProjectModal projectId={editProjectId} />
       )}
     </section>
-  )
+  );
 }
 
-export default ProjectPage
+export default ProjectPage;
