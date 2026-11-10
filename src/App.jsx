@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import Login from "./pages/authentication/Login";
-import Register from "./pages/authentication/Register";
+import Register from "./pages/authentication/Register"
 import ForgotPassword from "./pages/authentication/ForgotPassword"
 import DashboardLayout from "./components/layout/DashboardLayout";
 import { DashboardPage, ProjectPage, TaskPage, KanbanBoardPage, CalendarPage } from "./pages";
