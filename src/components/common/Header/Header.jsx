@@ -189,8 +189,8 @@ function GlobalSearch({
                         type="button"
                         onClick={() => onSelect(project)}
                         className={`flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left transition-colors ${activeIndex === resultIndex
-                            ? "bg-surface-hover"
-                            : "hover:bg-surface-hover"
+                          ? "bg-surface-hover"
+                          : "hover:bg-surface-hover"
                           }`}
                       >
                         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
@@ -236,8 +236,8 @@ function GlobalSearch({
                         type="button"
                         onClick={() => onSelect(task)}
                         className={`flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left transition-colors ${activeIndex === resultIndex
-                            ? "bg-surface-hover"
-                            : "hover:bg-surface-hover"
+                          ? "bg-surface-hover"
+                          : "hover:bg-surface-hover"
                           }`}
                       >
                         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-success/10 text-success">
@@ -361,13 +361,13 @@ function Header({ onMenuClick }) {
         </button>
 
         {/* Notifications */}
-        <button
+        {/* <button
           type="button"
           className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-surface text-heading shadow-sm transition-colors hover:bg-surface-hover sm:h-11 sm:w-11"
           aria-label="Notifications"
         >
           <Bell size={20} />
-        </button>
+        </button> */}
 
         {/* User Card */}
         <div className="hidden shrink-0 cursor-pointer items-center gap-2 rounded-xl bg-surface px-3 py-2 shadow-sm sm:flex">

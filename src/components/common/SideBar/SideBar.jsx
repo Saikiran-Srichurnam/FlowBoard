@@ -1,33 +1,40 @@
-
 import {
   LayoutDashboard,
   FolderKanban,
   CheckSquare,
   KanbanSquare,
   CalendarDays,
-  Users,
-  Bell,
-  Star,
-  Settings,
-  User,
-  LogOut,
 } from "lucide-react";
 
 import { NavLink } from "react-router-dom";
 
 function SideBar() {
   const sideBarItems = [
-    { name: "Dashboard", path: "/dashboard", symbol: <LayoutDashboard size={22} /> },
-    { name: "Projects", path: "/projects", symbol: <FolderKanban size={22} /> },
-    { name: "Tasks", path: "/tasks", symbol: <CheckSquare size={22} /> },
-    { name: "Kanban Board", path: "/kanban-Board", symbol: <KanbanSquare size={22} /> },
-    { name: "Calendar", path: "/calendar", symbol: <CalendarDays size={22} /> },
-    { name: "Team", path: "/team", symbol: <Users size={22} /> },
-    { name: "Notifications", path: "/notifications", symbol: <Bell size={22} /> },
-    { name: "Favorites", path: "/favorites", symbol: <Star size={22} /> },
-    { name: "Settings", path: "/settings", symbol: <Settings size={22} /> },
-    { name: "Profile", path: "/profile", symbol: <User size={22} /> },
-    { name: "Logout", path: "/logout", symbol: <LogOut size={22} /> },
+    {
+      name: "Dashboard",
+      path: "/dashboard",
+      symbol: <LayoutDashboard size={22} />,
+    },
+    {
+      name: "Projects",
+      path: "/projects",
+      symbol: <FolderKanban size={22} />,
+    },
+    {
+      name: "Tasks",
+      path: "/tasks",
+      symbol: <CheckSquare size={22} />,
+    },
+    {
+      name: "Kanban Board",
+      path: "/kanban-Board",
+      symbol: <KanbanSquare size={22} />,
+    },
+    {
+      name: "Calendar",
+      path: "/calendar",
+      symbol: <CalendarDays size={22} />,
+    },
   ];
 
   const sideBarClass = ({ isActive }) =>
@@ -39,7 +46,6 @@ function SideBar() {
 
   return (
     <aside className="left-0 top-0 h-full overflow-y-auto bg-surface z-20 shadow-md shrink-0 flex flex-col border-r border-border rounded-l-2xl">
-
       {/* Logo */}
       <div className="flex justify-center items-center mx-auto gap-2 px-3">
         <img

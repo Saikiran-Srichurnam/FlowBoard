@@ -6,14 +6,29 @@ const ActivityContext = createContext();
 export function ActivityProvider({ children }) {
   const [activities, setActivities] = useState(() => {
     try {
-      return JSON.parse(localStorage.getItem("myActivities")) || [];
-    } catch {
-      return [];
+      const saved = localStorage.getItem("myActivities");
+
+      if (saved) {
+        const parsed = JSON.parse(saved);
+
+        if (Array.isArray(parsed)) {
+          return parsed;
+        }
+      }
+    } catch (error) {
+      console.error("Error loading activities from localStorage:", error);
+      localStorage.removeItem("myActivities");
     }
+
+    return [];
   });
 
   useEffect(() => {
-    localStorage.setItem("myActivities", JSON.stringify(activities));
+    try {
+      localStorage.setItem("myActivities", JSON.stringify(activities));
+    } catch (error) {
+      console.error("Error saving activities to localStorage:", error);
+    }
   }, [activities]);
 
   const addActivity = (text, task) => {
