@@ -1,8 +1,9 @@
+
 import React from "react";
 import {
   CheckCircle2,
   FolderKanban,
-  Users,
+  CheckSquare,
   CalendarDays,
 } from "lucide-react";
 
@@ -21,152 +22,127 @@ function DashboardPreview() {
           </p>
         </div>
 
-        <div className="flex gap-3">
-          <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-primary/10"></div>
-          <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-primary/20"></div>
-        </div>
+        <span className="rounded-full bg-primary/10 px-3 py-1.5 text-[10px] sm:text-xs font-medium text-primary">
+          Illustrative Preview
+        </span>
       </div>
 
-      {/* Statistics */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-2 md:p-4">
+      {/* Sample Statistics */}
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 p-2 md:p-4">
 
         <div className="rounded-2xl bg-blue-50 p-4">
           <FolderKanban className="text-primary mb-2" size={22} />
-          <h3 className="text-2xl md:text-3xl font-bold">24</h3>
+          <h3 className="text-2xl md:text-3xl font-bold">03</h3>
           <p className="text-xs md:text-sm text-gray-500">
-            Projects
+            Sample Projects
           </p>
         </div>
 
         <div className="rounded-2xl bg-green-50 p-4">
-          <CheckCircle2 className="text-green-600 mb-2" size={22} />
-          <h3 className="text-2xl md:text-3xl font-bold">156</h3>
+          <CheckSquare className="text-green-600 mb-2" size={22} />
+          <h3 className="text-2xl md:text-3xl font-bold">08</h3>
           <p className="text-xs md:text-sm text-gray-500">
-            Completed
+            Sample Tasks
           </p>
         </div>
 
         <div className="rounded-2xl bg-yellow-50 p-4">
           <CalendarDays className="text-yellow-600 mb-2" size={22} />
-          <h3 className="text-2xl md:text-3xl font-bold">12</h3>
+          <h3 className="text-2xl md:text-3xl font-bold">05</h3>
           <p className="text-xs md:text-sm text-gray-500">
-            Meetings
-          </p>
-        </div>
-
-        <div className="rounded-2xl bg-purple-50 p-4">
-          <Users className="text-purple-600 mb-2" size={22} />
-          <h3 className="text-2xl md:text-3xl font-bold">8</h3>
-          <p className="text-xs md:text-sm text-gray-500">
-            Members
+            Upcoming Tasks
           </p>
         </div>
 
       </div>
 
-      {/* Kanban */}
+      {/* Sample Kanban Board */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 p-2 md:p-4">
 
-        {/* Todo */}
+        {/* To Do */}
         <div className="rounded-2xl bg-gray-100 p-4">
           <h3 className="mb-4 font-semibold">To Do</h3>
 
           <div className="space-y-3">
-
             <div className="rounded-xl bg-white p-3 shadow">
               <h4 className="font-medium text-sm md:text-base">
-                Landing Page
+                Design Dashboard
               </h4>
               <p className="text-xs text-gray-500">
-                UI Design
+                UI Development
               </p>
             </div>
 
             <div className="rounded-xl bg-white p-3 shadow">
               <h4 className="font-medium text-sm md:text-base">
-                Authentication
+                Create Task Modal
               </h4>
               <p className="text-xs text-gray-500">
-                Backend
+                Task Management
               </p>
             </div>
-
           </div>
         </div>
 
-        {/* Progress */}
+        {/* In Progress */}
         <div className="rounded-2xl bg-blue-50 p-4">
-
           <h3 className="mb-4 font-semibold text-blue-700">
             In Progress
           </h3>
 
           <div className="space-y-3">
-
             <div className="rounded-xl bg-white p-3 shadow">
-
               <h4 className="font-medium text-sm md:text-base">
-                Dashboard UI
+                Build Kanban Board
               </h4>
 
               <div className="mt-3 h-2 rounded bg-gray-200">
                 <div className="h-2 w-3/4 rounded bg-primary"></div>
               </div>
-
             </div>
 
             <div className="rounded-xl bg-white p-3 shadow">
-
               <h4 className="font-medium text-sm md:text-base">
-                API Integration
+                Calendar Integration
               </h4>
 
               <div className="mt-3 h-2 rounded bg-gray-200">
                 <div className="h-2 w-1/2 rounded bg-primary"></div>
               </div>
-
             </div>
-
           </div>
-
         </div>
 
         {/* Completed */}
         <div className="rounded-2xl bg-green-50 p-4">
-
           <h3 className="mb-4 font-semibold text-green-700">
             Completed
           </h3>
 
           <div className="space-y-3">
-
             <div className="rounded-xl bg-white p-3 shadow flex items-center justify-between">
               <span className="text-sm md:text-base">
-                Database Setup
+                Project Setup
               </span>
 
-              <CheckCircle2
-                className="text-green-600"
-                size={18}
-              />
+              <CheckCircle2 className="text-green-600" size={18} />
             </div>
 
             <div className="rounded-xl bg-white p-3 shadow flex items-center justify-between">
               <span className="text-sm md:text-base">
-                Deployment
+                Sidebar Design
               </span>
 
-              <CheckCircle2
-                className="text-green-600"
-                size={18}
-              />
+              <CheckCircle2 className="text-green-600" size={18} />
             </div>
-
           </div>
-
         </div>
 
       </div>
+
+      <p className="px-4 pb-4 text-center text-xs text-gray-500">
+        Sample data shown for demonstration purposes.
+      </p>
 
     </div>
   );

@@ -1,97 +1,98 @@
-import React from "react";
+
 import {
   FolderKanban,
-  Users,
+  CheckSquare,
+  KanbanSquare,
   CalendarDays,
-  Bell,
+  Activity,
   BarChart3,
-  ShieldCheck,
 } from "lucide-react";
 
 const features = [
   {
-    icon: <FolderKanban size={32} />,
+    icon: FolderKanban,
     title: "Project Management",
     description:
-      "Organize projects effortlessly with boards, lists, and milestones.",
+      "Create and organize projects while keeping your work structured and easy to manage.",
   },
   {
-    icon: <Users size={32} />,
-    title: "Team Collaboration",
+    icon: CheckSquare,
+    title: "Task Management",
     description:
-      "Invite teammates, assign tasks, and collaborate in real time.",
+      "Create, edit, and manage tasks with clear statuses and project associations.",
   },
   {
-    icon: <CalendarDays size={32} />,
+    icon: KanbanSquare,
+    title: "Kanban Boards",
+    description:
+      "Visualize your workflow and organize tasks across different stages using drag and drop.",
+  },
+  {
+    icon: CalendarDays,
     title: "Calendar Planning",
     description:
-      "Visualize deadlines, meetings, and project timelines in one place.",
+      "View your scheduled tasks and due dates in one convenient calendar.",
   },
   {
-    icon: <Bell size={32} />,
-    title: "Smart Notifications",
+    icon: Activity,
+    title: "Activity Tracking",
     description:
-      "Receive instant updates so you never miss important changes.",
+      "Keep track of recent project and task activities in your workspace.",
   },
   {
-    icon: <BarChart3 size={32} />,
-    title: "Analytics Dashboard",
+    icon: BarChart3,
+    title: "Progress Overview",
     description:
-      "Track project progress and team productivity with beautiful reports.",
-  },
-  {
-    icon: <ShieldCheck size={32} />,
-    title: "Secure Workspace",
-    description:
-      "Your data is protected with authentication and secure access control.",
+      "Get a clear overview of your projects, task statuses, and overall progress.",
   },
 ];
 
 function Features() {
   return (
-    <section className="py-24 px-6 lg:px-20 bg-blue-50">
+    <section className="py-20 md:py-24 px-6 lg:px-20 bg-background">
       <div className="max-w-7xl mx-auto">
 
         {/* Heading */}
         <div className="text-center max-w-3xl mx-auto">
-
-          <span className="inline-block rounded-full bg-primary/10 px-4 py-2 text-primary font-semibold">
+          <span className="inline-block rounded-full bg-primary/10 px-4 py-2 text-primary text-sm font-semibold tracking-wide">
             FEATURES
           </span>
 
-          <h2 className="mt-6 text-4xl md:text-5xl font-bold text-gray-900">
+          <h2 className="mt-6 text-3xl md:text-5xl font-bold text-heading leading-tight">
             Everything You Need to Manage Projects
           </h2>
 
-          <p className="mt-6 text-lg text-gray-600">
-            FlowBoard helps teams plan, collaborate, track progress,
-            and deliver projects faster—all from one modern workspace.
+          <p className="mt-5 text-base md:text-lg text-body leading-relaxed">
+            FlowBoard brings your projects, tasks, and workflow
+            together in one organized workspace. Plan your work,
+            track progress, and stay focused.
           </p>
-
         </div>
 
-        {/* Cards */}
-        <div className="mt-20 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Feature cards */}
+        <div className="mt-14 md:mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {features.map((feature) => {
+            const Icon = feature.icon;
 
-          {features.map((feature) => (
-            <div
-              key={feature.title}
-              className="group rounded-3xl border border-gray-200 bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
-            >
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white">
-                {feature.icon}
+            return (
+              <div
+                key={feature.title}
+                className="group rounded-2xl border border-border bg-surface p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg"
+              >
+                <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white">
+                  <Icon size={27} strokeWidth={1.8} />
+                </div>
+
+                <h3 className="mt-6 text-xl font-semibold text-heading">
+                  {feature.title}
+                </h3>
+
+                <p className="mt-3 text-sm md:text-base text-body leading-7">
+                  {feature.description}
+                </p>
               </div>
-
-              <h3 className="mt-6 text-2xl font-semibold">
-                {feature.title}
-              </h3>
-
-              <p className="mt-4 text-gray-600 leading-7">
-                {feature.description}
-              </p>
-            </div>
-          ))}
-
+            );
+          })}
         </div>
 
       </div>

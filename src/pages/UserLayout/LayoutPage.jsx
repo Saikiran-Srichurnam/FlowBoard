@@ -1,3 +1,4 @@
+
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/ui/Button";
 
@@ -8,7 +9,7 @@ function LayoutPage() {
     navigate("/register");
   };
 
-  const handleLiveDemo = () => {
+  const handleExploreDashboard = () => {
     navigate("/dashboard");
   };
 
@@ -21,12 +22,13 @@ function LayoutPage() {
         </h1>
 
         <h2 className="mt-4 text-xl md:text-2xl text-gray-500 max-w-xl leading-relaxed">
-          Plan, collaborate, and deliver projects effortlessly with one modern workspace.
+          Organize projects, manage tasks, and track progress
+          with one simple workspace.
         </h2>
       </div>
 
       <p className="mt-8 text-lg text-gray-600 max-w-lg">
-        Everything your team needs in one workspace.
+        Everything you need to organize and manage your projects.
       </p>
 
       <div className="mt-10 flex gap-4">
@@ -40,9 +42,9 @@ function LayoutPage() {
         <Button
           variant="secondary"
           className="px-8 py-6 border border-primary"
-          onClick={handleLiveDemo}
+          onClick={handleExploreDashboard}
         >
-          Live Demo
+          Explore Dashboard
         </Button>
       </div>
     </div>
