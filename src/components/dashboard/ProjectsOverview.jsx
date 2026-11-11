@@ -1,6 +1,7 @@
 import { BookOpenText, ArrowRight } from "lucide-react";
 import { useProjects } from "../../context/ProjectContext";
 import { useTasks } from "../../context/TasksContext";
+import { useNavigate } from "react-router-dom";
 
 function ProjectOverview() {
   const { projects = [] } = useProjects();
@@ -55,6 +56,8 @@ function ProjectOverview() {
     return assignee ? 1 : 0;
   };
 
+  const navigate = useNavigate();
+
   return (
     <section
       id="ProjectOverview"
@@ -72,9 +75,7 @@ function ProjectOverview() {
 
         <button
           type="button"
-          onClick={() => {
-            window.location.href = "/kanban-Board";
-          }}
+          onClick={() => navigate("/kanban-Board")}
           className="flex shrink-0 items-center gap-1 rounded-md text-sm font-medium text-primary transition-colors hover:text-primary-hover"
         >
           View Board
